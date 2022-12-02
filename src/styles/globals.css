@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("../assets/fonts/SEGOEUI.TTF");
+}
+
+@font-face {
+  font-family: "Consolas";
+  src: url("../assets/fonts/CONSOLA.TTF");
+}
+
+@font-face {
+  font-family: "Consolas";
+  src: url("../assets/fonts/CONSOLAB.TTF");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Consolas";
+  src: url("../assets/fonts/CONSOLAI.TTF");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Consolas";
+  src: url("../assets/fonts/CONSOLAZ.TTF");
+  font-weight: bold;
+  font-style: italic;
+}
