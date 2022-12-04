@@ -15,138 +15,195 @@ import {
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import { Fragment, useState } from 'react';
+import { Document } from '../components';
 import { clg } from '../utils';
 
-interface IFile {
-  key: number;
-  title: string;
-  value: boolean;
-}
+type IDocument =
+  | {
+      key: number;
+      title: string;
+      type: 'FOLDER';
+      parent: number;
+      children?: IDocument[];
+    }
+  | { key: number; title: string; type: 'FILE'; parent: number };
 
-interface IFolder {
-  key: number;
-  title: string;
-  value: boolean;
-  children: IFile[];
-}
-
-const FOLDERS: IFolder[] = [
+const DOCUMENTS_CONS: IDocument[] = [
   {
     key: 1,
     title: 'Home',
-    value: false,
+    type: 'FOLDER',
+    parent: -1,
     children: [
-      { key: 11, title: 'home.tsx', value: false },
-      { key: 12, title: 'index.tsx', value: false },
+      { key: 11, title: 'home.tsx', type: 'FILE', parent: 1 },
+      { key: 12, title: 'index.tsx', type: 'FILE', parent: 1 },
     ],
   },
   {
     key: 2,
     title: 'Projects',
-    value: false,
+    type: 'FOLDER',
+    parent: -1,
     children: [
-      { key: 21, title: 'projects.tsx', value: false },
-      { key: 22, title: 'index.tsx', value: false },
+      { key: 21, title: 'projects.tsx', type: 'FILE', parent: 2 },
+      { key: 22, title: 'index.tsx', type: 'FILE', parent: 2 },
     ],
   },
   {
     key: 3,
     title: 'Experience',
-    value: false,
+    type: 'FOLDER',
+    parent: -1,
     children: [
-      { key: 31, title: 'experiences.tsx', value: false },
-      { key: 32, title: 'index.tsx', value: false },
+      { key: 31, title: 'experiences.tsx', type: 'FILE', parent: 3 },
+      { key: 32, title: 'index.tsx', type: 'FILE', parent: 3 },
     ],
   },
   {
     key: 4,
     title: 'Skills',
-    value: true,
+    type: 'FOLDER',
+    parent: -1,
     children: [
-      { key: 41, title: 'skills.tsx', value: false },
-      { key: 42, title: 'index.tsx', value: true },
+      {
+        key: 40,
+        title: 'folderin',
+        type: 'FOLDER',
+        parent: 4,
+        children: [
+          { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40 },
+          { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40 },
+        ],
+      },
+      { key: 41, title: 'skills.tsx', type: 'FILE', parent: 4 },
+      { key: 42, title: 'index.tsx', type: 'FILE', parent: 4 },
     ],
+  },
+  {
+    key: 5,
+    title: 'asd.tsx',
+    type: 'FILE',
+    parent: -1,
   },
 ];
 
 const Home: NextPage = () => {
-  const [folders, setFolders] = useState<IFolder[]>(FOLDERS);
-  const [activeFile, setActiveFile] = useState<IFile | undefined>(
-    FOLDERS.find((folder) =>
-      folder.children.find((file) => file.value === true)
-    )?.children.find((file) => file.value === true)
-  );
+  const [documents, setDocuments] = useState<IDocument[]>(DOCUMENTS_CONS);
+  const [activeFolders, setActiveFolders] = useState<number[]>([1]);
+  const [activeFile, setActiveFile] = useState<number>(12);
+  const [folderHasActiveFile, setFolderHasActiveFile] = useState<number>(-1);
 
-  const handleFolderClick = (key: number) => {
-    // Find the clicked folder
-    const clickedFolder = folders.find((folder) => folder.key === key);
-    if (!clickedFolder) return;
-    // Change the value of the clicked folder
-    clickedFolder.value = !clickedFolder.value;
-    // Remove the old clicked folder from the folders array
-    const newFolders = folders.filter((folder) => folder.key !== key);
-    // Add the new clicked folder to the folders array
-    if (newFolders.length > 0) setFolders([...newFolders, clickedFolder]);
-  };
-
-  const clearAllChildrenValues = () => {
-    // Find the active parent folder
-    const activeParent = folders.find((folder) =>
-      folder.children.find((file) => file.value === true)
-    );
-    if (!activeParent) return;
-    // Find the active file
-    const activeChildren = activeParent.children.find(
-      (file) => file.value === true
-    );
-    if (!activeChildren) return;
-    // Clear the value of the active file
-    activeChildren.value = false;
-
-    // Remove the old active file from the active parent folder
-    const newChildren = activeParent.children.filter(
-      (file) => file.key !== activeChildren.key
-    );
-    // Add the new active file to the active parent folder
-    activeParent.children = [...newChildren, activeChildren];
-
-    // Remove the old active parent folder from the folders array
-    const newFolders = folders.filter(
-      (folder) => folder.key !== activeParent.key
-    );
-    // Add the new active parent folder to the folders array
-    setFolders([...newFolders, activeParent]);
-  };
-
-  const handleFileClick = (key: number) => {
-    // Find the clicked folder
-    const clickedFolder = folders.find((folder) =>
-      folder.children.find((file) => file.key === key)
-    );
-    if (!clickedFolder) return;
-    // Find the clicked file
-    const clickedFile = clickedFolder.children.find((file) => file.key === key);
-    if (!clickedFile) return;
-    // Clear all existing children state
-    clearAllChildrenValues();
-    // Change the value of the clicked file to true
-    clickedFile.value = true;
-    // Remove the old clicked file from the children array
-    clickedFolder.children = clickedFolder.children.filter(
-      (file) => file.key !== key
-    );
-    // Add the new clicked file to the children array
-    if (clickedFolder.children.length > 0) {
-      clickedFolder.children = [...clickedFolder.children, clickedFile];
+  const searchByKey: (key: number, arr?: IDocument[]) => IDocument | null = (
+    key,
+    arr = DOCUMENTS_CONS
+  ) => {
+    // TODO: Make it good
+    // eslint-disable-next-line no-restricted-syntax
+    for (const node of arr) {
+      if (node.key === key) return node;
+      if (node.type === 'FOLDER' && node.children) {
+        const child = searchByKey(key, node.children);
+        if (child) return child;
+      }
     }
-    // Remove the old clicked folder from the folders array
-    const newFolders = folders.filter(
-      (folder) => folder.key !== clickedFolder.key
-    );
-    // Add the new clicked folder to the folders array
-    if (newFolders.length > 0) setFolders([...newFolders, clickedFolder]);
-    // Update the active file state
-    setActiveFile(clickedFile);
+    return null;
+  };
+
+  const findParents: (key: number, arr?: IDocument[]) => IDocument[] = (
+    key,
+    arr = []
+  ) => {
+    const doc = searchByKey(key);
+    if (!doc) return arr;
+    if (doc.parent === -1) return [...arr, doc];
+    return findParents(doc.parent, [...arr, doc]);
+  };
+
+  const isActiveFolder = (key: number) => {
+    if (key === -1) return false;
+    // Check every parent of the active file
+    const parents = findParents(key).filter((f) => f.type === 'FOLDER');
+    return parents.every((k) => activeFolders.includes(k.key));
+  };
+  const isActiveFile = (key: number) => activeFile === key;
+  const isFolderHasActiveFile = (key: number) => folderHasActiveFile === key;
+
+  const handleFolderClick = (doc: IDocument) => {
+    // Open folder
+    if (activeFolders.findIndex((f) => f === doc.key) === -1) {
+      // If folder has active file remove the active folder from the folderHasActiveFile
+      if (isFolderHasActiveFile(doc.key)) {
+        const parents = findParents(activeFile).filter(
+          (f) => f.type === 'FOLDER'
+        );
+        const notInActiveFolderButHasActiveChild = parents.find(
+          (f) => !activeFolders.includes(f.key) && f.key !== doc.key
+        );
+        if (notInActiveFolderButHasActiveChild)
+          setFolderHasActiveFile(notInActiveFolderButHasActiveChild.key);
+        else setFolderHasActiveFile(-1);
+      }
+      setActiveFolders((prev) => [...prev, doc.key]);
+    }
+    // Close folder
+    else {
+      // Check closed folder has active file
+      const parents = findParents(activeFile).filter(
+        (f) => f.type === 'FOLDER'
+      );
+      const result = parents.findIndex((f) => f.key === doc.key) !== -1;
+      if (result) setFolderHasActiveFile(doc.key);
+      // Remove folder from active folders list
+      setActiveFolders((prev) => prev.filter((f) => f !== doc.key));
+    }
+  };
+
+  const handleFileClick = (doc: IDocument) => {
+    if (activeFile !== doc.key) {
+      // Clear folderHasActiveFile
+      setFolderHasActiveFile(-1);
+      // Set active file
+      setActiveFile(doc.key);
+    }
+  };
+
+  const handleCollapseFolders = () => {
+    // Check folderHasActiveFile for all top parent folders
+    const parents = findParents(activeFile).filter((f) => f.type === 'FOLDER');
+    const result = parents.findIndex((f) => f.parent === -1) !== -1;
+    if (result)
+      setFolderHasActiveFile((parents[parents.length - 1] as IDocument).key);
+    // Clear active folders
+    setActiveFolders([]);
+  };
+
+  const handleFileAdd = () => {
+    const newFile: IDocument = {
+      key: Math.floor(Math.random() * 1000),
+      title: 'newFile.tsx',
+      type: 'FILE',
+      parent: activeFolders[activeFolders.length - 1] ?? -1,
+    };
+
+    // If not top most folder
+    if (newFile.parent !== -1) {
+      const parent = searchByKey(newFile.parent);
+      if (parent && parent.type === 'FOLDER') {
+        parent.children?.push(newFile);
+        setDocuments([...documents, newFile]);
+      }
+    }
+    // If top most folder
+    else {
+      const newDocuments = [...documents, newFile];
+      setDocuments(newDocuments);
+    }
+  };
+
+  // TODO: understand why it doesn't work
+  // https://codesandbox.io/s/hungry-pine-k7g0y9?file=/src/document.js:166-187
+  const handleResetDocuments = () => {
+    if (documents !== DOCUMENTS_CONS) setDocuments(DOCUMENTS_CONS);
   };
 
   return (
@@ -187,75 +244,33 @@ const Home: NextPage = () => {
               </p>
               {/* Buttons */}
               <div className="flex gap-2">
-                <DocumentPlusIcon className="h-6 w-6 text-slate-400" />
-                <FolderPlusIcon className="h-6 w-6 text-slate-400" />
-                <ArrowPathIcon className="h-6 w-6 text-slate-400" />
-                <ArrowDownOnSquareStackIcon className="h-6 w-6 text-slate-400" />
+                <DocumentPlusIcon
+                  className="h-6 w-6 cursor-pointer text-slate-400"
+                  onClick={handleFileAdd}
+                />
+                <FolderPlusIcon className="h-6 w-6 cursor-pointer text-slate-400" />
+                <ArrowPathIcon
+                  className="h-6 w-6 cursor-pointer text-slate-400"
+                  onClick={handleResetDocuments}
+                />
+                <ArrowDownOnSquareStackIcon
+                  className="h-6 w-6 cursor-pointer text-slate-400"
+                  onClick={handleCollapseFolders}
+                />
               </div>
             </div>
             {/* Folders */}
-            {folders
-              .sort((a, b) => a.key - b.key)
-              .map((folder) => (
-                <Fragment key={folder.key}>
-                  {/* Top Folder */}
-                  <button
-                    className="flex cursor-pointer items-center gap-2"
-                    onClick={() => handleFolderClick(folder.key)}
-                    type="button"
-                  >
-                    <FolderIcon
-                      className={clg(
-                        'h-6 w-6',
-                        { 'text-slate-100': folder.value },
-                        { 'text-slate-400': !folder.value }
-                      )}
-                    />
-                    <span
-                      className={clg(
-                        'select-none font-segoeui text-base font-normal',
-                        { 'text-slate-100': folder.value },
-                        { 'text-slate-400': !folder.value }
-                      )}
-                    >
-                      {folder.title}
-                    </span>
-                  </button>
-                  {/* Inner Files */}
-                  {folder.children &&
-                    folder.children
-                      .sort((a, b) => a.key - b.key)
-                      .map((child) => (
-                        <button
-                          key={child.key}
-                          className={clg(
-                            'cursor-pointer items-center gap-2 pl-2',
-                            { flex: folder.value },
-                            { hidden: !folder.value }
-                          )}
-                          onClick={() => handleFileClick(child.key)}
-                          type="button"
-                        >
-                          <CodeBracketIcon
-                            className={clg(
-                              'h-6 w-6',
-                              { 'text-cyan-300': child.value },
-                              { 'text-slate-400': !child.value }
-                            )}
-                          />
-                          <span
-                            className={clg(
-                              'select-none font-segoeui text-base font-normal',
-                              { 'text-cyan-300': child.value },
-                              { 'text-slate-400': !child.value }
-                            )}
-                          >
-                            {child.title}
-                          </span>
-                        </button>
-                      ))}
-                </Fragment>
-              ))}
+            {documents.map((doc) => (
+              <Document
+                key={doc.key}
+                document={doc}
+                isActiveFile={isActiveFile}
+                isActiveFolder={isActiveFolder}
+                isFolderHasActiveFile={isFolderHasActiveFile}
+                onFolderClick={handleFolderClick}
+                onFileClick={handleFileClick}
+              />
+            ))}
           </div>
         </div>
         {/* Circles */}
