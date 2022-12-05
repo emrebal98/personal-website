@@ -1,18 +1,7 @@
 import { CodeBracketIcon, FolderIcon } from '@heroicons/react/24/outline';
-import React from 'react';
-import type { FunctionComponent } from 'react';
-import { clg } from '../utils';
-
-// TODO: move somewhere else
-type IDocument =
-  | {
-      key: number;
-      title: string;
-      type: 'FOLDER';
-      parent: number;
-      children?: IDocument[];
-    }
-  | { key: number; title: string; type: 'FILE'; parent: number };
+import React, { type FunctionComponent } from 'react';
+import { type IDocument } from '../types';
+import { clg, DOCUMENTS_ORDER } from '../utils';
 
 interface DocumentProps {
   document: IDocument;
@@ -87,19 +76,25 @@ const Document: FunctionComponent<DocumentProps> = ({
               {document.title}
             </span>
           </button>
-          {document.children &&
-            document.children.map((child) => (
-              <Document
-                key={child.key}
-                document={child}
-                indent={indent + 1}
-                isActiveFile={isActiveFile}
-                isActiveFolder={isActiveFolder}
-                isFolderHasActiveFile={isFolderHasActiveFile}
-                onFolderClick={handleFolderClick}
-                onFileClick={handleFileClick}
-              />
-            ))}
+          {document.children.length > 0 &&
+            document.children
+              .sort(
+                (a, b) =>
+                  DOCUMENTS_ORDER.indexOf(a.type) -
+                  DOCUMENTS_ORDER.indexOf(b.type)
+              )
+              .map((child) => (
+                <Document
+                  key={child.key}
+                  document={child}
+                  indent={indent + 1}
+                  isActiveFile={isActiveFile}
+                  isActiveFolder={isActiveFolder}
+                  isFolderHasActiveFile={isFolderHasActiveFile}
+                  onFolderClick={handleFolderClick}
+                  onFileClick={handleFileClick}
+                />
+              ))}
         </>
       ) : (
         //   FILE

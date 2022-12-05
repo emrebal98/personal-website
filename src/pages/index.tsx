@@ -1,12 +1,7 @@
 import {
-  ArrowDownOnSquareStackIcon,
-  ArrowPathIcon,
   CodeBracketIcon,
   Cog8ToothIcon,
   DocumentDuplicateIcon,
-  DocumentPlusIcon,
-  FolderIcon,
-  FolderPlusIcon,
   MagnifyingGlassIcon,
   PlayIcon,
   SquaresPlusIcon,
@@ -14,197 +9,16 @@ import {
 } from '@heroicons/react/24/outline/';
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import { Fragment, useState } from 'react';
-import { Document } from '../components';
+import { LeftMenuBar } from '../components';
+import { useDocumentsStore } from '../stores';
 import { clg } from '../utils';
 
-type IDocument =
-  | {
-      key: number;
-      title: string;
-      type: 'FOLDER';
-      parent: number;
-      children?: IDocument[];
-    }
-  | { key: number; title: string; type: 'FILE'; parent: number };
-
-const DOCUMENTS_CONS: IDocument[] = [
-  {
-    key: 1,
-    title: 'Home',
-    type: 'FOLDER',
-    parent: -1,
-    children: [
-      { key: 11, title: 'home.tsx', type: 'FILE', parent: 1 },
-      { key: 12, title: 'index.tsx', type: 'FILE', parent: 1 },
-    ],
-  },
-  {
-    key: 2,
-    title: 'Projects',
-    type: 'FOLDER',
-    parent: -1,
-    children: [
-      { key: 21, title: 'projects.tsx', type: 'FILE', parent: 2 },
-      { key: 22, title: 'index.tsx', type: 'FILE', parent: 2 },
-    ],
-  },
-  {
-    key: 3,
-    title: 'Experience',
-    type: 'FOLDER',
-    parent: -1,
-    children: [
-      { key: 31, title: 'experiences.tsx', type: 'FILE', parent: 3 },
-      { key: 32, title: 'index.tsx', type: 'FILE', parent: 3 },
-    ],
-  },
-  {
-    key: 4,
-    title: 'Skills',
-    type: 'FOLDER',
-    parent: -1,
-    children: [
-      {
-        key: 40,
-        title: 'folderin',
-        type: 'FOLDER',
-        parent: 4,
-        children: [
-          { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40 },
-          { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40 },
-        ],
-      },
-      { key: 41, title: 'skills.tsx', type: 'FILE', parent: 4 },
-      { key: 42, title: 'index.tsx', type: 'FILE', parent: 4 },
-    ],
-  },
-  {
-    key: 5,
-    title: 'asd.tsx',
-    type: 'FILE',
-    parent: -1,
-  },
-];
-
 const Home: NextPage = () => {
-  const [documents, setDocuments] = useState<IDocument[]>(DOCUMENTS_CONS);
-  const [activeFolders, setActiveFolders] = useState<number[]>([1]);
-  const [activeFile, setActiveFile] = useState<number>(12);
-  const [folderHasActiveFile, setFolderHasActiveFile] = useState<number>(-1);
-
-  const searchByKey: (key: number, arr?: IDocument[]) => IDocument | null = (
-    key,
-    arr = DOCUMENTS_CONS
-  ) => {
-    // TODO: Make it good
-    // eslint-disable-next-line no-restricted-syntax
-    for (const node of arr) {
-      if (node.key === key) return node;
-      if (node.type === 'FOLDER' && node.children) {
-        const child = searchByKey(key, node.children);
-        if (child) return child;
-      }
-    }
-    return null;
-  };
-
-  const findParents: (key: number, arr?: IDocument[]) => IDocument[] = (
-    key,
-    arr = []
-  ) => {
-    const doc = searchByKey(key);
-    if (!doc) return arr;
-    if (doc.parent === -1) return [...arr, doc];
-    return findParents(doc.parent, [...arr, doc]);
-  };
-
-  const isActiveFolder = (key: number) => {
-    if (key === -1) return false;
-    // Check every parent of the active file
-    const parents = findParents(key).filter((f) => f.type === 'FOLDER');
-    return parents.every((k) => activeFolders.includes(k.key));
-  };
-  const isActiveFile = (key: number) => activeFile === key;
-  const isFolderHasActiveFile = (key: number) => folderHasActiveFile === key;
-
-  const handleFolderClick = (doc: IDocument) => {
-    // Open folder
-    if (activeFolders.findIndex((f) => f === doc.key) === -1) {
-      // If folder has active file remove the active folder from the folderHasActiveFile
-      if (isFolderHasActiveFile(doc.key)) {
-        const parents = findParents(activeFile).filter(
-          (f) => f.type === 'FOLDER'
-        );
-        const notInActiveFolderButHasActiveChild = parents.find(
-          (f) => !activeFolders.includes(f.key) && f.key !== doc.key
-        );
-        if (notInActiveFolderButHasActiveChild)
-          setFolderHasActiveFile(notInActiveFolderButHasActiveChild.key);
-        else setFolderHasActiveFile(-1);
-      }
-      setActiveFolders((prev) => [...prev, doc.key]);
-    }
-    // Close folder
-    else {
-      // Check closed folder has active file
-      const parents = findParents(activeFile).filter(
-        (f) => f.type === 'FOLDER'
-      );
-      const result = parents.findIndex((f) => f.key === doc.key) !== -1;
-      if (result) setFolderHasActiveFile(doc.key);
-      // Remove folder from active folders list
-      setActiveFolders((prev) => prev.filter((f) => f !== doc.key));
-    }
-  };
-
-  const handleFileClick = (doc: IDocument) => {
-    if (activeFile !== doc.key) {
-      // Clear folderHasActiveFile
-      setFolderHasActiveFile(-1);
-      // Set active file
-      setActiveFile(doc.key);
-    }
-  };
-
-  const handleCollapseFolders = () => {
-    // Check folderHasActiveFile for all top parent folders
-    const parents = findParents(activeFile).filter((f) => f.type === 'FOLDER');
-    const result = parents.findIndex((f) => f.parent === -1) !== -1;
-    if (result)
-      setFolderHasActiveFile((parents[parents.length - 1] as IDocument).key);
-    // Clear active folders
-    setActiveFolders([]);
-  };
-
-  const handleFileAdd = () => {
-    const newFile: IDocument = {
-      key: Math.floor(Math.random() * 1000),
-      title: 'newFile.tsx',
-      type: 'FILE',
-      parent: activeFolders[activeFolders.length - 1] ?? -1,
-    };
-
-    // If not top most folder
-    if (newFile.parent !== -1) {
-      const parent = searchByKey(newFile.parent);
-      if (parent && parent.type === 'FOLDER') {
-        parent.children?.push(newFile);
-        setDocuments([...documents, newFile]);
-      }
-    }
-    // If top most folder
-    else {
-      const newDocuments = [...documents, newFile];
-      setDocuments(newDocuments);
-    }
-  };
-
-  // TODO: understand why it doesn't work
-  // https://codesandbox.io/s/hungry-pine-k7g0y9?file=/src/document.js:166-187
-  const handleResetDocuments = () => {
-    if (documents !== DOCUMENTS_CONS) setDocuments(DOCUMENTS_CONS);
-  };
+  // Active tabs
+  const activeTabs = useDocumentsStore((state) => state.activeTabs);
+  // Active tab
+  const activeTab = useDocumentsStore((state) => state.activeTab);
+  const setActiveTab = useDocumentsStore((state) => state.setActiveTab);
 
   return (
     <>
@@ -235,42 +49,35 @@ const Home: NextPage = () => {
             </div>
           </div>
           {/* Left Menu Bar */}
-          <div className="flex flex-col gap-4 py-2 px-4">
-            {/* Topbar */}
-            <div className="flex gap-16">
-              {/* Text */}
-              <p className="select-none font-segoeui text-base font-normal text-slate-100">
-                EXPLORER
-              </p>
-              {/* Buttons */}
-              <div className="flex gap-2">
-                <DocumentPlusIcon
-                  className="h-6 w-6 cursor-pointer text-slate-400"
-                  onClick={handleFileAdd}
-                />
-                <FolderPlusIcon className="h-6 w-6 cursor-pointer text-slate-400" />
-                <ArrowPathIcon
-                  className="h-6 w-6 cursor-pointer text-slate-400"
-                  onClick={handleResetDocuments}
-                />
-                <ArrowDownOnSquareStackIcon
-                  className="h-6 w-6 cursor-pointer text-slate-400"
-                  onClick={handleCollapseFolders}
-                />
-              </div>
+          <LeftMenuBar />
+          {/* BODY */}
+          <div className="flex flex-col gap-4 p-2">
+            {/* TABS */}
+            <div className="flex gap-4">
+              {activeTabs.map((tab) => (
+                <button
+                  key={tab}
+                  className={clg(
+                    'flex items-center gap-2 rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 p-2 backdrop-blur-sm',
+                    {
+                      'border-b border-cyan-300': activeTab === tab,
+                    },
+                    {
+                      ' ': activeTab !== tab,
+                    }
+                  )}
+                  onClick={() => setActiveTab(tab)}
+                  type="button"
+                >
+                  <CodeBracketIcon className="h-6 w-6 text-slate-100" />
+                  <span className="font-consolas text-base font-normal italic text-slate-100">
+                    index.tsx
+                  </span>
+                </button>
+              ))}
             </div>
-            {/* Folders */}
-            {documents.map((doc) => (
-              <Document
-                key={doc.key}
-                document={doc}
-                isActiveFile={isActiveFile}
-                isActiveFolder={isActiveFolder}
-                isFolderHasActiveFile={isFolderHasActiveFile}
-                onFolderClick={handleFolderClick}
-                onFileClick={handleFileClick}
-              />
-            ))}
+            {/* EDITOR */}
+            <div className="flex py-4">EDITOR</div>
           </div>
         </div>
         {/* Circles */}
@@ -282,3 +89,4 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+// TODO: remove when complete https://codesandbox.io/s/hungry-pine-k7g0y9?file=/src/document.js:166-187
