@@ -6,19 +6,44 @@ import {
   PlayIcon,
   SquaresPlusIcon,
   UserCircleIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline/';
 import { type NextPage } from 'next';
 import Head from 'next/head';
+import { type MouseEvent } from 'react';
 import { LeftMenuBar } from '../components';
 import { useDocumentsStore } from '../stores';
-import { clg } from '../utils';
+import { clg, findParents, searchByKey } from '../utils';
 
 const Home: NextPage = () => {
+  const documents = useDocumentsStore((state) => state.documents);
   // Active tabs
   const activeTabs = useDocumentsStore((state) => state.activeTabs);
-  // Active tab
-  const activeTab = useDocumentsStore((state) => state.activeTab);
-  const setActiveTab = useDocumentsStore((state) => state.setActiveTab);
+  const removeActiveTab = useDocumentsStore((state) => state.removeActiveTab);
+  // Active file
+  const activeFile = useDocumentsStore((state) => state.activeFile);
+  const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
+
+  const handleTabClose = (e: MouseEvent<HTMLButtonElement>, key: number) => {
+    e.stopPropagation();
+    if (activeFile === key) {
+      const index = activeTabs.findIndex((tab) => tab === key);
+      const newActiveFile = activeTabs[index + 1] || activeTabs[index - 1];
+      if (newActiveFile) setActiveFile(newActiveFile);
+      else setActiveFile(-1);
+    }
+    // Remove the tab from the activeTabs list
+    removeActiveTab(key);
+  };
+
+  // TODO: run like code
+  const handleRunCode = () => {
+    // Get active parent
+    const parents = findParents(activeFile, documents);
+    const activeTopParent = parents[parents.length - 1];
+
+    console.log(activeTopParent);
+  };
 
   return (
     <>
@@ -37,10 +62,10 @@ const Home: NextPage = () => {
           <div className="flex flex-col justify-between gap-8 p-2">
             {/* Body */}
             <div className="flex flex-col gap-8">
-              <DocumentDuplicateIcon className="h-8 w-8 text-slate-100" />
-              <MagnifyingGlassIcon className="h-8 w-8 text-slate-400" />
-              <SquaresPlusIcon className="h-8 w-8 text-slate-400" />
-              <PlayIcon className="h-8 w-8 text-slate-400" />
+              <DocumentDuplicateIcon className="h-8 w-8 cursor-pointer text-slate-100" />
+              <MagnifyingGlassIcon className="h-8 w-8 cursor-pointer text-slate-400" />
+              <SquaresPlusIcon className="h-8 w-8 cursor-pointer text-slate-400" />
+              <PlayIcon className="h-8 w-8 cursor-pointer text-slate-400" onClick={handleRunCode} />
             </div>
             {/* Bottom */}
             <div className="flex flex-col gap-4">
@@ -54,25 +79,32 @@ const Home: NextPage = () => {
           <div className="flex flex-col gap-4 p-2">
             {/* TABS */}
             <div className="flex gap-4">
-              {activeTabs.map((tab) => (
+              {activeTabs.map((key) => (
                 <button
-                  key={tab}
+                  key={key}
                   className={clg(
-                    'flex items-center gap-2 rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 p-2 backdrop-blur-sm',
+                    'group flex items-center gap-2 rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 p-2 backdrop-blur-sm',
                     {
-                      'border-b border-cyan-300': activeTab === tab,
+                      'border-b border-cyan-300': activeFile === key,
                     },
                     {
-                      ' ': activeTab !== tab,
+                      ' ': activeFile !== key,
                     }
                   )}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => setActiveFile(key)}
                   type="button"
                 >
                   <CodeBracketIcon className="h-6 w-6 text-slate-100" />
                   <span className="font-consolas text-base font-normal italic text-slate-100">
-                    index.tsx
+                    {searchByKey(key, documents)?.title}
                   </span>
+                  <button
+                    className="invisible rounded p-[2px] text-slate-100 opacity-0 hover:bg-gradient-to-br hover:from-red-700/60 hover:to-red-700/20 group-hover:visible group-hover:opacity-100"
+                    onClick={(e) => handleTabClose(e, key)}
+                    type="button"
+                  >
+                    <XMarkIcon className=" h-4 w-4" />
+                  </button>
                 </button>
               ))}
             </div>

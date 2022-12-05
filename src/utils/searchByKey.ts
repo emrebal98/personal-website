@@ -6,10 +6,7 @@ import { type IDocument } from '../types';
  * @param docs The array of IDocument objects to search in.
  * @returns The IDocument object with the given key, or null if no match is found.
  */
-const searchByKey: (key: number, docs: IDocument[]) => IDocument | null = (
-  key,
-  docs
-) => {
+const searchByKey: (key: number, docs: IDocument[]) => IDocument | null = (key, docs) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const node of docs) {
     // If the current item has a "key" property that matches the search key, return the item

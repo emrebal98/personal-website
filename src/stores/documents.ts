@@ -15,17 +15,11 @@ interface DocmentsState {
   // Active file
   activeFile: number;
   setActiveFile: (fileId: number) => void;
-  // Active document
-  folderHasActiveFile: number;
-  setFolderHasActiveFile: (folderId: number) => void;
   // Active tabs
   activeTabs: number[];
   addActiveTab: (fileId: number) => void;
   removeActiveTab: (fileId: number) => void;
   clearActiveTabs: () => void;
-  // Active tab
-  activeTab: number;
-  setActiveTab: (fileId: number) => void;
 }
 
 const useDocumentsStore = create<DocmentsState>(
@@ -50,23 +44,25 @@ const useDocumentsStore = create<DocmentsState>(
         // Active file
         activeFile: 12,
         setActiveFile: (fileId) => set(() => ({ activeFile: fileId })),
-        // Active document
-        folderHasActiveFile: -1,
-        setFolderHasActiveFile: (folderId) => set(() => ({ folderHasActiveFile: folderId })),
         // Active tabs
-        activeTabs: [],
+        activeTabs: [12],
         addActiveTab: (fileId) =>
-          set((state) => ({
-            activeTabs: [...state.activeTabs, fileId],
-          })),
+          set((state) => {
+            // If the tab is already open, do nothing
+            if (state.activeTabs.indexOf(fileId) === -1) {
+              // when adding a new tab, set it as the active file
+              state.setActiveFile(fileId);
+              return {
+                activeTabs: [...state.activeTabs, fileId],
+              };
+            }
+            return {};
+          }),
         removeActiveTab: (fileId) =>
           set((state) => ({
             activeTabs: state.activeTabs.filter((id) => id !== fileId),
           })),
         clearActiveTabs: () => set(() => ({ activeTabs: [] })),
-        // Active tab
-        activeTab: -1,
-        setActiveTab: (fileId) => set(() => ({ activeTab: fileId })),
       }),
       { name: 'documents' }
     )

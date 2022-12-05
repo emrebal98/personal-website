@@ -1,14 +1,12 @@
 import { CodeBracketIcon, FolderIcon } from '@heroicons/react/24/outline';
 import React, { type FunctionComponent } from 'react';
+import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
-import { clg, DOCUMENTS_ORDER } from '../utils';
+import { clg, DOCUMENTS_ORDER, findIfAnyChildIsActive, findParents } from '../utils';
 
 interface DocumentProps {
   document: IDocument;
   indent?: number;
-  isActiveFolder: (key: number) => boolean;
-  isActiveFile: (key: number) => boolean;
-  isFolderHasActiveFile: (key: number) => boolean;
   onFolderClick?: (doc: IDocument) => void;
   onFileClick?: (doc: IDocument) => void;
 }
@@ -16,12 +14,27 @@ interface DocumentProps {
 const Document: FunctionComponent<DocumentProps> = ({
   document,
   indent = 0,
-  isActiveFile,
-  isActiveFolder,
-  isFolderHasActiveFile,
   onFolderClick,
   onFileClick,
 }) => {
+  // All documents
+  const documents = useDocumentsStore((state) => state.documents);
+  // Active folders
+  const activeFolders = useDocumentsStore((state) => state.activeFolders);
+  // Active file
+  const activeFile = useDocumentsStore((state) => state.activeFile);
+  const isActiveFile = (key: number) => activeFile === key;
+
+  const isActiveFolder = (key: number) => {
+    if (key === -1) return false;
+    // Find the parents of the given key that are folders
+    const parents = findParents(key, documents).filter((f) => f.type === 'FOLDER');
+    // Return `true` if every parent is included in the activeFolders list, otherwise `false`
+    return parents.every((k) => activeFolders.includes(k.key));
+  };
+  const isFolderHasActiveFile = (key: number) =>
+    activeFolders.includes(key) ? false : findIfAnyChildIsActive(key, activeFile, documents);
+
   const handleFolderClick = (doc: IDocument) => {
     if (!onFolderClick) return;
     onFolderClick(doc);
@@ -44,9 +57,7 @@ const Document: FunctionComponent<DocumentProps> = ({
                 flex: isActiveFolder(document.parent) || document.parent === -1,
               },
               {
-                hidden: !(
-                  isActiveFolder(document.parent) || document.parent === -1
-                ),
+                hidden: !(isActiveFolder(document.parent) || document.parent === -1),
               }
             )}
             style={{ paddingLeft: `${indent * 8}px` }}
@@ -67,8 +78,7 @@ const Document: FunctionComponent<DocumentProps> = ({
                 { 'text-slate-100': isActiveFolder(document.key) },
                 {
                   'text-slate-400':
-                    !isActiveFolder(document.key) &&
-                    !isFolderHasActiveFile(document.key),
+                    !isActiveFolder(document.key) && !isFolderHasActiveFile(document.key),
                 },
                 { 'text-cyan-300': isFolderHasActiveFile(document.key) }
               )}
@@ -78,19 +88,12 @@ const Document: FunctionComponent<DocumentProps> = ({
           </button>
           {document.children.length > 0 &&
             document.children
-              .sort(
-                (a, b) =>
-                  DOCUMENTS_ORDER.indexOf(a.type) -
-                  DOCUMENTS_ORDER.indexOf(b.type)
-              )
+              .sort((a, b) => DOCUMENTS_ORDER.indexOf(a.type) - DOCUMENTS_ORDER.indexOf(b.type))
               .map((child) => (
                 <Document
                   key={child.key}
                   document={child}
                   indent={indent + 1}
-                  isActiveFile={isActiveFile}
-                  isActiveFolder={isActiveFolder}
-                  isFolderHasActiveFile={isFolderHasActiveFile}
                   onFolderClick={handleFolderClick}
                   onFileClick={handleFileClick}
                 />
@@ -105,9 +108,7 @@ const Document: FunctionComponent<DocumentProps> = ({
               flex: isActiveFolder(document.parent) || document.parent === -1,
             },
             {
-              hidden: !(
-                isActiveFolder(document.parent) || document.parent === -1
-              ),
+              hidden: !(isActiveFolder(document.parent) || document.parent === -1),
             }
           )}
           style={{ paddingLeft: `${indent * 8}px` }}

@@ -7,7 +7,7 @@ import {
 import { type FunctionComponent } from 'react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
-import { DOCUMENTS, DOCUMENTS_ORDER, findParents } from '../utils';
+import { DOCUMENTS, DOCUMENTS_ORDER } from '../utils';
 
 import Document from './document';
 
@@ -23,42 +23,18 @@ const LeftMenuBar: FunctionComponent = () => {
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
-  // Active document
-  const folderHasActiveFile = useDocumentsStore((state) => state.folderHasActiveFile);
-  const setFolderHasActiveFile = useDocumentsStore((state) => state.setFolderHasActiveFile);
-
-  const isActiveFolder = (key: number) => {
-    if (key === -1) return false;
-    // Find the parents of the given key that are folders
-    const parents = findParents(key, documents).filter((f) => f.type === 'FOLDER');
-    // Return `true` if every parent is included in the activeFolders list, otherwise `false`
-    return parents.every((k) => activeFolders.includes(k.key));
-  };
-  const isActiveFile = (key: number) => activeFile === key;
-  const isFolderHasActiveFile = (key: number) => folderHasActiveFile === key;
+  // Active tabs
+  const addActiveTab = useDocumentsStore((state) => state.addActiveTab);
+  const clearActiveTabs = useDocumentsStore((state) => state.clearActiveTabs);
 
   const handleFolderClick = (doc: IDocument) => {
     // Open folder
     if (activeFolders.findIndex((f) => f === doc.key) === -1) {
-      // If folder has active file remove the active folder from the folderHasActiveFile
-      if (isFolderHasActiveFile(doc.key)) {
-        const parents = findParents(activeFile, documents).filter((f) => f.type === 'FOLDER');
-        const notInActiveFolderButHasActiveChild = parents.find(
-          (f) => !activeFolders.includes(f.key) && f.key !== doc.key
-        );
-        if (notInActiveFolderButHasActiveChild)
-          setFolderHasActiveFile(notInActiveFolderButHasActiveChild.key);
-        else setFolderHasActiveFile(-1);
-      }
       // Add folder to active folders
       addActiveFolder(doc.key);
     }
     // Close folder
     else {
-      // Check closed folder has active file
-      const parents = findParents(activeFile, documents).filter((f) => f.type === 'FOLDER');
-      const result = parents.findIndex((f) => f.key === doc.key) !== -1;
-      if (result) setFolderHasActiveFile(doc.key);
       // Remove folder from active folders list
       removeActiveFolder(doc.key);
     }
@@ -66,18 +42,13 @@ const LeftMenuBar: FunctionComponent = () => {
 
   const handleFileClick = (doc: IDocument) => {
     if (activeFile !== doc.key) {
-      // Clear folderHasActiveFile
-      setFolderHasActiveFile(-1);
       // Set active file
       setActiveFile(doc.key);
+      addActiveTab(doc.key);
     }
   };
 
   const handleCollapseFolders = () => {
-    // Check folderHasActiveFile for all top parent folders
-    const parents = findParents(activeFile, documents).filter((f) => f.type === 'FOLDER');
-    const result = parents.findIndex((f) => f.parent === -1) !== -1;
-    if (result) setFolderHasActiveFile((parents[parents.length - 1] as IDocument).key);
     // Clear active folders
     clearActiveFolders();
   };
@@ -134,10 +105,15 @@ const LeftMenuBar: FunctionComponent = () => {
 
   const handleResetDocuments = () => {
     // Return to the initial state
+    // setFolderHasActiveFile(-1);
+    // Initial state of the active folders
     clearActiveFolders();
     addActiveFolder(1);
     setActiveFile(12);
-    setFolderHasActiveFile(-1);
+    // Initial state of the active tabs
+    clearActiveTabs();
+    addActiveTab(12);
+    // Iniital state of the documents
     setDocuments(DOCUMENTS);
   };
   return (
@@ -173,9 +149,6 @@ const LeftMenuBar: FunctionComponent = () => {
           <Document
             key={doc.key}
             document={doc}
-            isActiveFile={isActiveFile}
-            isActiveFolder={isActiveFolder}
-            isFolderHasActiveFile={isFolderHasActiveFile}
             onFolderClick={handleFolderClick}
             onFileClick={handleFileClick}
           />

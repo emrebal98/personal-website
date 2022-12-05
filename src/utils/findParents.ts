@@ -8,11 +8,11 @@ import searchByKey from './searchByKey';
  * @param resultArr The array of parent objects found so far. This should not be provided by the caller, it is used for recursion.
  * @returns An array of IDocument objects representing the parents of the IDocument object with the given key, starting from the immediate parent and ending with the root object. If no object with the given key is found, an empty array is returned.
  */
-const findParents: (
-  key: number,
-  docs: IDocument[],
-  resultArr?: IDocument[]
-) => IDocument[] = (key, docs, resultArr = []) => {
+const findParents: (key: number, docs: IDocument[], resultArr?: IDocument[]) => IDocument[] = (
+  key,
+  docs,
+  resultArr = []
+) => {
   // Search for the IDocument object with the given key
   const doc = searchByKey(key, docs);
   // If no object is found, return the result array
