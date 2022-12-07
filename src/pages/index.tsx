@@ -78,34 +78,38 @@ const Home: NextPage = () => {
           {/* BODY */}
           <div className="flex flex-col gap-4 p-2">
             {/* TABS */}
-            <div className="flex gap-4">
+            <div className="flex gap-4" role="tablist">
               {activeTabs.map((key) => (
-                <button
+                <div
                   key={key}
                   className={clg(
-                    'group flex items-center gap-2 rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 p-2 backdrop-blur-sm',
+                    'group relative rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0  backdrop-blur-sm',
                     {
                       'border-b border-cyan-300': activeFile === key,
                     },
                     {
-                      ' ': activeFile !== key,
+                      'border-b border-transparent': activeFile !== key,
                     }
                   )}
-                  onClick={() => setActiveFile(key)}
-                  type="button"
                 >
-                  <CodeBracketIcon className="h-6 w-6 text-slate-100" />
-                  <span className="font-consolas text-base font-normal italic text-slate-100">
-                    {searchByKey(key, documents)?.title}
-                  </span>
                   <button
-                    className="invisible rounded p-[2px] text-slate-100 opacity-0 hover:bg-gradient-to-br hover:from-red-700/60 hover:to-red-700/20 group-hover:visible group-hover:opacity-100"
+                    className="flex items-center gap-2 p-2 pr-9"
+                    type="button"
+                    onClick={() => setActiveFile(key)}
+                  >
+                    <CodeBracketIcon className="h-6 w-6 text-slate-100" />
+                    <span className="font-consolas text-base font-normal italic text-slate-100">
+                      {searchByKey(key, documents)?.title}
+                    </span>
+                  </button>
+                  <button
+                    className="invisible absolute right-2 top-1/2 -translate-y-1/2 rounded p-[2px] text-slate-100 opacity-0 hover:bg-gradient-to-br hover:from-red-700/60 hover:to-red-700/20 group-hover:visible group-hover:opacity-100"
                     onClick={(e) => handleTabClose(e, key)}
                     type="button"
                   >
-                    <XMarkIcon className=" h-4 w-4" />
+                    <XMarkIcon className="h-4 w-4" />
                   </button>
-                </button>
+                </div>
               ))}
             </div>
             {/* EDITOR */}
