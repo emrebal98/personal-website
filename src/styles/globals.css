@@ -30,3 +30,40 @@
   font-weight: bold;
   font-style: italic;
 }
+
+.language-tsx {
+  @apply font-consolas text-base font-normal text-slate-100;
+}
+.keyword {
+  @apply italic text-cyan-300;
+}
+.keyword-exception {
+  @apply not-italic text-fuchsia-300;
+}
+.punctuation {
+  @apply text-cyan-300;
+}
+
+.paranthesis {
+  @apply text-amber-300;
+}
+
+.string {
+  @apply text-lime-300;
+}
+
+.operator {
+  @apply text-cyan-300;
+}
+
+.operator-exception {
+  @apply text-fuchsia-300;
+}
+
+.class-name {
+  @apply text-amber-300;
+}
+
+.attr-name {
+  @apply text-fuchsia-300;
+}

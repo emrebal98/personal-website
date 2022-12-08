@@ -10,10 +10,12 @@ import {
 } from '@heroicons/react/24/outline/';
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import { type MouseEvent } from 'react';
+import React, { type MouseEvent, useState } from 'react';
 import { LeftMenuBar } from '../components';
 import { useDocumentsStore } from '../stores';
-import { clg, findParents, searchByKey } from '../utils';
+import { clg, findParents, getCodeContent, searchByKey } from '../utils';
+
+// TODO: add syntax highlighter
 
 const Home: NextPage = () => {
   const documents = useDocumentsStore((state) => state.documents);
@@ -45,6 +47,29 @@ const Home: NextPage = () => {
     console.log(activeTopParent);
   };
 
+  //   const [content, setContent] = useState(
+  //     `import React, { type FunctionComponent } from 'react';
+  // import Skills from './skills';
+
+  // const skills = [
+  //   'TypeScript',
+  //   'JavaScript',
+  //   'React',
+  //   'Next.js',
+  //   'CSS',
+  //   'TailwindCSS',
+  //   'Sass',
+  // ];
+
+  // const App: FunctionComponent = () => {
+  //   return <Skills skills={skills} />;
+  // };
+
+  // export default App;`
+  //   );
+
+  // console.log(refractor.highlight(content, 'tsx'));
+
   return (
     <>
       <Head>
@@ -55,7 +80,7 @@ const Home: NextPage = () => {
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]"> */}
       <main className="relative min-h-screen overflow-hidden bg-slate-900 p-16">
         {/* Window */}
-        <div className="relative flex min-h-[900px] rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4">
+        <div className="relative flex min-h-[900px] rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 ">
           {/* Icon Indicator Line */}
           <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" />
           {/* Left Icon Bar */}
@@ -113,7 +138,13 @@ const Home: NextPage = () => {
               ))}
             </div>
             {/* EDITOR */}
-            <div className="flex py-4">EDITOR</div>
+            <div className="flex py-4">
+              <pre>
+                <code className="language-tsx">
+                  {getCodeContent(searchByKey(activeFile, documents).content ?? 'EMPTY')}
+                </code>
+              </pre>
+            </div>
           </div>
         </div>
         {/* Circles */}
