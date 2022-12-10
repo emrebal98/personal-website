@@ -9,9 +9,9 @@ interface IFolder extends IDocumentBase {
   children: IDocument[];
 }
 
-interface IFile extends IDocumentBase {
+export interface IFile extends IDocumentBase {
   type: 'FILE';
-  content?: string;
+  content: string;
 }
 
 export type IDocument = IFolder | IFile;

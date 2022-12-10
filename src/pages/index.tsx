@@ -8,23 +8,41 @@ import {
   UserCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline/';
+
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import React, { type MouseEvent, useState } from 'react';
+import { createRef, type MouseEvent, useEffect, useRef, useState } from 'react';
+import Editor from 'react-simple-code-editor';
+import SimpleBar from 'simplebar-react';
 import { LeftMenuBar } from '../components';
 import { useDocumentsStore } from '../stores';
-import { clg, findParents, getCodeContent, searchByKey } from '../utils';
+// import { type IDocument } from '../types';
+import { clg, findParents, getCodeContent, searchByKey, updateFileContent } from '../utils';
 
-// TODO: add syntax highlighter
+// const getActiveDocumentContent: (activeFile: number, documents: IDocument[]) => string = (
+//   activeFile,
+//   documents
+// ) => {
+//   const activeDocument = searchByKey(activeFile, documents);
+//   let content = '';
+//   if (activeDocument && activeDocument.type === 'FILE') content = activeDocument.content;
+//   return content;
+// };
 
 const Home: NextPage = () => {
   const documents = useDocumentsStore((state) => state.documents);
+
   // Active tabs
   const activeTabs = useDocumentsStore((state) => state.activeTabs);
   const removeActiveTab = useDocumentsStore((state) => state.removeActiveTab);
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
+  // Active file code content
+  const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
+  const updateContent = useDocumentsStore((state) => state.findAndUpdateContent);
+  // Scrollable node ref
+  const scrollableNodeRef = createRef();
 
   const handleTabClose = (e: MouseEvent<HTMLButtonElement>, key: number) => {
     e.stopPropagation();
@@ -47,28 +65,55 @@ const Home: NextPage = () => {
     console.log(activeTopParent);
   };
 
-  //   const [content, setContent] = useState(
-  //     `import React, { type FunctionComponent } from 'react';
-  // import Skills from './skills';
+  useEffect(() => {
+    const handleScrollPosition = () => {
+      const parentElement = scrollableNodeRef.current as Element;
+      const activeTabElement = document.getElementById(activeFile.toString());
+      const parentPos = parentElement?.getBoundingClientRect() as DOMRect;
+      const childPos = activeTabElement?.getBoundingClientRect() as DOMRect;
 
-  // const skills = [
-  //   'TypeScript',
-  //   'JavaScript',
-  //   'React',
-  //   'Next.js',
-  //   'CSS',
-  //   'TailwindCSS',
-  //   'Sass',
-  // ];
+      const left = childPos.left - parentPos.left;
+      if (left < 0 || left + 100 > parentPos.width) {
+        parentElement.scrollTo({
+          left,
+          behavior: 'smooth',
+        });
+      }
+    };
+    handleScrollPosition();
+  }, [activeFile, scrollableNodeRef]);
 
-  // const App: FunctionComponent = () => {
-  //   return <Skills skills={skills} />;
-  // };
+  // Get code content of active file
+  // const activeDocument = searchByKey(activeFile, documents);
+  // let content: (React.ReactElement | string)[] = [];
+  // if (activeDocument && activeDocument.type === 'FILE')
+  //   content = getCodeContent(activeDocument.content);
 
-  // export default App;`
-  //   );
+  // const [activeContent, setActiveContent] = useState(
+  //   getActiveDocumentContent(activeFile, documents)
+  // );
+  // const [code, setCode] = useState(`function add(a, b) {\n  return a + b;\n}`);
+  // useState(searchByKey(activeFile, documents).content);
 
-  // console.log(refractor.highlight(content, 'tsx'));
+  // useEffect(() => {
+  //   setActiveContent(getActiveDocumentContent(activeFile, documents));
+  // }, [activeFile, documents]);
+  // const tab = useRef<HTMLDivElement>(null);
+  // TODO: add line numbers
+  const test = () => {
+    // const parentElement = scrollableNodeRef.current as Element;
+    // const activeTabElement = document.getElementById(activeFile.toString());
+    // const parentPos = parentElement?.getBoundingClientRect() as DOMRect;
+    // const childPos = activeTabElement?.getBoundingClientRect() as DOMRect;
+    // const left = childPos.left - parentPos.left;
+    // console.log('scrollLeft', parentElement.scrollLeft);
+    // console.log('width', parentPos.width);
+    // console.log('activeFile', childPos.left);
+    // console.log('left', left);
+    // if (left < 0 || left + 100 > parentPos.width) {
+    //   console.log('not seen');
+    // } else console.log('seen');
+  };
 
   return (
     <>
@@ -80,7 +125,7 @@ const Home: NextPage = () => {
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]"> */}
       <main className="relative min-h-screen overflow-hidden bg-slate-900 p-16">
         {/* Window */}
-        <div className="relative flex min-h-[900px] rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 ">
+        <div className="relative flex h-[calc(100vh_-_8rem)] rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 ">
           {/* Icon Indicator Line */}
           <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" />
           {/* Left Icon Bar */}
@@ -88,7 +133,12 @@ const Home: NextPage = () => {
             {/* Body */}
             <div className="flex flex-col gap-8">
               <DocumentDuplicateIcon className="h-8 w-8 cursor-pointer text-slate-100" />
-              <MagnifyingGlassIcon className="h-8 w-8 cursor-pointer text-slate-400" />
+              <MagnifyingGlassIcon
+                className="h-8 w-8 cursor-pointer text-slate-400"
+                onClick={() => {
+                  test();
+                }}
+              />
               <SquaresPlusIcon className="h-8 w-8 cursor-pointer text-slate-400" />
               <PlayIcon className="h-8 w-8 cursor-pointer text-slate-400" onClick={handleRunCode} />
             </div>
@@ -101,49 +151,56 @@ const Home: NextPage = () => {
           {/* Left Menu Bar */}
           <LeftMenuBar />
           {/* BODY */}
-          <div className="flex flex-col gap-4 p-2">
+          <div className="flex w-full flex-col gap-2 overflow-hidden p-2">
             {/* TABS */}
-            <div className="flex gap-4" role="tablist">
-              {activeTabs.map((key) => (
-                <div
-                  key={key}
-                  className={clg(
-                    'group relative rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0  backdrop-blur-sm',
-                    {
-                      'border-b border-cyan-300': activeFile === key,
-                    },
-                    {
-                      'border-b border-transparent': activeFile !== key,
-                    }
-                  )}
-                >
-                  <button
-                    className="flex items-center gap-2 p-2 pr-9"
-                    type="button"
-                    onClick={() => setActiveFile(key)}
+            <SimpleBar className="w-full pb-2" scrollableNodeProps={{ ref: scrollableNodeRef }}>
+              <div className="flex gap-4">
+                {activeTabs.map((key) => (
+                  <div
+                    key={key}
+                    id={key.toString()}
+                    className={clg(
+                      'group relative rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 backdrop-blur-sm',
+                      {
+                        'border-b border-cyan-300': activeFile === key,
+                      },
+                      {
+                        'border-b border-transparent': activeFile !== key,
+                      }
+                    )}
                   >
-                    <CodeBracketIcon className="h-6 w-6 text-slate-100" />
-                    <span className="font-consolas text-base font-normal italic text-slate-100">
-                      {searchByKey(key, documents)?.title}
-                    </span>
-                  </button>
-                  <button
-                    className="invisible absolute right-2 top-1/2 -translate-y-1/2 rounded p-[2px] text-slate-100 opacity-0 hover:bg-gradient-to-br hover:from-red-700/60 hover:to-red-700/20 group-hover:visible group-hover:opacity-100"
-                    onClick={(e) => handleTabClose(e, key)}
-                    type="button"
-                  >
-                    <XMarkIcon className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <button
+                      className="flex items-center gap-2 p-2 pr-9"
+                      type="button"
+                      onClick={() => setActiveFile(key)}
+                    >
+                      <CodeBracketIcon className="h-6 w-6 text-slate-100" />
+                      <span className="font-consolas text-base font-normal italic text-slate-100">
+                        {searchByKey(key, documents)?.title}
+                      </span>
+                    </button>
+                    <button
+                      className="invisible absolute right-2 top-1/2 -translate-y-1/2 rounded p-[2px] text-slate-100 opacity-0 hover:bg-gradient-to-br hover:from-red-700/60 hover:to-red-700/20 group-hover:visible group-hover:opacity-100"
+                      onClick={(e) => handleTabClose(e, key)}
+                      type="button"
+                    >
+                      <XMarkIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </SimpleBar>
             {/* EDITOR */}
-            <div className="flex py-4">
-              <pre>
-                <code className="language-tsx">
-                  {getCodeContent(searchByKey(activeFile, documents).content ?? 'EMPTY')}
-                </code>
-              </pre>
+            <div className="language-tsx flex w-full overflow-hidden">
+              <SimpleBar className="w-full">
+                <Editor
+                  value={findActiveFile(activeFile)?.content ?? ''}
+                  onValueChange={(newCode) => updateContent(activeFile, newCode)}
+                  highlight={(hCode) => getCodeContent(hCode)}
+                  placeholder="Write some code..."
+                  className="min-h-[40px] w-full"
+                />
+              </SimpleBar>
             </div>
           </div>
         </div>

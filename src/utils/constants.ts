@@ -19,7 +19,7 @@ export const DOCUMENTS: IDocument[] = [
         title: 'index.tsx',
         type: 'FILE',
         parent: 1,
-        content: `import Home from './home';\n\nexport default Home;\n`,
+        content: "import Home from './home';\n\nexport default Home;\n",
       },
     ],
   },
@@ -29,8 +29,8 @@ export const DOCUMENTS: IDocument[] = [
     type: 'FOLDER',
     parent: -1,
     children: [
-      { key: 21, title: 'projects.tsx', type: 'FILE', parent: 2 },
-      { key: 22, title: 'index.tsx', type: 'FILE', parent: 2 },
+      { key: 21, title: 'projects.tsx', type: 'FILE', parent: 2, content: '' },
+      { key: 22, title: 'index.tsx', type: 'FILE', parent: 2, content: '' },
     ],
   },
   {
@@ -39,8 +39,8 @@ export const DOCUMENTS: IDocument[] = [
     type: 'FOLDER',
     parent: -1,
     children: [
-      { key: 31, title: 'experiences.tsx', type: 'FILE', parent: 3 },
-      { key: 32, title: 'index.tsx', type: 'FILE', parent: 3 },
+      { key: 31, title: 'experiences.tsx', type: 'FILE', parent: 3, content: '' },
+      { key: 32, title: 'index.tsx', type: 'FILE', parent: 3, content: '' },
     ],
   },
   {
@@ -55,8 +55,8 @@ export const DOCUMENTS: IDocument[] = [
         type: 'FOLDER',
         parent: 4,
         children: [
-          { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40 },
-          { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40 },
+          { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40, content: '' },
+          { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40, content: '' },
         ],
       },
       {
@@ -83,7 +83,7 @@ export const DOCUMENTS: IDocument[] = [
           
       export default App;`,
       },
-      { key: 42, title: 'index.tsx', type: 'FILE', parent: 4 },
+      { key: 42, title: 'index.tsx', type: 'FILE', parent: 4, content: '' },
     ],
   },
   {
@@ -91,6 +91,7 @@ export const DOCUMENTS: IDocument[] = [
     title: 'asd.tsx',
     type: 'FILE',
     parent: -1,
+    content: '',
   },
 ];
 

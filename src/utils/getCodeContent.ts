@@ -1,3 +1,4 @@
+import type React from 'react';
 import tsx from 'refractor/lang/tsx';
 import { refractor } from 'refractor/lib/core';
 import convertToReactNodes from './convertToReactNodes';
@@ -8,7 +9,7 @@ import convertToReactNodes from './convertToReactNodes';
  * @param content - The code content string to convert.
  * @returns An array of React elements.
  */
-const getCodeContent = (content: string) => {
+const getCodeContent: (content: string) => (React.ReactElement | string)[] = (content) => {
   // Check if the refractor library supports the 'tsx' language.
   // If not, register the 'tsx' language with the refractor library.
   if (!refractor.listLanguages().includes('tsx')) refractor.register(tsx);

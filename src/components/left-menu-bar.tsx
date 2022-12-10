@@ -7,7 +7,7 @@ import {
 import { type FunctionComponent } from 'react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
-import { DOCUMENTS, DOCUMENTS_ORDER } from '../utils';
+import { DOCUMENTS_ORDER } from '../utils';
 
 import Document from './document';
 
@@ -15,6 +15,7 @@ const LeftMenuBar: FunctionComponent = () => {
   // All documents
   const documents = useDocumentsStore((state) => state.documents);
   const setDocuments = useDocumentsStore((state) => state.setDocuments);
+  const clearDocuments = useDocumentsStore((state) => state.clearDocuments);
   // Active folders
   const activeFolders = useDocumentsStore((state) => state.activeFolders);
   const addActiveFolder = useDocumentsStore((state) => state.addActiveFolder);
@@ -114,7 +115,7 @@ const LeftMenuBar: FunctionComponent = () => {
     clearActiveTabs();
     addActiveTab(12);
     // Iniital state of the documents
-    setDocuments(DOCUMENTS);
+    clearDocuments();
   };
   return (
     <div className="flex flex-col gap-4 py-2 px-4">

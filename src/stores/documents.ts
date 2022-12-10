@@ -1,12 +1,16 @@
 import create from 'zustand';
-// import { devtools, persist } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
+import type { IFile } from '../types';
 import { type IDocument } from '../types';
-import { DOCUMENTS } from '../utils';
+import { DOCUMENTS, searchByKey, updateFileContent } from '../utils';
 
-interface DocmentsState {
+interface DocumentsState {
   // All documents
   documents: IDocument[];
+  findActiveFile: (key: number) => IFile | null;
+  findAndUpdateContent: (key: number, newContent: string) => void;
   setDocuments: (documents: IDocument[]) => void;
+  clearDocuments: () => void;
   // Active folders
   activeFolders: number[];
   addActiveFolder: (folderId: number) => void;
@@ -22,10 +26,21 @@ interface DocmentsState {
   clearActiveTabs: () => void;
 }
 
-const useDocumentsStore = create<DocmentsState>((set) => ({
+const useDocumentsStore = create<DocumentsState>((set, get) => ({
   // All documents
-  documents: DOCUMENTS,
+  documents: JSON.parse(JSON.stringify(DOCUMENTS)),
+  findActiveFile: (key) => {
+    const activeFile = searchByKey(key, get().documents);
+    if (activeFile && activeFile.type === 'FILE') return activeFile;
+    return null;
+  },
+  findAndUpdateContent: (key, newContent) =>
+    set((state) => {
+      const newDocuments = updateFileContent(key, newContent, state.documents);
+      return { documents: newDocuments };
+    }),
   setDocuments: (documents) => set(() => ({ documents })),
+  clearDocuments: () => set(() => ({ documents: JSON.parse(JSON.stringify(DOCUMENTS)) })),
   // Active folders
   activeFolders: [1],
   addActiveFolder: (folderId) =>

@@ -31,32 +31,49 @@
   font-style: italic;
 }
 
+.simplebar-scrollbar:before {
+  @apply rounded bg-slate-200;
+}
+
+.simplebar-dragging .simplebar-scrollbar:before {
+  @apply bg-cyan-300;
+}
+
+.simplebar-track.simplebar-horizontal .simplebar-scrollbar {
+  @apply h-1;
+}
+
 .language-tsx {
   @apply font-consolas text-base font-normal text-slate-100;
 }
-.keyword {
+
+.language-tsx textarea:focus-visible {
+  @apply outline-none;
+}
+
+.language-tsx .keyword {
   @apply italic text-cyan-300;
 }
-.keyword-exception {
+.language-tsx .keyword-exception {
   @apply not-italic text-fuchsia-300;
 }
-.punctuation {
+.language-tsx .punctuation {
   @apply text-cyan-300;
 }
 
-.paranthesis {
+.language-tsx .paranthesis {
   @apply text-amber-300;
 }
 
-.string {
+.language-tsx .string {
   @apply text-lime-300;
 }
 
-.operator {
+.language-tsx .operator {
   @apply text-cyan-300;
 }
 
-.operator-exception {
+.language-tsx .operator-exception {
   @apply text-fuchsia-300;
 }
 
