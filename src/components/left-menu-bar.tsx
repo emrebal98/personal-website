@@ -5,10 +5,10 @@ import {
   FolderPlusIcon,
 } from '@heroicons/react/24/outline/';
 import { type FunctionComponent } from 'react';
+import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
 import { DOCUMENTS_ORDER } from '../utils';
-
 import Document from './document';
 
 const LeftMenuBar: FunctionComponent = () => {
@@ -144,16 +144,22 @@ const LeftMenuBar: FunctionComponent = () => {
         </div>
       </div>
       {/* Folders */}
-      {documents
-        .sort((a, b) => DOCUMENTS_ORDER.indexOf(a.type) - DOCUMENTS_ORDER.indexOf(b.type))
-        .map((doc) => (
-          <Document
-            key={doc.key}
-            document={doc}
-            onFolderClick={handleFolderClick}
-            onFileClick={handleFileClick}
-          />
-        ))}
+      <div className="overflow-hidden">
+        <SimpleBar className="file-scroll h-full w-full">
+          <div className="flex flex-col gap-4">
+            {documents
+              .sort((a, b) => DOCUMENTS_ORDER.indexOf(a.type) - DOCUMENTS_ORDER.indexOf(b.type))
+              .map((doc) => (
+                <Document
+                  key={doc.key}
+                  document={doc}
+                  onFolderClick={handleFolderClick}
+                  onFileClick={handleFileClick}
+                />
+              ))}
+          </div>
+        </SimpleBar>
+      </div>
     </div>
   );
 };
