@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+// import { devtools, persist } from 'zustand/middleware';
 import type { IFile } from '../types';
 import { type IDocument } from '../types';
 import { DOCUMENTS, searchByKey, updateFileContent } from '../utils';

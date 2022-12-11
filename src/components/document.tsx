@@ -100,7 +100,7 @@ const Document: FunctionComponent<DocumentProps> = ({
               ))}
         </>
       ) : (
-        //   FILE
+        // FILE
         <button
           className={clg(
             'cursor-pointer items-center gap-2',

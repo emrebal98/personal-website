@@ -39,8 +39,14 @@
   @apply bg-cyan-300;
 }
 
-.simplebar-track.simplebar-horizontal .simplebar-scrollbar {
+.tabs-scroll .simplebar-track.simplebar-horizontal .simplebar-scrollbar {
   @apply h-1;
+}
+
+.code-editor pre,
+.code-editor textarea {
+  white-space: pre !important;
+  padding-left: 40px !important;
 }
 
 .language-tsx {
