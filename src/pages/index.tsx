@@ -10,14 +10,18 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import { Editor, LeftMenuBar, Tabs } from '../components';
 import { useDocumentsStore } from '../stores';
-import { findParents } from '../utils';
+import { clg, findParents } from '../utils';
+
+// const MotionLeftMenuBar = motion(LeftMenuBar);
 
 const Home: NextPage = () => {
   const documents = useDocumentsStore((state) => state.documents);
 
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
-
+  // Show menu
+  const showMenu = useDocumentsStore((state) => state.showMenu);
+  const toggleMenu = useDocumentsStore((state) => state.toggleMenu);
   // TODO: run like code
   const handleRunCode = () => {
     // Get active parent
@@ -35,34 +39,44 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]"> */}
-      <main className="relative min-h-screen overflow-hidden bg-slate-900 p-16">
+      <main className="relative min-h-screen overflow-hidden bg-slate-900 md:p-16">
         {/* Window */}
-        <div className="relative flex h-[calc(100vh_-_8rem)] rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 ">
+        <div className="relative flex h-screen flex-col rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 md:h-[calc(100vh_-_8rem)] md:flex-row ">
           {/* Icon Indicator Line */}
-          <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" />
+          {/* <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" /> */}
           {/* Left Icon Bar */}
-          <div className="flex flex-col justify-between gap-8 p-2">
-            {/* Body */}
-            <div className="flex flex-col gap-8">
-              <DocumentDuplicateIcon className="h-8 w-8 cursor-pointer text-slate-100" />
-              <MagnifyingGlassIcon className="h-8 w-8 cursor-pointer text-slate-400" />
-              <SquaresPlusIcon className="h-8 w-8 cursor-pointer text-slate-400" />
-              <PlayIcon className="h-8 w-8 cursor-pointer text-slate-400" onClick={handleRunCode} />
-            </div>
-            {/* Bottom */}
-            <div className="flex flex-col gap-4">
-              <UserCircleIcon className="h-8 w-8 text-slate-400" />
-              <Cog8ToothIcon className="h-8 w-8 text-slate-400" />
-            </div>
+          <div className="order-1 flex justify-between p-2 md:order-none md:flex-col">
+            <DocumentDuplicateIcon
+              className="h-8 w-8 cursor-pointer text-slate-100 md:mb-8"
+              onClick={() => toggleMenu('leftMenuBar')}
+            />
+            <MagnifyingGlassIcon className="h-8 w-8 cursor-pointer text-slate-400 md:mb-8" />
+            <SquaresPlusIcon className="h-8 w-8 cursor-pointer text-slate-400 md:mb-8" />
+            <PlayIcon
+              className="h-8 w-8 cursor-pointer text-slate-400 md:mb-auto"
+              onClick={handleRunCode}
+            />
+            <UserCircleIcon className="h-8 w-8 text-slate-400 md:mb-4" />
+            <Cog8ToothIcon className="h-8 w-8 text-slate-400" />
           </div>
-          {/* Left Menu Bar */}
-          <LeftMenuBar />
-          {/* BODY */}
-          <div className="flex w-full flex-col gap-2 overflow-hidden p-2">
-            {/* TABS */}
-            <Tabs />
-            {/* EDITOR */}
-            <Editor />
+          {/* For Mobile Responsive */}
+          <div className="flex h-full w-full">
+            {/* Left Menu Bar */}
+            {/* TODO: add animation */}
+            {showMenu.leftMenuBar && <LeftMenuBar />}
+            {/* BODY */}
+            <div
+              className={clg('flex w-full flex-col gap-2 overflow-hidden p-2', {
+                'hidden md:flex': showMenu.leftMenuBar,
+              })}
+              // TODO:Just for mobile
+              // aria-hidden={!showMenu.leftMenuBar}
+            >
+              {/* TABS */}
+              <Tabs />
+              {/* EDITOR */}
+              <Editor />
+            </div>
           </div>
         </div>
         {/* Circles */}

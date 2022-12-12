@@ -4,14 +4,19 @@ import {
   DocumentPlusIcon,
   FolderPlusIcon,
 } from '@heroicons/react/24/outline/';
-import { type FunctionComponent } from 'react';
+import { type CSSProperties, type FunctionComponent } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
-import { DOCUMENTS_ORDER } from '../utils';
+import { clg, DOCUMENTS_ORDER } from '../utils';
 import Document from './document';
 
-const LeftMenuBar: FunctionComponent = () => {
+interface ILeftMenuBarProps {
+  className?: string;
+  style?: CSSProperties;
+}
+
+const LeftMenuBar: FunctionComponent<ILeftMenuBarProps> = ({ className, style }) => {
   // All documents
   const documents = useDocumentsStore((state) => state.documents);
   const setDocuments = useDocumentsStore((state) => state.setDocuments);
@@ -118,9 +123,14 @@ const LeftMenuBar: FunctionComponent = () => {
     clearDocuments();
   };
   return (
-    <div className="flex flex-col gap-4 py-2 px-4">
+    <div
+      className={clg('flex w-full flex-col gap-4 py-2 px-4 md:w-auto', {
+        [className as string]: className !== undefined,
+      })}
+      style={style}
+    >
       {/* Topbar */}
-      <div className="flex gap-16">
+      <div className="flex justify-between gap-16">
         {/* Text */}
         <p className="select-none font-segoeui text-base font-normal text-slate-100">EXPLORER</p>
         {/* Buttons */}
@@ -162,6 +172,11 @@ const LeftMenuBar: FunctionComponent = () => {
       </div>
     </div>
   );
+};
+
+LeftMenuBar.defaultProps = {
+  className: undefined,
+  style: undefined,
 };
 
 export default LeftMenuBar;

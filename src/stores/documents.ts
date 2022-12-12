@@ -1,7 +1,6 @@
 import create from 'zustand';
 // import { devtools, persist } from 'zustand/middleware';
-import type { IFile } from '../types';
-import { type IDocument } from '../types';
+import { type IDocument, type IFile, type MenuNames } from '../types';
 import { DOCUMENTS, searchByKey, updateFileContent } from '../utils';
 
 interface DocumentsState {
@@ -24,6 +23,9 @@ interface DocumentsState {
   addActiveTab: (fileId: number) => void;
   removeActiveTab: (fileId: number) => void;
   clearActiveTabs: () => void;
+  // Show menus
+  showMenu: { [key in MenuNames]: boolean };
+  toggleMenu: (menuName: MenuNames) => void;
 }
 
 const useDocumentsStore = create<DocumentsState>((set, get) => ({
@@ -74,6 +76,18 @@ const useDocumentsStore = create<DocumentsState>((set, get) => ({
       activeTabs: state.activeTabs.filter((id) => id !== fileId),
     })),
   clearActiveTabs: () => set(() => ({ activeTabs: [] })),
+  // Show menus
+  showMenu: {
+    leftMenuBar: true,
+    rightMenuBar: false,
+  },
+  toggleMenu: (menuName) =>
+    set((state) => ({
+      showMenu: {
+        ...state.showMenu,
+        [menuName]: !state.showMenu[menuName],
+      },
+    })),
 }));
 
 export default useDocumentsStore;

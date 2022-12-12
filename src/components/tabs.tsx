@@ -15,25 +15,17 @@ const Tabs: FunctionComponent = () => {
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
+  // Show menu
+  const showMenu = useDocumentsStore((state) => state.showMenu);
 
   // Handle scroll position
   useEffect(() => {
-    const handleScrollPosition = () => {
-      const parentElement = scrollableNodeRef.current as Element;
-      const activeTabElement = document.getElementById(activeFile.toString());
-      const parentPos = parentElement?.getBoundingClientRect() as DOMRect;
-      const childPos = activeTabElement?.getBoundingClientRect() as DOMRect;
-
-      const left = childPos.left - parentPos.left;
-      if (left < 0 || left + 100 > parentPos.width) {
-        parentElement.scrollTo({
-          left,
-          behavior: 'smooth',
-        });
-      }
-    };
-    handleScrollPosition();
-  }, [activeFile, scrollableNodeRef]);
+    const activeTabElement = document.getElementById(activeFile.toString());
+    activeTabElement?.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    });
+  }, [activeFile, showMenu]);
 
   // Handle tab close
   const handleTabClose = (e: MouseEvent<HTMLButtonElement>, key: number) => {

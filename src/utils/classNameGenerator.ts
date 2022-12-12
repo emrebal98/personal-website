@@ -9,7 +9,7 @@ export default function classNameGenerator(
   const classes: string[] = [];
   classNames.forEach((className) => {
     if (typeof className === 'string') {
-      classes.push(className);
+      if (className) classes.push(className);
     } else {
       Object.keys(className).forEach((key) => {
         if (className[key]) {
