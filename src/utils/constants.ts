@@ -1,4 +1,4 @@
-import type { IDocument } from '../types';
+import { type IDocument } from '../types';
 
 export const DOCUMENTS: IDocument[] = [
   {
@@ -48,6 +48,7 @@ export const DOCUMENTS: IDocument[] = [
     title: 'Skills',
     type: 'FOLDER',
     parent: -1,
+    isRunnable: true,
     children: [
       {
         key: 40,

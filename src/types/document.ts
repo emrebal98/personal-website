@@ -7,6 +7,7 @@ interface IDocumentBase {
 interface IFolder extends IDocumentBase {
   type: 'FOLDER';
   children: IDocument[];
+  isRunnable?: boolean;
 }
 
 export interface IFile extends IDocumentBase {

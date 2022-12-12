@@ -1,1 +1,1 @@
-export type MenuNames = 'leftMenuBar' | 'rightMenuBar';
+export type MenuNames = 'fileAndFolderMenu' | 'runMenu';

@@ -26,6 +26,7 @@ interface DocumentsState {
   // Show menus
   showMenu: { [key in MenuNames]: boolean };
   toggleMenu: (menuName: MenuNames) => void;
+  hideAllMenus: () => void;
 }
 
 const useDocumentsStore = create<DocumentsState>((set, get) => ({
@@ -78,16 +79,19 @@ const useDocumentsStore = create<DocumentsState>((set, get) => ({
   clearActiveTabs: () => set(() => ({ activeTabs: [] })),
   // Show menus
   showMenu: {
-    leftMenuBar: true,
-    rightMenuBar: false,
+    fileAndFolderMenu: true,
+    runMenu: false,
   },
-  toggleMenu: (menuName) =>
+  toggleMenu: (menuName) => {
+    if (!get().showMenu[menuName]) get().hideAllMenus();
     set((state) => ({
       showMenu: {
         ...state.showMenu,
         [menuName]: !state.showMenu[menuName],
       },
-    })),
+    }));
+  },
+  hideAllMenus: () => set(() => ({ showMenu: { fileAndFolderMenu: false, runMenu: false } })),
 }));
 
 export default useDocumentsStore;

@@ -4,11 +4,14 @@ import {
   MagnifyingGlassIcon,
   PlayIcon,
   SquaresPlusIcon,
+  StopIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline/';
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import { Editor, LeftMenuBar, Tabs } from '../components';
+import { useState } from 'react';
+import SimpleBar from 'simplebar-react';
+import { Editor, LeftMenuBar, Skills, Tabs } from '../components';
 import { useDocumentsStore } from '../stores';
 import { clg, findParents } from '../utils';
 
@@ -22,13 +25,21 @@ const Home: NextPage = () => {
   // Show menu
   const showMenu = useDocumentsStore((state) => state.showMenu);
   const toggleMenu = useDocumentsStore((state) => state.toggleMenu);
+
+  const [activeRunnableComponent, setActiveRunnableComponent] = useState<string>('');
   // TODO: run like code
   const handleRunCode = () => {
     // Get active parent
     const parents = findParents(activeFile, documents);
     const activeTopParent = parents[parents.length - 1];
 
-    console.log(activeTopParent);
+    if (activeTopParent?.type === 'FOLDER' && activeTopParent.isRunnable) {
+      // console.log('run code', activeTopParent.title);
+      toggleMenu('runMenu');
+      setActiveRunnableComponent(activeTopParent.title);
+    }
+
+    // console.log(activeTopParent);
   };
 
   return (
@@ -48,14 +59,22 @@ const Home: NextPage = () => {
           <div className="order-1 flex justify-between p-2 md:order-none md:flex-col">
             <DocumentDuplicateIcon
               className="h-6 w-6 cursor-pointer text-slate-100 md:mb-8 md:h-8 md:w-8"
-              onClick={() => toggleMenu('leftMenuBar')}
+              onClick={() => toggleMenu('fileAndFolderMenu')}
             />
             <MagnifyingGlassIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
             <SquaresPlusIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
-            <PlayIcon
-              className="h-6 w-6 cursor-pointer text-slate-400 md:mb-auto md:h-8 md:w-8"
-              onClick={handleRunCode}
-            />
+            {showMenu.runMenu ? (
+              <StopIcon
+                className="h-6 w-6 cursor-pointer text-slate-400 md:mb-auto md:h-8 md:w-8"
+                onClick={handleRunCode}
+              />
+            ) : (
+              <PlayIcon
+                className="h-6 w-6 cursor-pointer text-slate-400 md:mb-auto md:h-8 md:w-8"
+                onClick={handleRunCode}
+              />
+            )}
+
             <UserCircleIcon className="h-6 w-6 text-slate-400 md:mb-4 md:h-8 md:w-8" />
             <Cog8ToothIcon className="h-6 w-6 text-slate-400 md:h-8 md:w-8" />
           </div>
@@ -63,19 +82,25 @@ const Home: NextPage = () => {
           <div className="flex h-full w-full overflow-hidden">
             {/* Left Menu Bar */}
             {/* TODO: add animation */}
-            {showMenu.leftMenuBar && <LeftMenuBar />}
+            {showMenu.fileAndFolderMenu && <LeftMenuBar />}
             {/* BODY */}
             <div
               className={clg('flex w-full flex-col gap-2 overflow-hidden p-2', {
-                'hidden md:flex': showMenu.leftMenuBar,
+                'hidden md:flex': showMenu.fileAndFolderMenu,
               })}
               // TODO:Just for mobile
               // aria-hidden={!showMenu.leftMenuBar}
             >
               {/* TABS */}
-              <Tabs />
-              {/* EDITOR */}
-              <Editor />
+              <Tabs title={showMenu.runMenu ? activeRunnableComponent : undefined} />
+              {/* EDITOR & Runnable Component */}
+              {showMenu.runMenu ? (
+                <SimpleBar className="h-full w-full overflow-auto">
+                  {activeRunnableComponent === 'Skills' && <Skills />}
+                </SimpleBar>
+              ) : (
+                <Editor />
+              )}
             </div>
           </div>
         </div>

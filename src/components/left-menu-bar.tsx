@@ -130,7 +130,7 @@ const LeftMenuBar: FunctionComponent<ILeftMenuBarProps> = ({ className, style })
       style={style}
     >
       {/* Topbar */}
-      <div className="flex justify-between gap-4">
+      <div className="flex justify-between gap-4 md:gap-16">
         {/* Text */}
         <p className="select-none font-segoeui text-base font-normal text-slate-100">EXPLORER</p>
         {/* Buttons */}
