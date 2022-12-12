@@ -39,28 +39,28 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]"> */}
-      <main className="relative min-h-screen overflow-hidden bg-slate-900 md:p-16">
+      <main className="relative h-screen overflow-hidden bg-slate-900 md:p-16">
         {/* Window */}
-        <div className="relative flex h-screen flex-col rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 md:h-[calc(100vh_-_8rem)] md:flex-row ">
+        <div className="relative flex h-full flex-col rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 md:flex-row ">
           {/* Icon Indicator Line */}
           {/* <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" /> */}
           {/* Left Icon Bar */}
           <div className="order-1 flex justify-between p-2 md:order-none md:flex-col">
             <DocumentDuplicateIcon
-              className="h-8 w-8 cursor-pointer text-slate-100 md:mb-8"
+              className="h-6 w-6 cursor-pointer text-slate-100 md:mb-8 md:h-8 md:w-8"
               onClick={() => toggleMenu('leftMenuBar')}
             />
-            <MagnifyingGlassIcon className="h-8 w-8 cursor-pointer text-slate-400 md:mb-8" />
-            <SquaresPlusIcon className="h-8 w-8 cursor-pointer text-slate-400 md:mb-8" />
+            <MagnifyingGlassIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
+            <SquaresPlusIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
             <PlayIcon
-              className="h-8 w-8 cursor-pointer text-slate-400 md:mb-auto"
+              className="h-6 w-6 cursor-pointer text-slate-400 md:mb-auto md:h-8 md:w-8"
               onClick={handleRunCode}
             />
-            <UserCircleIcon className="h-8 w-8 text-slate-400 md:mb-4" />
-            <Cog8ToothIcon className="h-8 w-8 text-slate-400" />
+            <UserCircleIcon className="h-6 w-6 text-slate-400 md:mb-4 md:h-8 md:w-8" />
+            <Cog8ToothIcon className="h-6 w-6 text-slate-400 md:h-8 md:w-8" />
           </div>
           {/* For Mobile Responsive */}
-          <div className="flex h-full w-full">
+          <div className="flex h-full w-full overflow-hidden">
             {/* Left Menu Bar */}
             {/* TODO: add animation */}
             {showMenu.leftMenuBar && <LeftMenuBar />}
@@ -80,8 +80,8 @@ const Home: NextPage = () => {
           </div>
         </div>
         {/* Circles */}
-        <div className="absolute left-[1066px] top-[315px] h-[100px] w-[100px] rounded-full bg-cyan-300 mix-blend-screen blur-3xl" />
-        <div className="absolute left-[395px] top-[741px] h-[100px] w-[100px] rounded-full bg-cyan-300 mix-blend-screen blur-3xl" />
+        <div className="absolute right-16 top-16 h-[60px] w-[60px] rounded-full bg-cyan-300 mix-blend-screen blur-3xl md:right-32 md:top-60 md:h-[100px] md:w-[100px]" />
+        <div className="absolute left-16 bottom-16 h-[60px] w-[60px] rounded-full bg-cyan-300 mix-blend-screen blur-3xl md:left-96 md:bottom-36 md:h-[100px] md:w-[100px]" />
       </main>
     </>
   );
