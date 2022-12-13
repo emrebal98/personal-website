@@ -7,3 +7,4 @@ export { default as findIfAnyChildIsActive } from './findIfAnyChildIsActive';
 export { default as refactorNode } from './refactorNode';
 export { default as getCodeContent } from './getCodeContent';
 export { default as updateFileContent } from './updateFileContent';
+export { default as searchFiles } from './searchFiles';

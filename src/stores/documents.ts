@@ -1,6 +1,6 @@
 import create from 'zustand';
 // import { devtools, persist } from 'zustand/middleware';
-import { type IDocument, type IFile, type MenuNames } from '../types';
+import { type IDocument, type IFile, type IMenuNames } from '../types';
 import { DOCUMENTS, searchByKey, updateFileContent } from '../utils';
 
 interface DocumentsState {
@@ -18,14 +18,17 @@ interface DocumentsState {
   // Active file
   activeFile: number;
   setActiveFile: (fileId: number) => void;
+  // Active line number
+  activeLineNumber: number;
+  setActiveLineNumber: (lineNumber: number) => void;
   // Active tabs
   activeTabs: number[];
   addActiveTab: (fileId: number) => void;
   removeActiveTab: (fileId: number) => void;
   clearActiveTabs: () => void;
   // Show menus
-  showMenu: { [key in MenuNames]: boolean };
-  toggleMenu: (menuName: MenuNames) => void;
+  showMenu: { [key in IMenuNames]: boolean };
+  toggleMenu: (menuName: IMenuNames) => void;
   hideAllMenus: () => void;
 }
 
@@ -57,7 +60,13 @@ const useDocumentsStore = create<DocumentsState>((set, get) => ({
   clearActiveFolders: () => set(() => ({ activeFolders: [] })),
   // Active file
   activeFile: 12,
-  setActiveFile: (fileId) => set(() => ({ activeFile: fileId })),
+  setActiveFile: (fileId) => {
+    get().setActiveLineNumber(-1);
+    set(() => ({ activeFile: fileId }));
+  },
+  // Active line number
+  activeLineNumber: -1,
+  setActiveLineNumber: (lineNumber) => set(() => ({ activeLineNumber: lineNumber })),
   // Active tabs
   activeTabs: [12],
   addActiveTab: (fileId) =>
@@ -79,7 +88,8 @@ const useDocumentsStore = create<DocumentsState>((set, get) => ({
   clearActiveTabs: () => set(() => ({ activeTabs: [] })),
   // Show menus
   showMenu: {
-    fileAndFolderMenu: true,
+    documentMenu: true,
+    searchMenu: false,
     runMenu: false,
   },
   toggleMenu: (menuName) => {
@@ -91,7 +101,8 @@ const useDocumentsStore = create<DocumentsState>((set, get) => ({
       },
     }));
   },
-  hideAllMenus: () => set(() => ({ showMenu: { fileAndFolderMenu: false, runMenu: false } })),
+  hideAllMenus: () =>
+    set(() => ({ showMenu: { documentMenu: false, searchMenu: false, runMenu: false } })),
 }));
 
 export default useDocumentsStore;

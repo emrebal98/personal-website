@@ -65,24 +65,8 @@ export const DOCUMENTS: IDocument[] = [
         title: 'skills.tsx',
         type: 'FILE',
         parent: 4,
-        content: `import React, { type FunctionComponent } from 'react';
-      import Skills from './skills';
-          
-      const skills = [
-        'TypeScript',
-        'JavaScript',
-        'React',
-        'Next.js',
-        'CSS',
-        'TailwindCSS',
-        'Sass',
-      ];
-      
-      const App: FunctionComponent = () => {
-        return <Skills skills={skills} />;
-      };
-          
-      export default App;`,
+        content:
+          "import React, { type FunctionComponent } from 'react';\nimport Skills from './skills';\n          \nconst skills = [\n  'TypeScript',\n  'JavaScript',\n  'React',\n  'Next.js',\n  'CSS',\n  'TailwindCSS',\n  'Sass',\n];\n      \nconst App: FunctionComponent = () => {\n  return <Skills skills={skills} />;\n  };\n          \nexport default App;",
       },
       { key: 42, title: 'index.tsx', type: 'FILE', parent: 4, content: '' },
     ],

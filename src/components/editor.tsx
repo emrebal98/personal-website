@@ -10,13 +10,18 @@ const Editor: FunctionComponent = () => {
   // Active file code content
   const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
   const updateContent = useDocumentsStore((state) => state.findAndUpdateContent);
+  // Active line number
+  const activeLineNumber = useDocumentsStore((state) => state.activeLineNumber);
 
   // Handle highlight code
   const highlightWithLineNumbers = (code: string) =>
     getCodeContent(code)
       .split('\n')
       .map(
-        (line, i) => `<span class='absolute left-0 w-[40px] text-slate-400'>${i + 1}</span>${line}`
+        (line, i) =>
+          `<span id='line-${i + 1}' class='absolute left-0 w-[40px] text-slate-400${
+            activeLineNumber === i + 1 ? 'text-slate-100' : ''
+          }'>${i + 1}</span>${line}`
       )
       .join('\n');
 
@@ -29,6 +34,7 @@ const Editor: FunctionComponent = () => {
           onValueChange={(newCode) => updateContent(activeFile, newCode)}
           highlight={(hCode) => highlightWithLineNumbers(hCode)}
           placeholder="Write some code..."
+          preClassName="pre-code-editor"
         />
       </SimpleBar>
     </div>

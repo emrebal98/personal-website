@@ -1,1 +1,1 @@
-export type MenuNames = 'fileAndFolderMenu' | 'runMenu';
+export type IMenuNames = 'documentMenu' | 'searchMenu' | 'runMenu';

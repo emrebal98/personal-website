@@ -2,8 +2,11 @@ import React, { type FunctionComponent } from 'react';
 
 const Skills: FunctionComponent = () => (
   <div className="flex flex-wrap justify-center gap-8 py-4">
-    {Array.from({ length: 17 }).map(() => (
-      <div className="h-[150px] w-[150px] rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8">
+    {Array.from({ length: 17 }).map((_, index) => (
+      <div
+        key={index}
+        className="h-[150px] w-[150px] rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8"
+      >
         <svg
           className="h-full w-full"
           viewBox="0 0 512 104"

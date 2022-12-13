@@ -11,7 +11,7 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import SimpleBar from 'simplebar-react';
-import { Editor, LeftMenuBar, Skills, Tabs } from '../components';
+import { DocumentMenu, Editor, SearchMenu, Skills, Tabs } from '../components';
 import { useDocumentsStore } from '../stores';
 import { clg, findParents } from '../utils';
 
@@ -58,14 +58,25 @@ const Home: NextPage = () => {
           {/* Left Icon Bar */}
           <div className="order-1 flex justify-between p-2 md:order-none md:flex-col">
             <DocumentDuplicateIcon
-              className="h-6 w-6 cursor-pointer text-slate-100 md:mb-8 md:h-8 md:w-8"
-              onClick={() => toggleMenu('fileAndFolderMenu')}
+              className={clg(
+                'h-6 w-6 cursor-pointer md:mb-8 md:h-8 md:w-8',
+                { 'text-slate-100': showMenu.documentMenu },
+                { 'text-slate-400': !showMenu.documentMenu }
+              )}
+              onClick={() => toggleMenu('documentMenu')}
             />
-            <MagnifyingGlassIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
+            <MagnifyingGlassIcon
+              className={clg(
+                'h-6 w-6 cursor-pointer md:mb-8 md:h-8 md:w-8',
+                { 'text-slate-100': showMenu.searchMenu },
+                { 'text-slate-400': !showMenu.searchMenu }
+              )}
+              onClick={() => toggleMenu('searchMenu')}
+            />
             <SquaresPlusIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
             {showMenu.runMenu ? (
               <StopIcon
-                className="h-6 w-6 cursor-pointer text-slate-400 md:mb-auto md:h-8 md:w-8"
+                className="h-6 w-6 cursor-pointer text-slate-100 md:mb-auto md:h-8 md:w-8"
                 onClick={handleRunCode}
               />
             ) : (
@@ -82,11 +93,12 @@ const Home: NextPage = () => {
           <div className="flex h-full w-full overflow-hidden">
             {/* Left Menu Bar */}
             {/* TODO: add animation */}
-            {showMenu.fileAndFolderMenu && <LeftMenuBar />}
+            {showMenu.documentMenu && <DocumentMenu />}
+            {showMenu.searchMenu && <SearchMenu />}
             {/* BODY */}
             <div
               className={clg('flex w-full flex-col gap-2 overflow-hidden p-2', {
-                'hidden md:flex': showMenu.fileAndFolderMenu,
+                'hidden md:flex': showMenu.documentMenu || showMenu.searchMenu, // TODO: add other menus for mobile
               })}
               // TODO:Just for mobile
               // aria-hidden={!showMenu.leftMenuBar}

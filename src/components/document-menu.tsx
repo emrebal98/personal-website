@@ -11,12 +11,12 @@ import { type IDocument } from '../types';
 import { clg, DOCUMENTS_ORDER } from '../utils';
 import Document from './document';
 
-interface ILeftMenuBarProps {
+interface IDocumentMenu {
   className?: string;
   style?: CSSProperties;
 }
 
-const LeftMenuBar: FunctionComponent<ILeftMenuBarProps> = ({ className, style }) => {
+const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) => {
   // All documents
   const documents = useDocumentsStore((state) => state.documents);
   const setDocuments = useDocumentsStore((state) => state.setDocuments);
@@ -124,7 +124,7 @@ const LeftMenuBar: FunctionComponent<ILeftMenuBarProps> = ({ className, style })
   };
   return (
     <div
-      className={clg('flex w-full flex-col gap-4 py-2 px-4 md:w-auto', {
+      className={clg('flex w-full flex-col gap-4 py-2 px-4 md:min-w-[300px] md:max-w-[300px]', {
         [className as string]: className !== undefined,
       })}
       style={style}
@@ -155,7 +155,7 @@ const LeftMenuBar: FunctionComponent<ILeftMenuBarProps> = ({ className, style })
       </div>
       {/* Folders */}
       <div className="overflow-hidden">
-        <SimpleBar className="file-scroll h-full w-full">
+        <SimpleBar className="h-full w-full">
           <div className="flex flex-col gap-4">
             {documents
               .sort((a, b) => DOCUMENTS_ORDER.indexOf(a.type) - DOCUMENTS_ORDER.indexOf(b.type))
@@ -174,9 +174,9 @@ const LeftMenuBar: FunctionComponent<ILeftMenuBarProps> = ({ className, style })
   );
 };
 
-LeftMenuBar.defaultProps = {
+DocumentMenu.defaultProps = {
   className: undefined,
   style: undefined,
 };
 
-export default LeftMenuBar;
+export default DocumentMenu;
