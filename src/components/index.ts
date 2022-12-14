@@ -6,3 +6,5 @@ export { default as Editor } from './editor';
 export { default as Skills } from './skills';
 export { default as SearchMenu } from './search-menu';
 export { default as TreeView } from './tree-view';
+export { default as ExtensionMenu } from './extension-menu';
+export { default as Contact } from './contact';

@@ -2,7 +2,8 @@ import React, { type FunctionComponent } from 'react';
 import CodeEditor from 'react-simple-code-editor';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
-import { getCodeContent } from '../utils';
+import { contactExtensionKey, getCodeContent } from '../utils';
+import Contact from './contact';
 
 const Editor: FunctionComponent = () => {
   // Active file
@@ -24,6 +25,11 @@ const Editor: FunctionComponent = () => {
           }'>${i + 1}</span>${line}`
       )
       .join('\n');
+
+  //  If the active file is an extension and the active file is the contact extension
+  if (findActiveFile(activeFile)?.isExtension === true && activeFile === contactExtensionKey) {
+    return <Contact />;
+  }
 
   return (
     <div className="language-tsx h-full overflow-hidden">

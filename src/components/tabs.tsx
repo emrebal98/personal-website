@@ -1,8 +1,8 @@
-import { CodeBracketIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CodeBracketIcon, SquaresPlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { createRef, type FunctionComponent, type MouseEvent, useEffect } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
-import { clg, searchByKey } from '../utils';
+import { clg } from '../utils';
 
 interface ITabsProps {
   title?: string;
@@ -11,13 +11,12 @@ interface ITabsProps {
 const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
   // Scrollable node ref
   const scrollableNodeRef = createRef();
-  // Documents
-  const documents = useDocumentsStore((state) => state.documents);
   // Active tabs
   const activeTabs = useDocumentsStore((state) => state.activeTabs);
   const removeActiveTab = useDocumentsStore((state) => state.removeActiveTab);
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
+  const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
   // Show menu
   const showMenu = useDocumentsStore((state) => state.showMenu);
@@ -56,12 +55,8 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
               id={key.toString()}
               className={clg(
                 'group relative rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 backdrop-blur-sm',
-                {
-                  'border-b border-cyan-300': activeFile === key,
-                },
-                {
-                  'border-b border-transparent': activeFile !== key,
-                }
+                { 'border-b border-cyan-300': activeFile === key },
+                { 'border-b border-transparent': activeFile !== key }
               )}
             >
               <button
@@ -69,9 +64,15 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
                 type="button"
                 onClick={() => setActiveFile(key)}
               >
-                <CodeBracketIcon className="h-6 w-6 text-slate-100" />
-                <span className="font-consolas text-base font-normal italic text-slate-100">
-                  {searchByKey(key, documents)?.title}
+                {/* If the file is an extension, show the extension icon */}
+                {findActiveFile(key)?.isExtension === true ? (
+                  <SquaresPlusIcon className="h-6 w-6 text-slate-100" />
+                ) : (
+                  <CodeBracketIcon className="h-6 w-6 text-slate-100" />
+                )}
+
+                <span className="whitespace-nowrap font-consolas text-base font-normal italic text-slate-100">
+                  {findActiveFile(key)?.title}
                 </span>
               </button>
               <button

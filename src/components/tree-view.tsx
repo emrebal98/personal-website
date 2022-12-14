@@ -2,6 +2,7 @@ import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline/'
 import React, { type FunctionComponent, useState } from 'react';
 import { useDocumentsStore } from '../stores';
 import { type IFile } from '../types';
+import { clg } from '../utils';
 
 interface TreeViewProps {
   title: string;
@@ -23,6 +24,7 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
   // Active tabs
   const addActiveTab = useDocumentsStore((state) => state.addActiveTab);
   // Active line number
+  const activeLineNumber = useDocumentsStore((state) => state.activeLineNumber);
   const setActiveLineNumber = useDocumentsStore((state) => state.setActiveLineNumber);
 
   const handleChildClick = (child: {
@@ -80,7 +82,11 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
             <button
               id="child-item"
               key={item.file.key + item.lineNumber}
-              className="w-full text-left text-slate-400 hover:text-slate-100"
+              className={clg(
+                'w-full text-left ',
+                { 'text-cyan-300': activeLineNumber === item.lineNumber },
+                { 'text-slate-400 hover:text-slate-100': activeLineNumber !== item.lineNumber }
+              )}
               type="button"
               onClick={() => handleChildClick(item)}
             >
@@ -89,7 +95,13 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
                   item.lineText.before.length - 10 < 0 ? 0 : item.lineText.before.length - 10,
                   item.lineText.before.length
                 )}
-                <span className="rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 text-slate-100">
+                <span
+                  className={clg(
+                    'rounded bg-gradient-to-br text-slate-100',
+                    { 'from-cyan-300/40 to-cyan-300/0': activeLineNumber === item.lineNumber },
+                    { 'from-slate-400/40 to-slate-400/0': activeLineNumber !== item.lineNumber }
+                  )}
+                >
                   {item.lineText.word}
                 </span>
                 {item.lineText.after.slice(0, 80)}

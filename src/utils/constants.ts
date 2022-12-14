@@ -1,5 +1,7 @@
 import { type IDocument } from '../types';
 
+export const contactExtensionKey = 999;
+
 export const DOCUMENTS: IDocument[] = [
   {
     key: 1,
@@ -85,6 +87,14 @@ export const DOCUMENTS: IDocument[] = [
     Pharetra sit amet aliquam id. Laoreet id donec ultrices tincidunt arcu non sodales. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Et egestas quis ipsum suspendisse ultrices. Orci ac auctor augue mauris augue neque gravida. Id interdum velit laoreet id donec ultrices tincidunt arcu non. Leo integer malesuada nunc vel risus commodo viverra maecenas. Libero id faucibus nisl tincidunt eget nullam non. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Eleifend mi in nulla posuere. Aliquam ultrices sagittis orci a scelerisque purus semper.
     
     Turpis nunc eget lorem dolor. Id porta nibh venenatis cras sed. Nulla malesuada pellentesque elit eget gravida. Praesent semper feugiat nibh sed pulvinar proin gravida. Morbi tempus iaculis urna id volutpat lacus. Iaculis urna id volutpat lacus laoreet non curabitur gravida. Quisque non tellus orci ac auctor augue mauris augue neque. Risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est. Sed viverra ipsum nunc aliquet. Ac tortor dignissim convallis aenean et tortor at. Ultricies tristique nulla aliquet enim tortor. Sapien et ligula ullamcorper malesuada proin libero nunc consequat. Nunc sed augue lacus viverra. Amet dictum sit amet justo. Ac orci phasellus egestas tellus rutrum tellus pellentesque. Vitae semper quis lectus nulla at volutpat diam ut venenatis. Amet justo donec enim diam vulputate ut pharetra sit.`,
+  },
+  {
+    key: contactExtensionKey,
+    title: 'Contact Page',
+    type: 'FILE',
+    parent: -1,
+    content: '',
+    isExtension: true,
   },
 ];
 

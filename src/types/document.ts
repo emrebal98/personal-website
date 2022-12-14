@@ -13,6 +13,7 @@ interface IFolder extends IDocumentBase {
 export interface IFile extends IDocumentBase {
   type: 'FILE';
   content: string;
+  isExtension?: boolean;
 }
 
 export type IDocument = IFolder | IFile;

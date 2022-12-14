@@ -11,7 +11,7 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
 import SimpleBar from 'simplebar-react';
-import { DocumentMenu, Editor, SearchMenu, Skills, Tabs } from '../components';
+import { DocumentMenu, Editor, ExtensionMenu, SearchMenu, Skills, Tabs } from '../components';
 import { useDocumentsStore } from '../stores';
 import { clg, findParents } from '../utils';
 
@@ -73,7 +73,14 @@ const Home: NextPage = () => {
               )}
               onClick={() => toggleMenu('searchMenu')}
             />
-            <SquaresPlusIcon className="h-6 w-6 cursor-pointer text-slate-400 md:mb-8 md:h-8 md:w-8" />
+            <SquaresPlusIcon
+              className={clg(
+                'h-6 w-6 cursor-pointer md:mb-8 md:h-8 md:w-8',
+                { 'text-slate-100': showMenu.extensionMenu },
+                { 'text-slate-400': !showMenu.extensionMenu }
+              )}
+              onClick={() => toggleMenu('extensionMenu')}
+            />
             {showMenu.runMenu ? (
               <StopIcon
                 className="h-6 w-6 cursor-pointer text-slate-100 md:mb-auto md:h-8 md:w-8"
@@ -95,10 +102,12 @@ const Home: NextPage = () => {
             {/* TODO: add animation */}
             {showMenu.documentMenu && <DocumentMenu />}
             {showMenu.searchMenu && <SearchMenu />}
+            {showMenu.extensionMenu && <ExtensionMenu />}
             {/* BODY */}
             <div
               className={clg('flex w-full flex-col gap-2 overflow-hidden p-2', {
-                'hidden md:flex': showMenu.documentMenu || showMenu.searchMenu, // TODO: add other menus for mobile
+                'hidden md:flex':
+                  showMenu.documentMenu || showMenu.searchMenu || showMenu.extensionMenu, // TODO: add other menus for mobile
               })}
               // TODO:Just for mobile
               // aria-hidden={!showMenu.leftMenuBar}

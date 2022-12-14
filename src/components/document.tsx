@@ -45,6 +45,11 @@ const Document: FunctionComponent<DocumentProps> = ({
     onFileClick(doc);
   };
 
+  // Don't render extension files
+  if (document.type === 'FILE' && document.isExtension === true) {
+    return null;
+  }
+
   return (
     <>
       {/* FOLDER */}

@@ -1,1 +1,1 @@
-export type IMenuNames = 'documentMenu' | 'searchMenu' | 'runMenu';
+export type IMenuNames = 'documentMenu' | 'searchMenu' | 'extensionMenu' | 'runMenu';

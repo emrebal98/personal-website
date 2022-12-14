@@ -5,9 +5,7 @@ import { type IFile } from '../types';
 import { searchFiles } from '../utils';
 import TreeView from './tree-view';
 
-interface SearchMenuProps {}
-
-const SearchMenu: FunctionComponent<SearchMenuProps> = () => {
+const SearchMenu: FunctionComponent = () => {
   // All documents
   const documents = useDocumentsStore((state) => state.documents);
   const [search, setSearch] = useState<string>('');
@@ -42,7 +40,6 @@ const SearchMenu: FunctionComponent<SearchMenuProps> = () => {
       <div className="flex flex-col gap-4">
         {/* Text */}
         <p className="select-none font-segoeui text-base font-normal text-slate-100">SEARCH</p>
-        {/* bg-gradient-to-br from-slate-400/40 to-slate-400/0 */}
         <input
           className="rounded border border-slate-400 bg-transparent px-2 py-1 text-slate-100 focus-visible:outline-none"
           type="text"
@@ -52,7 +49,7 @@ const SearchMenu: FunctionComponent<SearchMenuProps> = () => {
         />
       </div>
       {/* Documents */}
-      <div className="overflow-hidden">
+      <div className="h-full overflow-hidden">
         <SimpleBar className="h-full w-full">
           <div className="flex flex-col gap-4">
             {foundGroupedArray &&
