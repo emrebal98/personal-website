@@ -9,10 +9,9 @@ import {
 } from '@heroicons/react/24/outline/';
 import { type NextPage } from 'next';
 import Head from 'next/head';
-import { useState } from 'react';
-import SimpleBar from 'simplebar-react';
-import { DocumentMenu, Editor, ExtensionMenu, SearchMenu, Skills, Tabs } from '../components';
+import { DocumentMenu, Editor, ExtensionMenu, Run, SearchMenu, Tabs } from '../components';
 import { useDocumentsStore } from '../stores';
+import { type IRunComponent } from '../types';
 import { clg, findParents } from '../utils';
 
 // const MotionLeftMenuBar = motion(LeftMenuBar);
@@ -25,21 +24,20 @@ const Home: NextPage = () => {
   // Show menu
   const showMenu = useDocumentsStore((state) => state.showMenu);
   const toggleMenu = useDocumentsStore((state) => state.toggleMenu);
+  // Run component
+  const runComponent = useDocumentsStore((state) => state.runComponent);
+  const setRunComponent = useDocumentsStore((state) => state.setRunComponent);
 
-  const [activeRunnableComponent, setActiveRunnableComponent] = useState<string>('');
-  // TODO: run like code
+  // Handle run code
   const handleRunCode = () => {
     // Get active parent
     const parents = findParents(activeFile, documents);
     const activeTopParent = parents[parents.length - 1];
-
+    // Check if active top parent is runnable
     if (activeTopParent?.type === 'FOLDER' && activeTopParent.isRunnable) {
-      // console.log('run code', activeTopParent.title);
       toggleMenu('runMenu');
-      setActiveRunnableComponent(activeTopParent.title);
+      setRunComponent(activeTopParent.title as IRunComponent);
     }
-
-    // console.log(activeTopParent);
   };
 
   return (
@@ -64,6 +62,7 @@ const Home: NextPage = () => {
                 { 'text-slate-400': !showMenu.documentMenu }
               )}
               onClick={() => toggleMenu('documentMenu')}
+              title="Explorer"
             />
             <MagnifyingGlassIcon
               className={clg(
@@ -72,6 +71,7 @@ const Home: NextPage = () => {
                 { 'text-slate-400': !showMenu.searchMenu }
               )}
               onClick={() => toggleMenu('searchMenu')}
+              title="Search"
             />
             <SquaresPlusIcon
               className={clg(
@@ -80,16 +80,19 @@ const Home: NextPage = () => {
                 { 'text-slate-400': !showMenu.extensionMenu }
               )}
               onClick={() => toggleMenu('extensionMenu')}
+              title="Extensions"
             />
             {showMenu.runMenu ? (
               <StopIcon
                 className="h-6 w-6 cursor-pointer text-slate-100 md:mb-auto md:h-8 md:w-8"
                 onClick={handleRunCode}
+                title="Stop"
               />
             ) : (
               <PlayIcon
                 className="h-6 w-6 cursor-pointer text-slate-400 md:mb-auto md:h-8 md:w-8"
                 onClick={handleRunCode}
+                title="Run"
               />
             )}
 
@@ -107,21 +110,13 @@ const Home: NextPage = () => {
             <div
               className={clg('flex w-full flex-col gap-2 overflow-hidden p-2', {
                 'hidden md:flex':
-                  showMenu.documentMenu || showMenu.searchMenu || showMenu.extensionMenu, // TODO: add other menus for mobile
+                  showMenu.documentMenu || showMenu.searchMenu || showMenu.extensionMenu,
               })}
-              // TODO:Just for mobile
-              // aria-hidden={!showMenu.leftMenuBar}
             >
               {/* TABS */}
-              <Tabs title={showMenu.runMenu ? activeRunnableComponent : undefined} />
+              <Tabs title={showMenu.runMenu ? runComponent : undefined} />
               {/* EDITOR & Runnable Component */}
-              {showMenu.runMenu ? (
-                <SimpleBar className="h-full w-full overflow-auto">
-                  {activeRunnableComponent === 'Skills' && <Skills />}
-                </SimpleBar>
-              ) : (
-                <Editor />
-              )}
+              {showMenu.runMenu ? <Run name={runComponent} /> : <Editor />}
             </div>
           </div>
         </div>

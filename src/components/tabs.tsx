@@ -1,7 +1,14 @@
-import { CodeBracketIcon, SquaresPlusIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CodeBracketIcon,
+  SquaresPlusIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { createRef, type FunctionComponent, type MouseEvent, useEffect } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
+import type { IRunComponent } from '../types';
 import { clg } from '../utils';
 
 interface ITabsProps {
@@ -20,6 +27,9 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
   // Show menu
   const showMenu = useDocumentsStore((state) => state.showMenu);
+  // Run component
+  const runComponent = useDocumentsStore((state) => state.runComponent);
+  const setRunComponent = useDocumentsStore((state) => state.setRunComponent);
 
   // Handle scroll position
   useEffect(() => {
@@ -43,11 +53,40 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
     removeActiveTab(key);
   };
 
+  // Get the prev or next run component name
+  const getRunComponent = (type: 'prev' | 'next') => {
+    const order: IRunComponent[] = ['Skills', 'Experiences'];
+    if (type === 'next') {
+      const index = order.findIndex((item) => item === runComponent);
+      if (index === order.length - 1) return order[0] as IRunComponent;
+      return order[index + 1] as IRunComponent;
+    }
+    const index = order.findIndex((item) => item === runComponent);
+    if (index === 0) return order[order.length - 1] as IRunComponent;
+    return order[index - 1] as IRunComponent;
+  };
+
   return (
     <SimpleBar className="tabs-scroll w-full pb-2" scrollableNodeProps={{ ref: scrollableNodeRef }}>
       <div className={clg('flex gap-4', { 'justify-center': title !== undefined })}>
         {title !== undefined ? (
-          <p className="font-consolas text-base italic text-slate-100">{title}</p>
+          <div className="flex w-full justify-between">
+            <button
+              className="flex items-center gap-2 text-slate-400 hover:text-slate-100"
+              type="button"
+              onClick={() => setRunComponent(getRunComponent('prev'))}
+            >
+              <ArrowLeftIcon className="h-6 w-6" /> {getRunComponent('prev')}
+            </button>
+            <p className="font-consolas text-base italic text-slate-100">{title}</p>
+            <button
+              className="flex items-center gap-2 text-slate-400 hover:text-slate-100"
+              type="button"
+              onClick={() => setRunComponent(getRunComponent('next'))}
+            >
+              {getRunComponent('next')} <ArrowRightIcon className="h-6 w-6" />
+            </button>
+          </div>
         ) : (
           activeTabs.map((key) => (
             <div

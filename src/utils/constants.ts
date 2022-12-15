@@ -37,9 +37,10 @@ export const DOCUMENTS: IDocument[] = [
   },
   {
     key: 3,
-    title: 'Experience',
+    title: 'Experiences',
     type: 'FOLDER',
     parent: -1,
+    isRunnable: true,
     children: [
       { key: 31, title: 'experiences.tsx', type: 'FILE', parent: 3, content: '' },
       { key: 32, title: 'index.tsx', type: 'FILE', parent: 3, content: '' },
@@ -52,16 +53,16 @@ export const DOCUMENTS: IDocument[] = [
     parent: -1,
     isRunnable: true,
     children: [
-      {
-        key: 40,
-        title: 'folderin',
-        type: 'FOLDER',
-        parent: 4,
-        children: [
-          { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40, content: '' },
-          { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40, content: '' },
-        ],
-      },
+      // {
+      //   key: 40,
+      //   title: 'folderin',
+      //   type: 'FOLDER',
+      //   parent: 4,
+      //   children: [
+      //     { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40, content: '' },
+      //     { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40, content: '' },
+      //   ],
+      // },
       {
         key: 41,
         title: 'skills.tsx',

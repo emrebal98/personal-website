@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { type IDocument, type IFile, type IMenuNames } from '../types';
+import { type IDocument, type IFile, type IMenuNames, type IRunComponent } from '../types';
 import { DOCUMENTS, searchByKey, updateFileContent } from '../utils';
 
 interface DocumentsState {
@@ -30,6 +30,9 @@ interface DocumentsState {
   showMenu: { [key in IMenuNames]: boolean };
   toggleMenu: (menuName: IMenuNames) => void;
   hideAllMenus: () => void;
+  // Run component
+  runComponent: IRunComponent;
+  setRunComponent: (componentName: IRunComponent) => void;
 }
 
 const useDocumentsStore = create<DocumentsState>(
@@ -107,6 +110,9 @@ const useDocumentsStore = create<DocumentsState>(
       set(() => ({
         showMenu: { documentMenu: false, searchMenu: false, extensionMenu: false, runMenu: false },
       })),
+    // Run component
+    runComponent: 'Skills', // TODO:change to 'Home'
+    setRunComponent: (componentName) => set(() => ({ runComponent: componentName })),
   }))
 );
 
