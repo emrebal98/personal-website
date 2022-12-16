@@ -8,3 +8,5 @@ export { default as refactorNode } from './refactorNode';
 export { default as getCodeContent } from './getCodeContent';
 export { default as updateFileContent } from './updateFileContent';
 export { default as searchFiles } from './searchFiles';
+export { default as calculateMonths } from './calculateMonths';
+export { default as getDateString } from './getDateString';

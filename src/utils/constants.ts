@@ -1,4 +1,26 @@
-import { type IDocument } from '../types';
+import {
+  Allianz,
+  CSharp,
+  CSS,
+  Flutter,
+  Git,
+  Java,
+  JavaScript,
+  Jotform,
+  MySQL,
+  NextJS,
+  NodeJS,
+  Prisma,
+  Python,
+  ReactJS,
+  Sass,
+  SistemTeknik,
+  StyledComponents,
+  TailwindCSS,
+  TRPC,
+  TypeScript,
+} from '../assets/icons';
+import { type IDocument, type IExperience, type IRunComponent, type ISkill } from '../types';
 
 export const contactExtensionKey = 999;
 
@@ -30,6 +52,7 @@ export const DOCUMENTS: IDocument[] = [
     title: 'Projects',
     type: 'FOLDER',
     parent: -1,
+    isRunnable: true,
     children: [
       { key: 21, title: 'projects.tsx', type: 'FILE', parent: 2, content: '' },
       { key: 22, title: 'index.tsx', type: 'FILE', parent: 2, content: '' },
@@ -100,3 +123,154 @@ export const DOCUMENTS: IDocument[] = [
 ];
 
 export const DOCUMENTS_ORDER = ['FOLDER', 'FILE'];
+
+export const RUNCOMPONENT_ORDER: IRunComponent[] = ['Projects', 'Skills', 'Experiences'];
+
+export const SKILLS: ISkill[] = [
+  {
+    id: 211,
+    title: 'NextJS',
+    icon: NextJS,
+    className: 'text-black dark:text-white',
+  },
+  {
+    id: 212,
+    title: 'ReactJS',
+    icon: ReactJS,
+  },
+  {
+    id: 213,
+    title: 'TypeScript',
+    icon: TypeScript,
+  },
+  {
+    id: 214,
+    title: 'JavaScript',
+    icon: JavaScript,
+  },
+  {
+    id: 215,
+    title: 'TailwindCSS',
+    icon: TailwindCSS,
+    className: 'text-black dark:text-white',
+  },
+  {
+    id: 216,
+    title: 'CSS',
+    icon: CSS,
+  },
+  {
+    id: 217,
+    title: 'Sass',
+    icon: Sass,
+  },
+  {
+    id: 218,
+    title: 'styled-components',
+    icon: StyledComponents,
+    isStaticImage: true,
+  },
+  {
+    id: 219,
+    title: 'NodeJS',
+    icon: NodeJS,
+  },
+  {
+    id: 220,
+    title: 'Prisma',
+    icon: Prisma,
+    className: 'text-black dark:text-white',
+  },
+  {
+    id: 221,
+    title: 'tRPC',
+    icon: TRPC,
+  },
+  {
+    id: 222,
+    title: 'Git',
+    icon: Git,
+  },
+  {
+    id: 223,
+    title: 'MySQL',
+    icon: MySQL,
+  },
+  {
+    id: 224,
+    title: 'Flutter',
+    icon: Flutter,
+  },
+  {
+    id: 225,
+    title: 'C#',
+    icon: CSharp,
+  },
+  {
+    id: 226,
+    title: 'Java',
+    icon: Java,
+  },
+  {
+    id: 227,
+    title: 'Python',
+    icon: Python,
+  },
+];
+
+export const EXPERIENCES: IExperience[] = [
+  {
+    id: 311,
+    companyName: 'Jotform',
+    companyLogo: Jotform,
+    jobs: [
+      {
+        id: 3111,
+        jobTitle: 'UI Developer',
+        jobType: 'Internship',
+        startDate: new Date('2022-08-01'),
+        endDate: new Date('2022-09-01'),
+      },
+    ],
+    location: 'Istanbul, Turkey',
+    skills: ['ReactJS', 'JavaScript', 'styled-components', 'CSS', 'Git'],
+  },
+  {
+    id: 312,
+    companyName: 'Allianz Partners',
+    companyLogo: Allianz,
+    jobs: [
+      {
+        id: 3121,
+        jobTitle: 'Workplace Service Specialist',
+        jobType: 'Contract',
+        startDate: new Date('2021-09-01'),
+        endDate: new Date('2021-10-01'),
+      },
+      {
+        id: 3122,
+        jobTitle: 'Intern',
+        jobType: 'Internship',
+        startDate: new Date('2021-08-01'),
+        endDate: new Date('2021-08-01'),
+      },
+    ],
+    location: 'Istanbul, Turkey',
+  },
+  {
+    id: 313,
+    companyName: 'Sistem Teknik Industrial Furnaces',
+    companyLogo: SistemTeknik,
+    jobs: [
+      {
+        id: 3131,
+        jobTitle: 'Software Intern',
+        jobType: 'Seasonal',
+        startDate: new Date('2018-07-01'),
+        endDate: new Date('2018-09-01'),
+      },
+    ],
+    location: 'Kocaeli, Turkey',
+    skills: ['C#', 'SQL', 'WinForms'],
+  },
+];

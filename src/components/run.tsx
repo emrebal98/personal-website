@@ -1,8 +1,8 @@
-import React from 'react';
-import type { FunctionComponent } from 'react';
+import { type FunctionComponent } from 'react';
 import SimpleBar from 'simplebar-react';
 import { type IRunComponent } from '../types';
 import Experiences from './experiences';
+import Projects from './projects';
 import Skills from './skills';
 
 interface RunProps {
@@ -11,6 +11,8 @@ interface RunProps {
 
 const handleName = (name: IRunComponent) => {
   switch (name) {
+    case 'Projects':
+      return <Projects />;
     case 'Skills':
       return <Skills />;
     case 'Experiences':
