@@ -35,6 +35,9 @@
   @apply selection:bg-slate-400/20;
 }
 
+.simplebar-content {
+  @apply h-full;
+}
 .simplebar-scrollbar:before {
   @apply rounded bg-slate-200;
 }

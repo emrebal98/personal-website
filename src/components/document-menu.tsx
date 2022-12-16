@@ -138,23 +138,27 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
           <DocumentPlusIcon
             className="h-6 w-6 cursor-pointer text-slate-400"
             onClick={handleFileAdd}
+            title="Add file"
           />
           <FolderPlusIcon
             className="h-6 w-6 cursor-pointer text-slate-400"
             onClick={handleFolderAdd}
+            title="Add folder"
           />
           <ArrowPathIcon
             className="h-6 w-6 cursor-pointer text-slate-400"
             onClick={handleResetDocuments}
+            title="Reset documents"
           />
           <ArrowDownOnSquareStackIcon
             className="h-6 w-6 cursor-pointer text-slate-400"
             onClick={handleCollapseFolders}
+            title="Collapse folders"
           />
         </div>
       </div>
       {/* Folders */}
-      <div className="overflow-hidden">
+      <div className="h-full overflow-hidden">
         <SimpleBar className="h-full w-full">
           <div className="flex flex-col gap-4">
             {documents

@@ -20,6 +20,7 @@ interface TreeViewProps {
 const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
   const [expand, setExpand] = useState<boolean>(true);
   // Active file
+  const activeFile = useDocumentsStore((state) => state.activeFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
   // Active tabs
   const addActiveTab = useDocumentsStore((state) => state.addActiveTab);
@@ -36,10 +37,11 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
       after: string;
     };
   }) => {
-    // Set active file
-    setActiveFile(child.file.key);
-    addActiveTab(child.file.key);
-
+    if (activeFile !== child.file.key) {
+      // Set active file
+      setActiveFile(child.file.key);
+      addActiveTab(child.file.key);
+    }
     setTimeout(() => {
       //   const preCodeEditor = document.getElementsByClassName('pre-code-editor');
       //   const spans = preCodeEditor[0]?.getElementsByTagName('span');
@@ -56,11 +58,15 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
       //   line?.setAttribute('style', 'color: RED');
       setActiveLineNumber(child.lineNumber);
       line?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 0);
+    }, 10);
 
     // console.log(child);
     // console.log(line);
   };
+
+  // Check if the search is active
+  const isActiveSearch = (lineNumber: number, fileKey: number) =>
+    activeLineNumber === lineNumber && activeFile === fileKey;
 
   return (
     <div className="flex select-none flex-col gap-2">
@@ -84,8 +90,13 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
               key={item.file.key + item.lineNumber}
               className={clg(
                 'w-full text-left ',
-                { 'text-cyan-300': activeLineNumber === item.lineNumber },
-                { 'text-slate-400 hover:text-slate-100': activeLineNumber !== item.lineNumber }
+                { 'text-cyan-300': isActiveSearch(item.lineNumber, item.file.key) },
+                {
+                  'text-slate-400 hover:text-slate-100': !isActiveSearch(
+                    item.lineNumber,
+                    item.file.key
+                  ),
+                }
               )}
               type="button"
               onClick={() => handleChildClick(item)}
@@ -98,8 +109,18 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
                 <span
                   className={clg(
                     'rounded bg-gradient-to-br text-slate-100',
-                    { 'from-cyan-300/40 to-cyan-300/0': activeLineNumber === item.lineNumber },
-                    { 'from-slate-400/40 to-slate-400/0': activeLineNumber !== item.lineNumber }
+                    {
+                      'from-cyan-300/40 to-cyan-300/0': isActiveSearch(
+                        item.lineNumber,
+                        item.file.key
+                      ),
+                    },
+                    {
+                      'from-slate-400/40 to-slate-400/0': !isActiveSearch(
+                        item.lineNumber,
+                        item.file.key
+                      ),
+                    }
                   )}
                 >
                   {item.lineText.word}

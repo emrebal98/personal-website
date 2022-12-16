@@ -38,6 +38,7 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
       block: 'start',
       behavior: 'smooth',
     });
+    console.log('asd');
   }, [activeFile, showMenu]);
 
   // Handle tab close
