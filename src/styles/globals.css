@@ -90,10 +90,33 @@
   @apply text-fuchsia-300;
 }
 
-.class-name {
+.language-tsx .class-name {
   @apply text-amber-300;
 }
 
-.attr-name {
+.language-tsx .attr-name {
   @apply text-fuchsia-300;
+}
+
+.language-tsx .tag {
+  @apply text-red-400;
+}
+
+.language-tsx .attr-value {
+  @apply text-lime-300;
+}
+
+.language-tsx .function {
+  @apply text-blue-300;
+}
+
+.language-tsx .script {
+  @apply text-slate-100;
+}
+.language-tsx .comment {
+  @apply text-slate-400;
+}
+
+.language-tsx .number {
+  @apply text-orange-500;
 }
