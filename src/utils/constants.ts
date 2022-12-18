@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import {
   Allianz,
   CSharp,
@@ -65,8 +66,22 @@ export const DOCUMENTS: IDocument[] = [
     parent: -1,
     isRunnable: true,
     children: [
-      { key: 31, title: 'experiences.tsx', type: 'FILE', parent: 3, content: '' },
-      { key: 32, title: 'index.tsx', type: 'FILE', parent: 3, content: '' },
+      {
+        key: 31,
+        title: 'experiences.tsx',
+        type: 'FILE',
+        parent: 3,
+        content:
+          'import Image from \'next/image\';\nimport { type FunctionComponent } from \'react\';\nimport { calculateMonths, EXPERIENCES, getDateString } from \'../utils\';\n\nconst Experiences: FunctionComponent = () => (\n  <div className="container mx-auto flex flex-col items-center gap-8 py-4">\n    {EXPERIENCES.map((experience) => (\n      <div\n        key={experience.id}\n        className="flex w-full flex-col items-center gap-4 rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8 font-segoeui text-slate-100 md:flex-row md:items-start"\n      >\n        {/* Logo */}\n        <Image src={experience.companyLogo} alt={experience.companyName} width={80} height={80} />\n        {experience.jobs.length === 1 && experience.jobs[0] ? (\n          // If there is only one job, show the job title, company name, job type, start date, end date, location, and skills.\n          <div className="flex flex-col gap-2">\n            <h3 className="font-bold">{experience.jobs[0].jobTitle}</h3>\n            <p className="text-sm">{`${experience.companyName} • ${experience.jobs[0].jobType}`}</p>\n            <p className="text-sm text-slate-300">\n              {getDateString(experience.jobs[0].startDate, experience.jobs[0].endDate)}\n            </p>\n            <p className="text-sm text-slate-200">{experience.location}</p>\n            <p className="text-sm">\n              <span className="font-bold">Skills: </span>\n              {experience.skills?.join(\' • \')}\n            </p>\n          </div>\n        ) : (\n          // If there are more than one job, show the company name, total months, location, and jobs.\n          <div className="flex flex-col gap-4">\n            <div className="flex flex-col gap-2">\n              <h3 className="font-bold">{experience.companyName}</h3>\n              <p className="text-sm">\n                {`${\n                  calculateMonths(\n                    experience.jobs[experience.jobs.length - 1]?.startDate as Date,\n                    experience.jobs[0]?.endDate as Date\n                  ) + 1\n                } months`}\n              </p>\n              <p className="text-sm text-slate-300">{experience.location}</p>\n            </div>\n            {experience.jobs.map((job) => (\n              <div key={job.id} className="relative flex flex-col gap-2">\n                <h4 className="font-bold">{job.jobTitle}</h4>\n                <p className="text-sm">{job.jobType}</p>\n                <p className="text-sm text-slate-300">\n                  {getDateString(job.startDate, job.endDate)}\n                </p>\n              </div>\n            ))}\n          </div>\n        )}\n      </div>\n    ))}\n  </div>\n);\n\nexport default Experiences;\n',
+      },
+      {
+        key: 32,
+        title: 'index.tsx',
+        type: 'FILE',
+        parent: 3,
+        content:
+          "import { type FunctionComponent } from 'react';\nimport Experiencesfrom './experiences';\n\nconst App: FunctionComponent = () => {\n  return <Experiences/>;\n};\n\nexport default App;\n",
+      },
     ],
   },
   {
@@ -76,25 +91,22 @@ export const DOCUMENTS: IDocument[] = [
     parent: -1,
     isRunnable: true,
     children: [
-      // {
-      //   key: 40,
-      //   title: 'folderin',
-      //   type: 'FOLDER',
-      //   parent: 4,
-      //   children: [
-      //     { key: 441, title: 'asd.tsx', type: 'FILE', parent: 40, content: '' },
-      //     { key: 442, title: 'zxc.tsx', type: 'FILE', parent: 40, content: '' },
-      //   ],
-      // },
       {
         key: 41,
         title: 'skills.tsx',
         type: 'FILE',
         parent: 4,
         content:
-          "import React, { type FunctionComponent } from 'react';\nimport Skills from './skills';\n          \nconst skills = [\n  'TypeScript',\n  'JavaScript',\n  'React',\n  'Next.js',\n  'CSS',\n  'TailwindCSS',\n  'Sass',\n];\n      \nconst App: FunctionComponent = () => {\n  return <Skills skills={skills} />;\n  };\n          \nexport default App;",
+          "import Image from 'next/image';\nimport { type FunctionComponent } from 'react';\nimport { clg, SKILLS } from '../utils';\n\nconst Skills: FunctionComponent = () => (\n  <div className=\"container mx-auto flex flex-wrap justify-center gap-8 py-4\">\n    {SKILLS.map((skill) => (\n      // Card\n      <div\n        key={skill.id}\n        className=\"flex h-[150px] w-[150px] items-center rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8\"\n        title={skill.title}\n      >\n        {skill.isStaticImage === true ? (\n          <Image src={skill.icon} alt={skill.title} />\n        ) : (\n          <skill.icon\n            className={clg('h-full w-full', {\n              [skill.className as string]: skill.className !== undefined,\n            })}\n          />\n        )}\n      </div>\n    ))}\n  </div>\n);\n\nexport default Skills;\n",
       },
-      { key: 42, title: 'index.tsx', type: 'FILE', parent: 4, content: '' },
+      {
+        key: 42,
+        title: 'index.tsx',
+        type: 'FILE',
+        parent: 4,
+        content:
+          "import { type FunctionComponent } from 'react';\nimport Skills from './skills';\n\nconst App: FunctionComponent = () => {\n  return <Skills />;\n};\n\nexport default App;\n",
+      },
     ],
   },
   {
