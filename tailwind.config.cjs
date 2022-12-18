@@ -7,6 +7,9 @@ module.exports = {
         segoeui: ['Segoe UI'],
         consolas: ['Consolas'],
       },
+      transitionProperty: {
+        width: 'width',
+      },
     },
   },
   plugins: [],

@@ -10,3 +10,4 @@ export { default as updateFileContent } from './updateFileContent';
 export { default as searchFiles } from './searchFiles';
 export { default as calculateMonths } from './calculateMonths';
 export { default as getDateString } from './getDateString';
+export { default as useElementWidth } from './useElementWidth';
