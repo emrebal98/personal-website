@@ -69,7 +69,7 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
       }}
     >
       {loading === true && (
-        <div className="absolute inset-0 z-20 flex items-center  justify-center bg-slate-400/40 backdrop-blur-lg">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-400/40 backdrop-blur-lg">
           <RocketLaunchIcon
             className="h-12 w-12 animate-[spin_2s_linear_infinite] text-slate-100"
             title="Loading"
