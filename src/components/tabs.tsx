@@ -17,7 +17,7 @@ interface ITabsProps {
 
 const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
   // Scrollable node ref
-  const scrollableNodeRef = createRef();
+  const scrollableNodeRef = createRef<HTMLElement>();
   // Active tabs
   const activeTabs = useDocumentsStore((state) => state.activeTabs);
   const removeActiveTab = useDocumentsStore((state) => state.removeActiveTab);
@@ -25,21 +25,21 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
   const activeFile = useDocumentsStore((state) => state.activeFile);
   const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
-  // Show menu
-  const showMenu = useDocumentsStore((state) => state.showMenu);
   // Run component
   const runComponent = useDocumentsStore((state) => state.runComponent);
   const setRunComponent = useDocumentsStore((state) => state.setRunComponent);
 
   // Handle scroll position
   useEffect(() => {
+    // Get the scrollable node and the active tab
+    const scrollElement = scrollableNodeRef.current;
     const activeTabElement = document.getElementById(activeFile.toString());
-    activeTabElement?.scrollIntoView({
-      block: 'start',
-      behavior: 'smooth',
-    });
-    console.log('asd');
-  }, [activeFile, showMenu]);
+    // If there is no scrollable node or active tab, return
+    if (!activeTabElement || !scrollElement) return;
+    // Scroll to the active tab
+    const left = activeTabElement.offsetLeft;
+    scrollElement.scrollTo({ left, behavior: 'smooth' });
+  }, [activeFile, scrollableNodeRef]);
 
   // Handle tab close
   const handleTabClose = (e: MouseEvent<HTMLButtonElement>, key: number) => {

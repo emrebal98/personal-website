@@ -20,8 +20,11 @@ const SearchMenu: FunctionComponent = () => {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+    // If search is empty
+    if (!e.target.value) return setFoundGroupedArray(undefined);
+    // Search files
     const foundFiles = searchFiles(e.target.value, documents);
-
+    // Group files
     const groupedArray = foundFiles.reduce((acc, curr) => {
       const { title } = curr.file;
       if (!acc[title]) {
@@ -30,8 +33,8 @@ const SearchMenu: FunctionComponent = () => {
       acc[title]?.push(curr);
       return acc;
     }, {} as { [key: string]: typeof foundFiles });
-
-    setFoundGroupedArray(groupedArray);
+    // Set found grouped array
+    return setFoundGroupedArray(groupedArray);
   };
 
   return (
@@ -51,7 +54,7 @@ const SearchMenu: FunctionComponent = () => {
       {/* Documents */}
       <div className="h-full overflow-hidden">
         <SimpleBar className="h-full w-full">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             {foundGroupedArray &&
               Object.keys(foundGroupedArray).map((key) => (
                 <TreeView key={key} title={key} childs={foundGroupedArray[key]} />
