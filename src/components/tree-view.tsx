@@ -42,26 +42,8 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
       setActiveFile(child.file.key);
       addActiveTab(child.file.key);
     }
-    setTimeout(() => {
-      //   const preCodeEditor = document.getElementsByClassName('pre-code-editor');
-      //   const spans = preCodeEditor[0]?.getElementsByTagName('span');
-      //   if (spans) {
-      //     for (let i = 0; i < spans.length; i += 1) {
-      //       const element = spans[i];
-      //       if (element?.textContent?.includes(child.lineText.word)) {
-      //         console.log(element);
-      //       }
-      //     }
-      //   }
-
-      const line = document.getElementById(`line-${child.lineNumber}`);
-      //   line?.setAttribute('style', 'color: RED');
-      setActiveLineNumber(child.lineNumber);
-      line?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 10);
-
-    // console.log(child);
-    // console.log(line);
+    // Set active line number
+    setActiveLineNumber(child.lineNumber);
   };
 
   // Check if the search is active
@@ -76,7 +58,7 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
         onClick={() => setExpand((prev) => !prev)}
       >
         {expand ? (
-          <ChevronDownIcon className="h-4 w-4 cursor-pointer" />
+          <ChevronDownIcon className="h-4 w-4 cursor-pointer text-slate-100" />
         ) : (
           <ChevronRightIcon className="h-4 w-4 cursor-pointer" />
         )}
