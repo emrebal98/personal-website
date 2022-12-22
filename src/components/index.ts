@@ -11,3 +11,4 @@ export { default as Contact } from './contact';
 export { default as Experiences } from './experiences';
 export { default as Run } from './run';
 export { default as Projects } from './projects';
+export { default as DocumentInput } from './document-input';

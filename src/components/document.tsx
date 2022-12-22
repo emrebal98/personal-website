@@ -1,14 +1,19 @@
 import { CodeBracketIcon, FolderIcon } from '@heroicons/react/24/outline';
-import React, { type FunctionComponent } from 'react';
+import { type FunctionComponent, type RefObject } from 'react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
 import { clg, DOCUMENTS_ORDER, findIfAnyChildIsActive, findParents } from '../utils';
+import DocumentInput from './document-input';
 
 interface DocumentProps {
   document: IDocument;
   indent?: number;
   onFolderClick?: (doc: IDocument) => void;
   onFileClick?: (doc: IDocument) => void;
+  onEditComplete?: (doc: IDocument, value: string) => void;
+  onEditCancel?: (doc: IDocument) => void;
+  inputRef?: RefObject<HTMLInputElement>;
+  excludeBlur?: (RefObject<HTMLButtonElement> | undefined)[];
 }
 
 const Document: FunctionComponent<DocumentProps> = ({
@@ -16,6 +21,10 @@ const Document: FunctionComponent<DocumentProps> = ({
   indent = 0,
   onFolderClick,
   onFileClick,
+  onEditComplete,
+  onEditCancel,
+  inputRef,
+  excludeBlur,
 }) => {
   // All documents
   const documents = useDocumentsStore((state) => state.documents);
@@ -23,8 +32,9 @@ const Document: FunctionComponent<DocumentProps> = ({
   const activeFolders = useDocumentsStore((state) => state.activeFolders);
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
-  const isActiveFile = (key: number) => activeFile === key;
 
+  // Helper functions
+  const isActiveFile = (key: number) => activeFile === key;
   const isActiveFolder = (key: number) => {
     if (key === -1) return false;
     // Find the parents of the given key that are folders
@@ -50,11 +60,39 @@ const Document: FunctionComponent<DocumentProps> = ({
     return null;
   }
 
-  return (
-    <>
-      {/* FOLDER */}
-      {document.type === 'FOLDER' ? (
-        <>
+  // Folder
+  if (document.type === 'FOLDER') {
+    return (
+      <>
+        {document.onEditMode === true ? (
+          <div
+            className={clg(
+              'items-center gap-2',
+              {
+                flex: isActiveFolder(document.parent) || document.parent === -1,
+              },
+              {
+                hidden: !(isActiveFolder(document.parent) || document.parent === -1),
+              }
+            )}
+            style={{ paddingLeft: `${indent * 8}px` }}
+          >
+            <FolderIcon
+              className={clg(
+                'h-6 w-6',
+                { 'text-slate-100': isActiveFolder(document.key) },
+                { 'text-slate-400': !isActiveFolder(document.key) }
+              )}
+            />
+            <DocumentInput
+              document={document}
+              onEditComplete={onEditComplete}
+              onEditCancel={onEditCancel}
+              inputRef={inputRef}
+              excludeBlur={excludeBlur}
+            />
+          </div>
+        ) : (
           <button
             className={clg(
               'cursor-pointer items-center gap-2',
@@ -91,61 +129,102 @@ const Document: FunctionComponent<DocumentProps> = ({
               {document.title}
             </span>
           </button>
-          {document.children.length > 0 &&
-            document.children
-              .sort((a, b) => DOCUMENTS_ORDER.indexOf(a.type) - DOCUMENTS_ORDER.indexOf(b.type))
-              .map((child) => (
-                <Document
-                  key={child.key}
-                  document={child}
-                  indent={indent + 1}
-                  onFolderClick={handleFolderClick}
-                  onFileClick={handleFileClick}
-                />
-              ))}
-        </>
-      ) : (
-        // FILE
-        <button
+        )}
+        {document.children.length > 0 &&
+          document.children
+            .sort((a, b) => DOCUMENTS_ORDER.indexOf(a.type) - DOCUMENTS_ORDER.indexOf(b.type))
+            .map((child) => (
+              <Document
+                key={child.key}
+                document={child}
+                indent={indent + 1}
+                onFolderClick={handleFolderClick}
+                onFileClick={handleFileClick}
+                onEditComplete={onEditComplete}
+                onEditCancel={onEditCancel}
+                inputRef={inputRef}
+                excludeBlur={excludeBlur}
+              />
+            ))}
+      </>
+    );
+  }
+
+  // FILE
+  if (document.type === 'FILE') {
+    return document.onEditMode === true ? (
+      <div
+        className={clg(
+          'items-center gap-2',
+          {
+            flex: isActiveFolder(document.parent) || document.parent === -1,
+          },
+          {
+            hidden: !(isActiveFolder(document.parent) || document.parent === -1),
+          }
+        )}
+        style={{ paddingLeft: `${indent * 8}px` }}
+      >
+        <CodeBracketIcon
           className={clg(
-            'cursor-pointer items-center gap-2',
-            {
-              flex: isActiveFolder(document.parent) || document.parent === -1,
-            },
-            {
-              hidden: !(isActiveFolder(document.parent) || document.parent === -1),
-            }
+            'h-6 w-6',
+            { 'text-cyan-300': isActiveFile(document.key) },
+            { 'text-slate-400': !isActiveFile(document.key) }
           )}
-          style={{ paddingLeft: `${indent * 8}px` }}
-          onClick={() => handleFileClick(document)}
-          type="button"
+        />
+        <DocumentInput
+          document={document}
+          onEditComplete={onEditComplete}
+          onEditCancel={onEditCancel}
+          inputRef={inputRef}
+          excludeBlur={excludeBlur}
+        />
+      </div>
+    ) : (
+      <button
+        className={clg(
+          'cursor-pointer items-center gap-2',
+          {
+            flex: isActiveFolder(document.parent) || document.parent === -1,
+          },
+          {
+            hidden: !(isActiveFolder(document.parent) || document.parent === -1),
+          }
+        )}
+        style={{ paddingLeft: `${indent * 8}px` }}
+        onClick={() => handleFileClick(document)}
+        type="button"
+      >
+        <CodeBracketIcon
+          className={clg(
+            'h-6 w-6',
+            { 'text-cyan-300': isActiveFile(document.key) },
+            { 'text-slate-400': !isActiveFile(document.key) }
+          )}
+        />
+        <span
+          className={clg(
+            'select-none font-segoeui text-base font-normal',
+            { 'text-cyan-300': isActiveFile(document.key) },
+            { 'text-slate-400': !isActiveFile(document.key) }
+          )}
         >
-          <CodeBracketIcon
-            className={clg(
-              'h-6 w-6',
-              { 'text-cyan-300': isActiveFile(document.key) },
-              { 'text-slate-400': !isActiveFile(document.key) }
-            )}
-          />
-          <span
-            className={clg(
-              'select-none font-segoeui text-base font-normal',
-              { 'text-cyan-300': isActiveFile(document.key) },
-              { 'text-slate-400': !isActiveFile(document.key) }
-            )}
-          >
-            {document.title}
-          </span>
-        </button>
-      )}
-    </>
-  );
+          {document.title}
+        </span>
+      </button>
+    );
+  }
+
+  // Otherwise return null
+  return null;
 };
 
 Document.defaultProps = {
   indent: undefined,
   onFolderClick: undefined,
   onFileClick: undefined,
+  onEditComplete: undefined,
+  onEditCancel: undefined,
 } as Partial<DocumentProps>;
 
 export default Document;

@@ -2,6 +2,7 @@ interface IDocumentBase {
   key: number;
   title: string;
   parent: number;
+  onEditMode?: boolean;
 }
 
 interface IFolder extends IDocumentBase {
