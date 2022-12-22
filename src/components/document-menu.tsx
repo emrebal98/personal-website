@@ -4,11 +4,18 @@ import {
   DocumentPlusIcon,
   FolderPlusIcon,
 } from '@heroicons/react/24/outline/';
-import { type CSSProperties, type FunctionComponent } from 'react';
+import {
+  createRef,
+  type CSSProperties,
+  type FunctionComponent,
+  type MouseEvent,
+  useRef,
+  useState,
+} from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
-import { clg, DOCUMENTS_ORDER } from '../utils';
+import { addDocument, clg, DOCUMENTS_ORDER, removeDocument, updateDocument } from '../utils';
 import Document from './document';
 
 interface IDocumentMenu {
@@ -32,6 +39,12 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
   // Active tabs
   const addActiveTab = useDocumentsStore((state) => state.addActiveTab);
   const clearActiveTabs = useDocumentsStore((state) => state.clearActiveTabs);
+  // State for edit mode
+  const [onEditMode, setOnEditMode] = useState<boolean>(false);
+  const fileButtonRef = useRef<HTMLButtonElement>(null);
+  const folderButtonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // const [preventOnBlur, setPreventOnBlur] = useState<boolean>(false);
 
   const handleFolderClick = (doc: IDocument) => {
     // Open folder
@@ -59,59 +72,60 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
     clearActiveFolders();
   };
 
-  // Adds new document to the documents array according to the parent
-  const addDocument: (newDoc: IDocument, state: IDocument[]) => IDocument[] = (newDoc, state) => {
-    // If the new document is added to the root
-    if (newDoc.parent === -1) return [...state, newDoc];
-    const updatedState = state.map((item) => {
-      // If the parent is found, add the new document to the children array
-      if (item.type === 'FOLDER' && item.children && item.key === newDoc.parent) {
-        return {
-          ...item,
-          children: [...item.children, newDoc],
-        };
-      }
-      // If the parent is not found, keep the same state
-      if (item.type === 'FOLDER' && item.children) {
-        return {
-          ...item,
-          children: addDocument(newDoc, item.children),
-        };
-      }
-      return item;
-    });
-    return updatedState;
+  const handleEditComplete = (doc: IDocument, value: string) => {
+    const updatedDoc = doc;
+    updatedDoc.title = value;
+    updatedDoc.onEditMode = false;
+    const newState = updateDocument(doc.key, updatedDoc, documents);
+    setDocuments(newState);
+    setOnEditMode(false);
   };
 
-  // TODO: make this editable
+  const handleEditCancel = (doc: IDocument) => {
+    const newState = removeDocument(doc.key, documents);
+    setDocuments(newState);
+    setOnEditMode(false);
+  };
+
   const handleFileAdd = () => {
+    // Prevent adding a new file if there is already one in edit mode
+    if (onEditMode) {
+      inputRef.current?.focus();
+      return;
+    }
+    setOnEditMode(true);
     const newFile: IDocument = {
       key: Math.floor(Math.random() * 1000),
-      title: 'newFile.tsx',
+      title: '',
       type: 'FILE',
+      content: '',
       parent: activeFolders[activeFolders.length - 1] ?? -1,
+      onEditMode: true,
     };
     const newState = addDocument(newFile, documents);
     setDocuments(newState);
   };
 
-  // TODO: make this editable
   const handleFolderAdd = () => {
+    // Prevent adding a new folder if there is already one in edit mode
+    if (onEditMode) {
+      inputRef.current?.focus();
+      return;
+    }
+    setOnEditMode(true);
     const newFolder: IDocument = {
       key: Math.floor(Math.random() * 1000),
-      title: 'newFolder',
+      title: '',
       type: 'FOLDER',
       children: [],
       parent: activeFolders[activeFolders.length - 1] ?? -1,
+      onEditMode: true,
     };
     const newState = addDocument(newFolder, documents);
-
     setDocuments(newState);
   };
 
   const handleResetDocuments = () => {
-    // Return to the initial state
-    // setFolderHasActiveFile(-1);
     // Initial state of the active folders
     clearActiveFolders();
     addActiveFolder(1);
@@ -135,16 +149,25 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
         <p className="select-none font-segoeui text-base font-normal text-slate-100">EXPLORER</p>
         {/* Buttons */}
         <div className="flex gap-2">
-          <DocumentPlusIcon
-            className="h-6 w-6 cursor-pointer text-slate-400"
-            onClick={handleFileAdd}
+          <button
+            ref={fileButtonRef}
+            className="text-slate-400"
+            type="button"
             title="Add file"
-          />
-          <FolderPlusIcon
-            className="h-6 w-6 cursor-pointer text-slate-400"
+            onClick={handleFileAdd}
+          >
+            <DocumentPlusIcon className="h-6 w-6" />
+          </button>
+          <button
+            ref={folderButtonRef}
+            className="text-slate-400"
+            type="button"
             onClick={handleFolderAdd}
             title="Add folder"
-          />
+          >
+            <FolderPlusIcon className="h-6 w-6" />
+          </button>
+
           <ArrowPathIcon
             className="h-6 w-6 cursor-pointer text-slate-400"
             onClick={handleResetDocuments}
@@ -169,6 +192,10 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
                   document={doc}
                   onFolderClick={handleFolderClick}
                   onFileClick={handleFileClick}
+                  onEditComplete={handleEditComplete}
+                  onEditCancel={handleEditCancel}
+                  inputRef={inputRef}
+                  excludeBlur={[fileButtonRef, folderButtonRef]}
                 />
               ))}
           </div>

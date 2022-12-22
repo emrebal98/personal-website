@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { type IDocument, type IFile, type IMenuNames, type IRunComponent } from '../types';
-import { DOCUMENTS, searchByKey, updateFileContent } from '../utils';
+import { DOCUMENTS, searchByKey, updateDocument } from '../utils';
 
 interface DocumentsState {
   // All documents
@@ -46,7 +46,16 @@ const useDocumentsStore = create<DocumentsState>(
     },
     findAndUpdateContent: (key, newContent) =>
       set((state) => {
-        const newDocuments = updateFileContent(key, newContent, state.documents);
+        const currentDocument = searchByKey(key, state.documents);
+        // If the current document is a folder, do nothing
+        if (!currentDocument || currentDocument.type === 'FOLDER')
+          return { documents: state.documents };
+        // If the current document is a file, update the content
+        const newDocuments = updateDocument(
+          key,
+          { ...currentDocument, content: newContent },
+          state.documents
+        );
         return { documents: newDocuments };
       }),
     setDocuments: (documents) => set(() => ({ documents })),
