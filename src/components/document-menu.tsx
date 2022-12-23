@@ -4,14 +4,12 @@ import {
   DocumentPlusIcon,
   FolderPlusIcon,
 } from '@heroicons/react/24/outline/';
-import dynamic from 'next/dynamic';
 import { type CSSProperties, type FunctionComponent, useRef, useState } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
 import { type IDocument } from '../types';
 import { addDocument, clg, DOCUMENTS_ORDER, removeDocument, updateDocument } from '../utils';
-// Dynamic import
-const Document = dynamic(() => import('./document'), { ssr: false });
+import Document from './document';
 
 interface IDocumentMenu {
   className?: string;

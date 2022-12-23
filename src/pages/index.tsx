@@ -7,21 +7,14 @@ import {
   StopIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline/';
-import { type NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { Run } from '../components';
+import { DocumentMenu, Editor, ExtensionMenu, Layout, Run, SearchMenu, Tabs } from '../components';
 import { useDocumentsStore } from '../stores';
 import { type IRunComponent } from '../types';
 import { clg, findParents } from '../utils';
-//  Dynamic imports
-const DocumentMenu = dynamic(() => import('../components/document-menu'), { ssr: false });
-const Editor = dynamic(() => import('../components/editor'), { ssr: false });
-const ExtensionMenu = dynamic(() => import('../components/extension-menu'), { ssr: false });
-const SearchMenu = dynamic(() => import('../components/search-menu'), { ssr: false });
-const Tabs = dynamic(() => import('../components/tabs'), { ssr: false });
+import { type NextPageWithLayout } from './_app';
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   const documents = useDocumentsStore((state) => state.documents);
 
   // Active file
@@ -130,5 +123,7 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+Home.getLayout = (page) => <Layout>{page}</Layout>;
 
 export default Home;

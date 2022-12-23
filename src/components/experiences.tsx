@@ -10,7 +10,13 @@ const Experiences: FunctionComponent = () => (
         className="flex w-full flex-col items-center gap-4 rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8 font-segoeui text-slate-100 md:flex-row md:items-start"
       >
         {/* Logo */}
-        <Image src={experience.companyLogo} alt={experience.companyName} width={80} height={80} />
+        <Image
+          src={experience.companyLogo}
+          alt={experience.companyName}
+          width={80}
+          height={80}
+          priority
+        />
         {experience.jobs.length === 1 && experience.jobs[0] ? (
           // If there is only one job, show the job title, company name, job type, start date, end date, location, and skills.
           <div className="flex flex-col gap-2">

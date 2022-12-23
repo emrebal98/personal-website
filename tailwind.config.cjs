@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        segoeui: ['Segoe UI, sans-serif'],
-        consolas: ['Consolas, monospace'],
+        segoeui: ['Segoe UI'],
+        consolas: ['Consolas'],
       },
       transitionProperty: {
         width: 'width',

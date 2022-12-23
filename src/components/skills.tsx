@@ -12,7 +12,7 @@ const Skills: FunctionComponent = () => (
         title={skill.title}
       >
         {skill.isStaticImage === true ? (
-          <Image src={skill.icon} alt={skill.title} />
+          <Image src={skill.icon} alt={skill.title} priority />
         ) : (
           <skill.icon
             className={clg('h-full w-full', {
