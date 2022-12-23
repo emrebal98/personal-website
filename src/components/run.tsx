@@ -2,6 +2,7 @@ import { createRef, type FunctionComponent, type RefObject } from 'react';
 import SimpleBar from 'simplebar-react';
 import { type IRunComponent } from '../types';
 import Experiences from './experiences';
+import Home from './home';
 import Projects from './projects';
 import Skills from './skills';
 
@@ -14,6 +15,8 @@ const handleName: (name: IRunComponent, ref: RefObject<HTMLElement>) => JSX.Elem
   ref
 ) => {
   switch (name) {
+    case 'Home':
+      return <Home />;
     case 'Projects':
       return <Projects barRef={ref} />;
     case 'Skills':

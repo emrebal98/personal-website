@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic';
 import React, { type FunctionComponent, useState } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
 import { type IFile } from '../types';
 import { searchFiles } from '../utils';
-import TreeView from './tree-view';
+// Dynamic import
+const TreeView = dynamic(() => import('./tree-view'), { ssr: false });
 
 const SearchMenu: FunctionComponent = () => {
   // All documents

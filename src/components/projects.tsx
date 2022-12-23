@@ -9,9 +9,9 @@ import Link from 'next/link';
 import { type FunctionComponent, type RefObject, useState } from 'react';
 import { clg, useElementWidth } from '../utils';
 
-const PROJECTS = [
-  'https://blog-with-nextjs-emrebal98.vercel.app/',
-  'http://oriondizaynmakina.com/',
+const PROJECTS: { url: string; title: string }[] = [
+  { url: 'https://blog-with-nextjs-emrebal98.vercel.app/', title: 'Blog With Next.js' },
+  { url: 'http://oriondizaynmakina.com/', title: 'Orion Dizayn Makina' },
 ];
 
 const DEVICES: { [key in 'desktop' | 'mobile']: { width: number; height: number } } = {
@@ -32,7 +32,7 @@ interface IProjectsProps {
 const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
-  const [currentProject, setCurrentProject] = useState<string>(PROJECTS[0] as string);
+  const [projectIndex, setProjectIndex] = useState<number>(0);
   // Current parent width
   const parent = useElementWidth(barRef);
   // Calculated value for zoom respect to window width
@@ -40,10 +40,7 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
 
   const handleNextProject = () => {
     setLoading(true);
-    const currentIndex = PROJECTS.indexOf(currentProject);
-    if (currentIndex === PROJECTS.length - 1) {
-      setCurrentProject(PROJECTS[0] as string);
-    } else setCurrentProject(PROJECTS[currentIndex + 1] as string);
+    setProjectIndex((prev) => (prev === PROJECTS.length - 1 ? 0 : prev + 1));
   };
 
   const isParentSizeGreater = (type: 'width' | 'height') => {
@@ -54,9 +51,6 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
   };
 
   const calculateIframeHeight = () => {
-    if (isParentSizeGreater('height')) {
-      return DEVICES[device].height;
-    }
     if (calculatedZoom < 1) return parent.height / calculatedZoom;
     return parent.height;
   };
@@ -65,7 +59,7 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
     <div
       className="relative mx-auto h-full origin-top-left overflow-hidden rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 backdrop-blur-2xl transition-width"
       style={{
-        width: DEVICES[device].width < parent.width ? DEVICES[device].width : '100%',
+        width: isParentSizeGreater('width') ? DEVICES[device].width : '100%',
       }}
     >
       {loading === true && (
@@ -78,8 +72,8 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
       )}
       <iframe
         className="h-full w-full origin-top-left"
-        src={currentProject}
-        title="Blog with Next.js"
+        src={PROJECTS[projectIndex]?.url}
+        title={PROJECTS[projectIndex]?.title}
         loading="lazy"
         onLoad={() => setLoading(false)}
         style={{
@@ -93,7 +87,7 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
         <div className="flex w-full justify-start">
           <Link
             className="rounded bg-slate-600/60 py-1 px-2 text-slate-100 hover:bg-slate-600"
-            href={currentProject}
+            href={PROJECTS[projectIndex]?.url ?? '#'}
             target="_blank"
             title="Open site in new tab"
           >

@@ -31,20 +31,23 @@ export const DOCUMENTS: IDocument[] = [
     title: 'Home',
     type: 'FOLDER',
     parent: -1,
+    isRunnable: true,
     children: [
       {
         key: 11,
         title: 'home.tsx',
         type: 'FILE',
         parent: 1,
-        content: `import React from 'react';\n\nconst Home = () => {\n  return <div>Home</div>;\n};\n\nexport default Home;\n`,
+        content:
+          'import { type FunctionComponent } from \'react\';\n\nconst Home: FunctionComponent = () => (\n  <div className="container mx-auto flex flex-col items-center gap-8 py-4">\n    {/* Card */}\n    <div className="flex w-full flex-col items-center gap-4 rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8 font-segoeui text-slate-100 md:flex-row md:items-start">\n      <div className="flex flex-col gap-4">\n        <h1 className="font-segoeui text-4xl font-bold text-slate-100">Hi, I am Emre BAL</h1>\n        <h3 className="text-xl font-bold text-slate-100">Full Stack Developer</h3>\n        <p className="text-base font-normal text-slate-100">\n          I am currently improving myself on Next.js with using T3 stack. You can navigate to skills\n          page to see what technologies that I used.\n        </p>\n      </div>\n    </div>\n    <div className="flex w-full flex-col items-center gap-4 rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8 font-segoeui text-slate-100 md:flex-row md:items-start">\n      <div className="flex flex-col gap-4">\n        <h3 className="text-xl font-bold text-slate-100">Why is this site like a code editor?</h3>\n        <p className="text-base font-normal text-slate-100">\n          Basically, I wanted to create an unusual website to introduce myself.\n        </p>\n        <h3 className="text-xl font-bold text-slate-100">How do I use it?</h3>\n        <ul className="list-disc pl-8 text-base font-normal text-slate-100">\n          <li>There are 4 pages Home, Projects, Experiences, Skills. </li>\n          <li>\n            You can navigate between pages without going back to code view from top navigation bar.\n          </li>\n          <li>\n            To run one of these pages, you can open any file under the relevant directory and press\n            the run button.\n          </li>\n          <li>I leave the rest for you to discover. 😀</li>\n        </ul>\n      </div>\n    </div>\n  </div>\n);\n\nexport default Home;\n',
       },
       {
         key: 12,
         title: 'index.tsx',
         type: 'FILE',
         parent: 1,
-        content: "import Home from './home';\n\nexport default Home;\n",
+        content:
+          "import { type FunctionComponent } from 'react';\nimport Home from './home';\n\nconst App: FunctionComponent = () => {\n  return <Home />;\n};\n\nexport default App;\n",
       },
     ],
   },
@@ -55,8 +58,22 @@ export const DOCUMENTS: IDocument[] = [
     parent: -1,
     isRunnable: true,
     children: [
-      { key: 21, title: 'projects.tsx', type: 'FILE', parent: 2, content: '' },
-      { key: 22, title: 'index.tsx', type: 'FILE', parent: 2, content: '' },
+      {
+        key: 21,
+        title: 'projects.tsx',
+        type: 'FILE',
+        parent: 2,
+        content:
+          'import {\n  ArrowLongRightIcon,\n  ArrowTopRightOnSquareIcon,\n  ComputerDesktopIcon,\n  DevicePhoneMobileIcon,\n  RocketLaunchIcon,\n} from \'@heroicons/react/24/outline/\';\nimport Link from \'next/link\';\nimport { type FunctionComponent, type RefObject, useState } from \'react\';\nimport { clg, DEVICES, PROJECTS } from \'../utils\';\n\nconst Projects: FunctionComponent = () => (\n  <div\n    className="relative mx-auto h-full origin-top-left overflow-hidden rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 backdrop-blur-2xl transition-width"\n    style={{\n      width: isParentSizeGreater(\'width\') ? DEVICES[device].width : \'100%\',\n    }}\n  >\n    {loading === true && (\n      <div className="absolute inset-0 flex items-center justify-center bg-slate-400/40 backdrop-blur-lg">\n        <RocketLaunchIcon\n          className="h-12 w-12 animate-[spin_2s_linear_infinite] text-slate-100"\n          title="Loading"\n        />\n      </div>\n    )}\n    <iframe\n      className="h-full w-full origin-top-left"\n      src={PROJECTS[projectIndex]?.url}\n      title={PROJECTS[projectIndex]?.title}\n      loading="lazy"\n      onLoad={() => setLoading(false)}\n      style={{\n        width: DEVICES[device].width,\n        height: calculateIframeHeight(),\n        transform: calculatedZoom < 1 ? `scale(${calculatedZoom})` : \'unset\',\n      }}\n    />\n    {/* Bottom Navbar */}\n    <div className="absolute inset-x-0 bottom-0 flex h-[50px] items-center justify-between rounded-b-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 backdrop-blur-2xl">\n      <div className="flex w-full justify-start">\n        <Link\n          className="rounded bg-slate-600/60 py-1 px-2 text-slate-100 hover:bg-slate-600"\n          href={PROJECTS[projectIndex]?.url ?? \'#\'}\n          target="_blank"\n          title="Open site in new tab"\n        >\n          <ArrowTopRightOnSquareIcon className="h-6 w-6" />\n        </Link>\n      </div>\n      <div className="flex w-full justify-center">\n        <button\n          className={clg(\'h-10 w-10 rounded-l p-1 text-slate-100 \', {\n            \'bg-slate-900\': device === \'desktop\',\n            \'bg-slate-900/50 \': device !== \'desktop\',\n          })}\n          type="button"\n          onClick={() => setDevice(\'desktop\')}\n        >\n          <ComputerDesktopIcon />\n        </button>\n        <button\n          className={clg(\'h-10 w-10 rounded-r p-1 text-slate-100 \', {\n            \'bg-slate-900\': device === \'mobile\',\n            \'bg-slate-900/50 \': device !== \'mobile\',\n          })}\n          type="button"\n          onClick={() => setDevice(\'mobile\')}\n        >\n          <DevicePhoneMobileIcon />\n        </button>\n      </div>\n      <div className="flex w-full justify-end">\n        <button\n          className="flex gap-2 rounded bg-slate-600/60 px-2 text-slate-100 hover:bg-slate-600"\n          type="button"\n          onClick={() => handleNextProject()}\n        >\n          <p className="stroke-red-600 stroke-2">Next</p>\n          <ArrowLongRightIcon className="h-6 w-6" />\n        </button>\n      </div>\n    </div>\n  </div>\n);\n\nexport default Projects;\n',
+      },
+      {
+        key: 22,
+        title: 'index.tsx',
+        type: 'FILE',
+        parent: 2,
+        content:
+          "import { type FunctionComponent } from 'react';\nimport Projects from './projects';\n\nconst App: FunctionComponent = () => {\n  return <Projects />;\n};\n\nexport default App;\n",
+      },
     ],
   },
   {
@@ -80,7 +97,7 @@ export const DOCUMENTS: IDocument[] = [
         type: 'FILE',
         parent: 3,
         content:
-          "import { type FunctionComponent } from 'react';\nimport Experiencesfrom './experiences';\n\nconst App: FunctionComponent = () => {\n  return <Experiences/>;\n};\n\nexport default App;\n",
+          "import { type FunctionComponent } from 'react';\nimport Experiences from './experiences';\n\nconst App: FunctionComponent = () => {\n  return <Experiences />;\n};\n\nexport default App;\n",
       },
     ],
   },
@@ -110,21 +127,6 @@ export const DOCUMENTS: IDocument[] = [
     ],
   },
   {
-    key: 5,
-    title: 'asd.tsx',
-    type: 'FILE',
-    parent: -1,
-    content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In pellentesque massa placerat duis. Eget arcu dictum varius duis at. Nam at lectus urna duis convallis. Ut faucibus pulvinar elementum integer. Mauris rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar. Pretium lectus quam id leo in vitae turpis. Volutpat consequat mauris nunc congue nisi vitae suscipit. Ultrices in iaculis nunc sed augue lacus. Sed euismod nisi porta lorem mollis. Bibendum neque egestas congue quisque egestas diam. At in tellus integer feugiat scelerisque varius morbi enim nunc. Lectus arcu bibendum at varius vel pharetra vel turpis nunc. Cras semper auctor neque vitae tempus quam pellentesque. Interdum varius sit amet mattis vulputate enim nulla aliquet. Tincidunt lobortis feugiat vivamus at augue. Nunc aliquet bibendum enim facilisis.
-
-    Odio tempor orci dapibus ultrices in iaculis nunc sed augue. Eget arcu dictum varius duis at consectetur lorem. Euismod nisi porta lorem mollis aliquam ut porttitor. Dignissim diam quis enim lobortis scelerisque. Suscipit adipiscing bibendum est ultricies integer quis. Nunc id cursus metus aliquam eleifend mi in nulla posuere. In egestas erat imperdiet sed. Ac orci phasellus egestas tellus rutrum. Nec feugiat nisl pretium fusce id velit. In tellus integer feugiat scelerisque varius morbi enim nunc. Pellentesque id nibh tortor id aliquet lectus proin nibh nisl. Mauris sit amet massa vitae tortor condimentum. Amet facilisis magna etiam tempor orci. Ipsum a arcu cursus vitae congue. Faucibus turpis in eu mi bibendum neque egestas. Augue interdum velit euismod in pellentesque massa placerat duis. Egestas quis ipsum suspendisse ultrices gravida dictum fusce ut. Turpis in eu mi bibendum neque.
-    
-    Sem nulla pharetra diam sit. Integer feugiat scelerisque varius morbi enim nunc faucibus a pellentesque. Vivamus arcu felis bibendum ut tristique et egestas. Etiam dignissim diam quis enim. In hac habitasse platea dictumst. Tortor aliquam nulla facilisi cras fermentum. Sodales neque sodales ut etiam sit amet. Sapien eget mi proin sed. Vitae nunc sed velit dignissim sodales ut eu. Aliquet nibh praesent tristique magna sit amet. Vitae congue eu consequat ac felis donec et. Laoreet suspendisse interdum consectetur libero id faucibus nisl tincidunt eget.
-    
-    Pharetra sit amet aliquam id. Laoreet id donec ultrices tincidunt arcu non sodales. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Et egestas quis ipsum suspendisse ultrices. Orci ac auctor augue mauris augue neque gravida. Id interdum velit laoreet id donec ultrices tincidunt arcu non. Leo integer malesuada nunc vel risus commodo viverra maecenas. Libero id faucibus nisl tincidunt eget nullam non. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla facilisi cras. Eleifend mi in nulla posuere. Aliquam ultrices sagittis orci a scelerisque purus semper.
-    
-    Turpis nunc eget lorem dolor. Id porta nibh venenatis cras sed. Nulla malesuada pellentesque elit eget gravida. Praesent semper feugiat nibh sed pulvinar proin gravida. Morbi tempus iaculis urna id volutpat lacus. Iaculis urna id volutpat lacus laoreet non curabitur gravida. Quisque non tellus orci ac auctor augue mauris augue neque. Risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est. Sed viverra ipsum nunc aliquet. Ac tortor dignissim convallis aenean et tortor at. Ultricies tristique nulla aliquet enim tortor. Sapien et ligula ullamcorper malesuada proin libero nunc consequat. Nunc sed augue lacus viverra. Amet dictum sit amet justo. Ac orci phasellus egestas tellus rutrum tellus pellentesque. Vitae semper quis lectus nulla at volutpat diam ut venenatis. Amet justo donec enim diam vulputate ut pharetra sit.`,
-  },
-  {
     key: contactExtensionKey,
     title: 'Contact Page',
     type: 'FILE',
@@ -136,7 +138,7 @@ export const DOCUMENTS: IDocument[] = [
 
 export const DOCUMENTS_ORDER = ['FOLDER', 'FILE'];
 
-export const RUNCOMPONENT_ORDER: IRunComponent[] = ['Projects', 'Skills', 'Experiences'];
+export const RUNCOMPONENT_ORDER: IRunComponent[] = ['Home', 'Projects', 'Skills', 'Experiences'];
 
 export const SKILLS: ISkill[] = [
   {

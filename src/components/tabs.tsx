@@ -8,7 +8,7 @@ import {
 import { createRef, type FunctionComponent, type MouseEvent, useEffect } from 'react';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
-import type { IRunComponent } from '../types';
+import { type IRunComponent } from '../types';
 import { clg, RUNCOMPONENT_ORDER } from '../utils';
 
 interface ITabsProps {

@@ -8,13 +8,18 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline/';
 import { type NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { DocumentMenu, Editor, ExtensionMenu, Run, SearchMenu, Tabs } from '../components';
+import { Run } from '../components';
 import { useDocumentsStore } from '../stores';
 import { type IRunComponent } from '../types';
 import { clg, findParents } from '../utils';
-
-// const MotionLeftMenuBar = motion(LeftMenuBar);
+//  Dynamic imports
+const DocumentMenu = dynamic(() => import('../components/document-menu'), { ssr: false });
+const Editor = dynamic(() => import('../components/editor'), { ssr: false });
+const ExtensionMenu = dynamic(() => import('../components/extension-menu'), { ssr: false });
+const SearchMenu = dynamic(() => import('../components/search-menu'), { ssr: false });
+const Tabs = dynamic(() => import('../components/tabs'), { ssr: false });
 
 const Home: NextPage = () => {
   const documents = useDocumentsStore((state) => state.documents);
@@ -27,7 +32,6 @@ const Home: NextPage = () => {
   // Run component
   const runComponent = useDocumentsStore((state) => state.runComponent);
   const setRunComponent = useDocumentsStore((state) => state.setRunComponent);
-
   // Handle run code
   const handleRunCode = () => {
     // Get active parent
@@ -52,7 +56,7 @@ const Home: NextPage = () => {
         {/* Window */}
         <div className="relative flex h-full flex-col rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 p-4 md:flex-row ">
           {/* Icon Indicator Line */}
-          {/* <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" /> */}
+          <div className="absolute top-[40px] -left-4 h-[1px] w-8 rotate-90 bg-cyan-300 blur-[1px]" />
           {/* Left Icon Bar */}
           <div className="order-1 flex justify-between p-2 md:order-none md:flex-col">
             <DocumentDuplicateIcon
@@ -102,7 +106,6 @@ const Home: NextPage = () => {
           {/* For Mobile Responsive */}
           <div className="flex h-full w-full overflow-hidden">
             {/* Left Menu Bar */}
-            {/* TODO: add animation */}
             {showMenu.documentMenu && <DocumentMenu />}
             {showMenu.searchMenu && <SearchMenu />}
             {showMenu.extensionMenu && <ExtensionMenu />}
@@ -129,4 +132,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-// TODO: remove when complete https://codesandbox.io/s/hungry-pine-k7g0y9?file=/src/document.js:166-187

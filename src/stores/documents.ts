@@ -36,93 +36,111 @@ interface DocumentsState {
 }
 
 const useDocumentsStore = create<DocumentsState>(
-  devtools((set, get) => ({
-    // All documents
-    documents: JSON.parse(JSON.stringify(DOCUMENTS)),
-    findActiveFile: (key) => {
-      const activeFile = searchByKey(key, get().documents);
-      if (activeFile && activeFile.type === 'FILE') return activeFile;
-      return null;
-    },
-    findAndUpdateContent: (key, newContent) =>
-      set((state) => {
-        const currentDocument = searchByKey(key, state.documents);
-        // If the current document is a folder, do nothing
-        if (!currentDocument || currentDocument.type === 'FOLDER')
-          return { documents: state.documents };
-        // If the current document is a file, update the content
-        const newDocuments = updateDocument(
-          key,
-          { ...currentDocument, content: newContent },
-          state.documents
-        );
-        return { documents: newDocuments };
-      }),
-    setDocuments: (documents) => set(() => ({ documents })),
-    clearDocuments: () => set(() => ({ documents: JSON.parse(JSON.stringify(DOCUMENTS)) })),
-    // Active folders
-    activeFolders: [1],
-    addActiveFolder: (folderId) =>
-      set((state) => ({
-        activeFolders: [...state.activeFolders, folderId],
-      })),
-    removeActiveFolder: (folderId) =>
-      set((state) => ({
-        activeFolders: state.activeFolders.filter((id) => id !== folderId),
-      })),
-    clearActiveFolders: () => set(() => ({ activeFolders: [] })),
-    // Active file
-    activeFile: 12,
-    setActiveFile: (fileId) => {
-      get().setActiveLineNumber(-1);
-      set(() => ({ activeFile: fileId }));
-    },
-    // Active line number
-    activeLineNumber: -1,
-    setActiveLineNumber: (lineNumber) => set(() => ({ activeLineNumber: lineNumber })),
-    // Active tabs
-    activeTabs: [12],
-    addActiveTab: (fileId) =>
-      set((state) => {
-        // If the tab is already open, do nothing
-        if (state.activeTabs.indexOf(fileId) === -1) {
-          // when adding a new tab, set it as the active file
-          state.setActiveFile(fileId);
-          return {
-            activeTabs: [...state.activeTabs, fileId],
-          };
-        }
-        return {};
-      }),
-    removeActiveTab: (fileId) =>
-      set((state) => ({
-        activeTabs: state.activeTabs.filter((id) => id !== fileId),
-      })),
-    clearActiveTabs: () => set(() => ({ activeTabs: [] })),
-    // Show menus
-    showMenu: {
-      documentMenu: true,
-      searchMenu: false,
-      extensionMenu: false,
-      runMenu: false,
-    },
-    toggleMenu: (menuName) => {
-      if (!get().showMenu[menuName]) get().hideAllMenus();
-      set((state) => ({
-        showMenu: {
-          ...state.showMenu,
-          [menuName]: !state.showMenu[menuName],
+  devtools(
+    persist(
+      (set, get) => ({
+        // All documents
+        documents: JSON.parse(JSON.stringify(DOCUMENTS)),
+        findActiveFile: (key) => {
+          const activeFile = searchByKey(key, get().documents);
+          if (activeFile && activeFile.type === 'FILE') return activeFile;
+          return null;
         },
-      }));
-    },
-    hideAllMenus: () =>
-      set(() => ({
-        showMenu: { documentMenu: false, searchMenu: false, extensionMenu: false, runMenu: false },
-      })),
-    // Run component
-    runComponent: 'Skills', // TODO:change to 'Home'
-    setRunComponent: (componentName) => set(() => ({ runComponent: componentName })),
-  }))
+        findAndUpdateContent: (key, newContent) =>
+          set((state) => {
+            const currentDocument = searchByKey(key, state.documents);
+            // If the current document is a folder, do nothing
+            if (!currentDocument || currentDocument.type === 'FOLDER')
+              return { documents: state.documents };
+            // If the current document is a file, update the content
+            const newDocuments = updateDocument(
+              key,
+              { ...currentDocument, content: newContent },
+              state.documents
+            );
+            return { documents: newDocuments };
+          }),
+        setDocuments: (documents) => set(() => ({ documents })),
+        clearDocuments: () => set(() => ({ documents: JSON.parse(JSON.stringify(DOCUMENTS)) })),
+        // Active folders
+        activeFolders: [1],
+        addActiveFolder: (folderId) =>
+          set((state) => ({
+            activeFolders: [...state.activeFolders, folderId],
+          })),
+        removeActiveFolder: (folderId) =>
+          set((state) => ({
+            activeFolders: state.activeFolders.filter((id) => id !== folderId),
+          })),
+        clearActiveFolders: () => set(() => ({ activeFolders: [] })),
+        // Active file
+        activeFile: 12,
+        setActiveFile: (fileId) => {
+          get().setActiveLineNumber(-1);
+          set(() => ({ activeFile: fileId }));
+        },
+        // Active line number
+        activeLineNumber: -1,
+        setActiveLineNumber: (lineNumber) => set(() => ({ activeLineNumber: lineNumber })),
+        // Active tabs
+        activeTabs: [12],
+        addActiveTab: (fileId) =>
+          set((state) => {
+            // If the tab is already open, do nothing
+            if (state.activeTabs.indexOf(fileId) === -1) {
+              // when adding a new tab, set it as the active file
+              state.setActiveFile(fileId);
+              return {
+                activeTabs: [...state.activeTabs, fileId],
+              };
+            }
+            return {};
+          }),
+        removeActiveTab: (fileId) =>
+          set((state) => ({
+            activeTabs: state.activeTabs.filter((id) => id !== fileId),
+          })),
+        clearActiveTabs: () => set(() => ({ activeTabs: [] })),
+        // Show menus
+        showMenu: {
+          documentMenu: false,
+          searchMenu: false,
+          extensionMenu: false,
+          runMenu: true,
+        },
+        toggleMenu: (menuName) => {
+          if (!get().showMenu[menuName]) get().hideAllMenus();
+          set((state) => ({
+            showMenu: {
+              ...state.showMenu,
+              [menuName]: !state.showMenu[menuName],
+            },
+          }));
+        },
+        hideAllMenus: () =>
+          set(() => ({
+            showMenu: {
+              documentMenu: false,
+              searchMenu: false,
+              extensionMenu: false,
+              runMenu: false,
+            },
+          })),
+        // Run component
+        runComponent: 'Home',
+        setRunComponent: (componentName) => set(() => ({ runComponent: componentName })),
+      }),
+      {
+        name: 'documents-CE',
+        getStorage: () => ({
+          // Returning a promise from getItem is necessary to avoid issues with hydration
+          getItem: async (name: string) => localStorage.getItem(name),
+          setItem: (name: string, value: string) => localStorage.setItem(name, value),
+          removeItem: (name: string) => localStorage.removeItem(name),
+        }),
+      }
+    )
+  )
 );
 
 export default useDocumentsStore;

@@ -1,6 +1,6 @@
 import { type StaticImageData } from 'next/image';
 
-export type IRunComponent = 'Projects' | 'Skills' | 'Experiences';
+export type IRunComponent = 'Home' | 'Projects' | 'Skills' | 'Experiences';
 
 interface ISkillBase {
   id: number;
