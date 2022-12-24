@@ -73,7 +73,7 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
           <div className="flex w-full justify-between">
             <div className="flex w-full justify-start overflow-hidden">
               <button
-                className="flex items-center gap-2 text-slate-400 hover:text-slate-100"
+                className="flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
                 type="button"
                 onClick={() => setRunComponent(getRunComponent('prev'))}
               >
@@ -81,11 +81,13 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
               </button>
             </div>
             <div className="flex w-full justify-center overflow-hidden">
-              <p className="font-consolas text-base italic text-slate-100">{title}</p>
+              <p className="font-consolas text-base italic text-slate-900 dark:text-slate-100">
+                {title}
+              </p>
             </div>
             <div className="flex w-full justify-end overflow-hidden">
               <button
-                className="flex items-center gap-2 text-slate-400 hover:text-slate-100"
+                className="flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
                 type="button"
                 onClick={() => setRunComponent(getRunComponent('next'))}
               >
@@ -99,8 +101,8 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
               key={key}
               id={key.toString()}
               className={clg(
-                'group relative rounded bg-gradient-to-br from-slate-700/40 to-slate-700/0 backdrop-blur-sm',
-                { 'border-b border-cyan-300': activeFile === key },
+                'group relative rounded bg-gradient-to-br from-slate-300/40 to-slate-300/0 backdrop-blur-sm dark:from-slate-700/40 dark:to-slate-700/0',
+                { 'border-b border-cyan-700 dark:border-cyan-300': activeFile === key },
                 { 'border-b border-transparent': activeFile !== key }
               )}
             >
@@ -111,17 +113,17 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
               >
                 {/* If the file is an extension, show the extension icon */}
                 {findActiveFile(key)?.isExtension === true ? (
-                  <SquaresPlusIcon className="h-6 w-6 text-slate-100" />
+                  <SquaresPlusIcon className="h-6 w-6 text-slate-900 dark:text-slate-100" />
                 ) : (
-                  <CodeBracketIcon className="h-6 w-6 text-slate-100" />
+                  <CodeBracketIcon className="h-6 w-6 text-slate-900 dark:text-slate-100" />
                 )}
 
-                <span className="whitespace-nowrap font-consolas text-base font-normal italic text-slate-100">
+                <span className="whitespace-nowrap font-consolas text-base font-normal italic text-slate-900 dark:text-slate-100">
                   {findActiveFile(key)?.title}
                 </span>
               </button>
               <button
-                className="invisible absolute right-2 top-1/2 -translate-y-1/2 rounded p-[2px] text-slate-100 opacity-0 hover:bg-gradient-to-br hover:from-red-700/60 hover:to-red-700/20 group-hover:visible group-hover:opacity-100"
+                className="invisible absolute right-2 top-1/2 -translate-y-1/2 rounded p-[2px] text-slate-900 opacity-0 hover:bg-gradient-to-br hover:from-red-300/60 hover:to-red-300/20 group-hover:visible group-hover:opacity-100 dark:text-slate-100 dark:hover:from-red-700/60 dark:hover:to-red-700/20"
                 onClick={(e) => handleTabClose(e, key)}
                 type="button"
               >

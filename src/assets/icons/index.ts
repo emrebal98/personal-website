@@ -18,3 +18,5 @@ export { default as TypeScript } from './type-script.svg';
 export { default as Jotform } from './jotform.png';
 export { default as Allianz } from './allianz.png';
 export { default as SistemTeknik } from './sistem-teknik.png';
+export { default as GitHub } from './github.svg';
+export { default as LinkedIn } from './linkedin.png';

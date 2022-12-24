@@ -77,13 +77,7 @@ const Document: FunctionComponent<DocumentProps> = ({
             )}
             style={{ paddingLeft: `${indent * 8}px` }}
           >
-            <FolderIcon
-              className={clg(
-                'h-6 w-6',
-                { 'text-slate-100': isActiveFolder(document.key) },
-                { 'text-slate-400': !isActiveFolder(document.key) }
-              )}
-            />
+            <FolderIcon className="h-6 w-6 text-slate-600 dark:text-slate-400" />
             <DocumentInput
               document={document}
               onEditComplete={onEditComplete}
@@ -110,20 +104,20 @@ const Document: FunctionComponent<DocumentProps> = ({
             <FolderIcon
               className={clg(
                 'h-6 w-6',
-                { 'text-slate-100': isActiveFolder(document.key) },
-                { 'text-slate-400': !isActiveFolder(document.key) }
+                { 'text-slate-900 dark:text-slate-100': isActiveFolder(document.key) },
+                { 'text-slate-600 dark:text-slate-400': !isActiveFolder(document.key) }
               )}
             />
 
             <span
               className={clg(
                 'select-none font-segoeui text-base font-normal',
-                { 'text-slate-100': isActiveFolder(document.key) },
+                { 'text-slate-900 dark:text-slate-100': isActiveFolder(document.key) },
                 {
-                  'text-slate-400':
+                  'text-slate-600 dark:text-slate-400':
                     !isActiveFolder(document.key) && !isFolderHasActiveFile(document.key),
                 },
-                { 'text-cyan-300': isFolderHasActiveFile(document.key) }
+                { 'text-cyan-700 dark:text-cyan-300': isFolderHasActiveFile(document.key) }
               )}
             >
               {document.title}
@@ -165,13 +159,7 @@ const Document: FunctionComponent<DocumentProps> = ({
         )}
         style={{ paddingLeft: `${indent * 8}px` }}
       >
-        <CodeBracketIcon
-          className={clg(
-            'h-6 w-6',
-            { 'text-cyan-300': isActiveFile(document.key) },
-            { 'text-slate-400': !isActiveFile(document.key) }
-          )}
-        />
+        <CodeBracketIcon className="h-6 w-6 text-slate-600 dark:text-slate-400" />
         <DocumentInput
           document={document}
           onEditComplete={onEditComplete}
@@ -198,15 +186,15 @@ const Document: FunctionComponent<DocumentProps> = ({
         <CodeBracketIcon
           className={clg(
             'h-6 w-6',
-            { 'text-cyan-300': isActiveFile(document.key) },
-            { 'text-slate-400': !isActiveFile(document.key) }
+            { 'text-cyan-700 dark:text-cyan-300': isActiveFile(document.key) },
+            { 'text-slate-600 dark:text-slate-400': !isActiveFile(document.key) }
           )}
         />
         <span
           className={clg(
             'select-none font-segoeui text-base font-normal',
-            { 'text-cyan-300': isActiveFile(document.key) },
-            { 'text-slate-400': !isActiveFile(document.key) }
+            { 'text-cyan-700 dark:text-cyan-300': isActiveFile(document.key) },
+            { 'text-slate-600 dark:text-slate-400': !isActiveFile(document.key) }
           )}
         >
           {document.title}

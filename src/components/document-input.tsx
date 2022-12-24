@@ -31,7 +31,7 @@ const DocumentInput: FunctionComponent<DocumentInputProps> = ({
   return (
     <input
       ref={inputRef}
-      className="rounded border border-slate-400 bg-transparent text-slate-400 focus-visible:outline-none"
+      className="rounded border border-slate-600 bg-transparent text-slate-600 focus-visible:outline-none dark:border-slate-400 dark:text-slate-400"
       type="text"
       name="newFile"
       autoComplete="off"
