@@ -53,12 +53,12 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
   return (
     <div className="flex select-none flex-col gap-2">
       <button
-        className="flex items-center gap-2 text-slate-400 hover:text-slate-100"
+        className="flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
         type="button"
         onClick={() => setExpand((prev) => !prev)}
       >
         {expand ? (
-          <ChevronDownIcon className="h-4 w-4 cursor-pointer text-slate-100" />
+          <ChevronDownIcon className="h-4 w-4 cursor-pointer text-slate-900 dark:text-slate-100" />
         ) : (
           <ChevronRightIcon className="h-4 w-4 cursor-pointer" />
         )}
@@ -72,12 +72,15 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
               key={item.file.key + item.lineNumber}
               className={clg(
                 'w-full text-left ',
-                { 'text-cyan-300': isActiveSearch(item.lineNumber, item.file.key) },
                 {
-                  'text-slate-400 hover:text-slate-100': !isActiveSearch(
+                  'text-cyan-700 dark:text-cyan-300': isActiveSearch(
                     item.lineNumber,
                     item.file.key
                   ),
+                },
+                {
+                  'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100':
+                    !isActiveSearch(item.lineNumber, item.file.key),
                 }
               )}
               type="button"
@@ -90,18 +93,14 @@ const TreeView: FunctionComponent<TreeViewProps> = ({ title, childs }) => {
                 )}
                 <span
                   className={clg(
-                    'rounded bg-gradient-to-br text-slate-100',
+                    'rounded bg-gradient-to-br text-slate-900 dark:text-slate-100',
                     {
-                      'from-cyan-300/40 to-cyan-300/0': isActiveSearch(
-                        item.lineNumber,
-                        item.file.key
-                      ),
+                      'from-cyan-700/40 to-cyan-700/0 dark:from-cyan-300/40 dark:to-cyan-300/0':
+                        isActiveSearch(item.lineNumber, item.file.key),
                     },
                     {
-                      'from-slate-400/40 to-slate-400/0': !isActiveSearch(
-                        item.lineNumber,
-                        item.file.key
-                      ),
+                      'from-slate-600/40 to-slate-600/0 dark:from-slate-400/40 dark:to-slate-400/0':
+                        !isActiveSearch(item.lineNumber, item.file.key),
                     }
                   )}
                 >

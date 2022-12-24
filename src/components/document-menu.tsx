@@ -139,12 +139,14 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
       {/* Topbar */}
       <div className="flex justify-between gap-4 md:gap-16">
         {/* Text */}
-        <p className="select-none font-segoeui text-base font-normal text-slate-100">EXPLORER</p>
+        <p className="select-none font-segoeui text-base font-normal text-slate-900 dark:text-slate-100">
+          EXPLORER
+        </p>
         {/* Buttons */}
         <div className="flex gap-2">
           <button
             ref={fileButtonRef}
-            className="text-slate-400"
+            className="text-slate-600 dark:text-slate-400"
             type="button"
             title="Add file"
             onClick={handleFileAdd}
@@ -153,7 +155,7 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
           </button>
           <button
             ref={folderButtonRef}
-            className="text-slate-400"
+            className="text-slate-600 dark:text-slate-400"
             type="button"
             onClick={handleFolderAdd}
             title="Add folder"
@@ -162,12 +164,12 @@ const DocumentMenu: FunctionComponent<IDocumentMenu> = ({ className, style }) =>
           </button>
 
           <ArrowPathIcon
-            className="h-6 w-6 cursor-pointer text-slate-400"
+            className="h-6 w-6 cursor-pointer text-slate-600 dark:text-slate-400"
             onClick={handleResetDocuments}
             title="Reset documents"
           />
           <ArrowDownOnSquareStackIcon
-            className="h-6 w-6 cursor-pointer text-slate-400"
+            className="h-6 w-6 cursor-pointer text-slate-600 dark:text-slate-400"
             onClick={handleCollapseFolders}
             title="Collapse folders"
           />

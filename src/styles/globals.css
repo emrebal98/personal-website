@@ -36,19 +36,19 @@
   font-display: swap;
 }
 
-* {
-  @apply selection:bg-slate-400/20;
+::selection {
+  @apply bg-slate-600/20 dark:bg-slate-400/20;
 }
 
 .simplebar-content {
   @apply h-full;
 }
 .simplebar-scrollbar:before {
-  @apply rounded bg-slate-200;
+  @apply rounded bg-slate-800 dark:bg-slate-200;
 }
 
 .simplebar-dragging .simplebar-scrollbar:before {
-  @apply bg-cyan-300;
+  @apply bg-cyan-700 dark:bg-cyan-300;
 }
 
 .tabs-scroll .simplebar-track.simplebar-horizontal .simplebar-scrollbar {
@@ -62,7 +62,7 @@
 }
 
 .language-tsx {
-  @apply font-consolas text-base font-normal text-slate-100;
+  @apply font-consolas text-base font-normal text-slate-900 dark:text-slate-100;
 }
 
 .language-tsx textarea:focus-visible {
@@ -70,58 +70,58 @@
 }
 
 .language-tsx .keyword {
-  @apply italic text-cyan-300;
+  @apply italic text-cyan-700 dark:text-cyan-300;
 }
 .language-tsx .keyword-exception {
-  @apply not-italic text-fuchsia-300;
+  @apply not-italic text-fuchsia-700 dark:text-fuchsia-300;
 }
 .language-tsx .punctuation {
-  @apply text-cyan-300;
+  @apply text-cyan-700 dark:text-cyan-300;
 }
 
 .language-tsx .paranthesis {
-  @apply text-amber-300;
+  @apply text-amber-700 dark:text-amber-300;
 }
 
 .language-tsx .string {
-  @apply text-lime-300;
+  @apply text-lime-700 dark:text-lime-300;
 }
 
 .language-tsx .operator {
-  @apply text-cyan-300;
+  @apply text-cyan-700 dark:text-cyan-300;
 }
 
 .language-tsx .operator-exception {
-  @apply text-fuchsia-300;
+  @apply text-fuchsia-700 dark:text-fuchsia-300;
 }
 
 .language-tsx .class-name {
-  @apply text-amber-300;
+  @apply text-amber-700 dark:text-amber-300;
 }
 
 .language-tsx .attr-name {
-  @apply text-fuchsia-300;
+  @apply text-fuchsia-700 dark:text-fuchsia-300;
 }
 
 .language-tsx .tag {
-  @apply text-red-400;
+  @apply text-red-600 dark:text-red-400;
 }
 
 .language-tsx .attr-value {
-  @apply text-lime-300;
+  @apply text-lime-700 dark:text-lime-300;
 }
 
 .language-tsx .function {
-  @apply text-blue-300;
+  @apply text-blue-700 dark:text-blue-300;
 }
 
 .language-tsx .script {
-  @apply text-slate-100;
+  @apply text-slate-900 dark:text-slate-100;
 }
 .language-tsx .comment {
-  @apply text-slate-400;
+  @apply text-slate-600 dark:text-slate-400;
 }
 
 .language-tsx .number {
-  @apply text-orange-500;
+  @apply text-orange-500 dark:text-orange-500;
 }

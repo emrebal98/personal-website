@@ -42,9 +42,11 @@ const SearchMenu: FunctionComponent = () => {
       {/* Topbar */}
       <div className="flex flex-col gap-4">
         {/* Text */}
-        <p className="select-none font-segoeui text-base font-normal text-slate-100">SEARCH</p>
+        <p className="select-none font-segoeui text-base font-normal text-slate-900 dark:text-slate-100">
+          SEARCH
+        </p>
         <input
-          className="rounded border border-slate-400 bg-transparent px-2 py-1 text-slate-100 focus-visible:outline-none"
+          className="rounded border border-slate-600 bg-transparent px-2 py-1 text-slate-900 placeholder:text-slate-600 focus-visible:outline-none dark:border-slate-400 dark:text-slate-100 dark:placeholder:text-slate-400"
           type="text"
           placeholder="Search"
           value={search}

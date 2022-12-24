@@ -57,15 +57,15 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
 
   return (
     <div
-      className="relative mx-auto h-full origin-top-left overflow-hidden rounded-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 backdrop-blur-2xl transition-width"
+      className="relative mx-auto h-full origin-top-left overflow-hidden rounded-2xl bg-light-gradient backdrop-blur-2xl transition-width dark:bg-dark-gradient"
       style={{
         width: isParentSizeGreater('width') ? DEVICES[device].width : '100%',
       }}
     >
       {loading === true && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-400/40 backdrop-blur-lg">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-600/40 backdrop-blur-lg dark:bg-slate-400/40">
           <RocketLaunchIcon
-            className="h-12 w-12 animate-[spin_2s_linear_infinite] text-slate-100"
+            className="h-12 w-12 animate-[spin_2s_linear_infinite] text-slate-900 dark:text-slate-100"
             title="Loading"
           />
         </div>
@@ -83,10 +83,10 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
         }}
       />
       {/* Bottom Navbar */}
-      <div className="absolute inset-x-0 bottom-0 flex h-[50px] items-center justify-between rounded-b-2xl bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 backdrop-blur-2xl">
+      <div className="absolute inset-x-0 bottom-0 flex h-[50px] items-center justify-between rounded-b-2xl bg-light-gradient px-4 backdrop-blur-2xl dark:bg-dark-gradient">
         <div className="flex w-full justify-start">
           <Link
-            className="rounded bg-slate-600/60 py-1 px-2 text-slate-100 hover:bg-slate-600"
+            className="rounded bg-slate-400/60 py-1 px-2 text-slate-900 hover:bg-slate-400 dark:bg-slate-600/60 dark:text-slate-100 dark:hover:bg-slate-600"
             href={PROJECTS[projectIndex]?.url ?? '#'}
             target="_blank"
             title="Open site in new tab"
@@ -96,9 +96,9 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
         </div>
         <div className="flex w-full justify-center">
           <button
-            className={clg('h-10 w-10 rounded-l p-1 text-slate-100 ', {
-              'bg-slate-900': device === 'desktop',
-              'bg-slate-900/50 ': device !== 'desktop',
+            className={clg('h-10 w-10 rounded-l p-1 text-slate-900 dark:text-slate-100', {
+              'bg-slate-100 dark:bg-slate-900': device === 'desktop',
+              'bg-slate-100/50 dark:bg-slate-900/50': device !== 'desktop',
             })}
             type="button"
             onClick={() => setDevice('desktop')}
@@ -106,9 +106,9 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
             <ComputerDesktopIcon />
           </button>
           <button
-            className={clg('h-10 w-10 rounded-r p-1 text-slate-100 ', {
-              'bg-slate-900': device === 'mobile',
-              'bg-slate-900/50 ': device !== 'mobile',
+            className={clg('h-10 w-10 rounded-r p-1 text-slate-900 dark:text-slate-100', {
+              'bg-slate-100 dark:bg-slate-900': device === 'mobile',
+              'bg-slate-100/50 dark:bg-slate-900/50': device !== 'mobile',
             })}
             type="button"
             onClick={() => setDevice('mobile')}
@@ -118,11 +118,11 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
         </div>
         <div className="flex w-full justify-end">
           <button
-            className="flex gap-2 rounded bg-slate-600/60 px-2 text-slate-100 hover:bg-slate-600"
+            className="flex gap-2 rounded bg-slate-400/60 px-2 text-slate-900 hover:bg-slate-400 dark:bg-slate-600/60 dark:text-slate-100 dark:hover:bg-slate-600"
             type="button"
             onClick={() => handleNextProject()}
           >
-            <p className="stroke-red-600 stroke-2">Next</p>
+            <p>Next</p>
             <ArrowLongRightIcon className="h-6 w-6" />
           </button>
         </div>

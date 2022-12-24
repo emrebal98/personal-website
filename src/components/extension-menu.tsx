@@ -23,7 +23,9 @@ const ExtensionMenu: FunctionComponent = () => {
       {/* Topbar */}
       <div className="flex flex-col gap-4">
         {/* Text */}
-        <p className="select-none font-segoeui text-base font-normal text-slate-100">EXTENSIONS</p>
+        <p className="select-none font-segoeui text-base font-normal text-slate-900 dark:text-slate-100">
+          EXTENSIONS
+        </p>
       </div>
       {/* Documents */}
       <div className="h-full overflow-hidden">
@@ -32,8 +34,11 @@ const ExtensionMenu: FunctionComponent = () => {
             <button
               className={clg(
                 'flex items-center gap-2 text-left',
-                { 'text-cyan-300': activeFile === contactExtensionKey },
-                { 'text-slate-400 hover:text-slate-100': activeFile !== contactExtensionKey }
+                { 'text-cyan-700 dark:text-cyan-300': activeFile === contactExtensionKey },
+                {
+                  'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100':
+                    activeFile !== contactExtensionKey,
+                }
               )}
               type="button"
               title="Contact page that allows users to send messages to the website owner."
@@ -45,8 +50,8 @@ const ExtensionMenu: FunctionComponent = () => {
                 <p
                   className={clg(
                     'overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal',
-                    { 'text-cyan-300': activeFile === contactExtensionKey },
-                    { 'text-slate-400': activeFile !== contactExtensionKey }
+                    { 'text-cyan-700 dark:text-cyan-300': activeFile === contactExtensionKey },
+                    { 'text-slate-600 dark:text-slate-400': activeFile !== contactExtensionKey }
                   )}
                 >
                   Contact page that allows users to send messages to the website owner.

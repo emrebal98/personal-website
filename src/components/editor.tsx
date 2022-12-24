@@ -35,8 +35,10 @@ const Editor: FunctionComponent = () => {
       .split('\n')
       .map(
         (line, i) =>
-          `<span id='line-${i + 1}' class='absolute left-0 w-[40px]${
-            activeLineNumber === i + 1 ? ' text-slate-100' : ' text-slate-400'
+          `<span id='line-${i + 1}' class='absolute left-0 w-[40px] ${
+            activeLineNumber === i + 1
+              ? 'text-slate-900 dark:text-slate-100'
+              : 'text-slate-600 dark:text-slate-400'
           }'>${i + 1}</span>${line}`
       )
       .join('\n');

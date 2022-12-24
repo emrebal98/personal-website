@@ -8,7 +8,7 @@ const Skills: FunctionComponent = () => (
       // Card
       <div
         key={skill.id}
-        className="flex h-[150px] w-[150px] items-center rounded bg-gradient-to-br from-slate-400/40 to-slate-400/0 px-4 py-8"
+        className="flex h-[150px] w-[150px] items-center rounded bg-light-gradient px-4 py-8 dark:bg-dark-gradient"
         title={skill.title}
       >
         {skill.isStaticImage === true ? (
