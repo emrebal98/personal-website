@@ -11,7 +11,7 @@ import { clg, useElementWidth } from '../utils';
 
 const PROJECTS: { url: string; title: string }[] = [
   { url: 'https://blog-with-nextjs-emrebal98.vercel.app/', title: 'Blog With Next.js' },
-  { url: 'http://oriondizaynmakina.com/', title: 'Orion Dizayn Makina' },
+  { url: 'https://oriondizaynmakina.com/', title: 'Orion Dizayn Makina' },
 ];
 
 const DEVICES: { [key in 'desktop' | 'mobile']: { width: number; height: number } } = {
