@@ -17,8 +17,31 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }) => {
   const page = (
     <>
       <Head>
+        {/* Primary Meta Tags */}
         <title>Emre Bal</title>
-        <meta name="description" content="Personal website of Emre Bal." />
+        <meta name="title" content="Emre Bal" />
+        <meta
+          name="description"
+          content="Personal website of Emre Bal. He is a full stack developer. The technologies he used mostly are Next.js, React, TypeScript."
+        />
+        {/* Open Graph / Facebook  */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://emrebal.com/" />
+        <meta property="og:title" content="Emre Bal" />
+        <meta
+          property="og:description"
+          content="Personal website of Emre Bal. He is a full stack developer. The technologies he used mostly are Next.js, React, TypeScript, tRPC, Prisma, MySQL."
+        />
+        <meta property="og:image" content="https://emrebal.com/meta-image.png" />
+        {/* Twitter  */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://emrebal.com/" />
+        <meta property="twitter:title" content="Emre Bal" />
+        <meta
+          property="twitter:description"
+          content="Personal website of Emre Bal. He is a full stack developer. The technologies he used mostly are Next.js, React, TypeScript, tRPC, Prisma, MySQL."
+        />
+        <meta property="twitter:image" content="https://emrebal.com/meta-image.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ThemeProvider attribute="class" enableSystem>
