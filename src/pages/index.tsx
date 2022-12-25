@@ -19,7 +19,7 @@ const Home: NextPageWithLayout = () => {
   const runComponent = useDocumentsStore((state) => state.runComponent);
 
   return (
-    <main className="relative h-screen overflow-hidden bg-slate-100 dark:bg-slate-900 md:p-16">
+    <main className="relative z-0 h-screen overflow-hidden bg-slate-100 dark:bg-slate-900 md:p-16">
       {/* Window */}
       <div className="flex h-full flex-col rounded-2xl bg-light-gradient p-4 dark:bg-dark-gradient md:flex-row ">
         {/* Left Icon Bar */}
@@ -45,8 +45,8 @@ const Home: NextPageWithLayout = () => {
         </div>
       </div>
       {/* Circles */}
-      <div className="absolute right-16 top-16 h-[60px] w-[60px] rounded-full bg-cyan-700 blur-3xl dark:bg-cyan-300 md:right-32 md:top-60 md:h-[100px] md:w-[100px]" />
-      <div className="absolute left-16 bottom-16 h-[60px] w-[60px] rounded-full bg-cyan-700 blur-3xl dark:bg-cyan-300 md:left-96 md:bottom-36 md:h-[100px] md:w-[100px]" />
+      <div className="absolute right-16 top-16 -z-10 h-[60px] w-[60px] rounded-full bg-cyan-700 blur-3xl dark:bg-cyan-300 md:right-32 md:top-60 md:h-[100px] md:w-[100px]" />
+      <div className="absolute left-16 bottom-16 -z-10 h-[60px] w-[60px] rounded-full bg-cyan-700 blur-3xl dark:bg-cyan-300 md:left-96 md:bottom-36 md:h-[100px] md:w-[100px]" />
     </main>
   );
 };
