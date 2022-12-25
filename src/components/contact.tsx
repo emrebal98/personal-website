@@ -10,32 +10,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type ChangeEvent, type FunctionComponent } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { type ErrorOption } from 'react-hook-form/dist/types';
 import SimpleBar from 'simplebar-react';
-import { z } from 'zod';
+import { FormSchema, type IFormScheme } from '../types';
 import { clg } from '../utils';
-
-const FormSchema = z.object({
-  name: z
-    .string()
-    .min(3, { message: 'Name must contain at least 3 characters.' })
-    .max(50, { message: 'Name must contain at most 50 characters.' }),
-  email: z
-    .string()
-    .min(1, { message: 'Email is required.' })
-    .email({ message: 'Email is invalid.' }),
-  message: z
-    .string()
-    .min(10, { message: 'Message must contain at least 10 characters.' })
-    .max(4000, { message: 'Message must contain at most 4000 characters.' }),
-});
-
-type IFormScheme = z.infer<typeof FormSchema>;
 
 const Contact: FunctionComponent = () => {
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<IFormScheme>({
     resolver: zodResolver(FormSchema),
@@ -43,12 +28,39 @@ const Contact: FunctionComponent = () => {
 
   // Handle submit
   const onSubmit: SubmitHandler<IFormScheme> = async (data) => {
-    await new Promise(async (resolve) => {
-      await setTimeout(() => {
-        console.log(data);
-        resolve(undefined);
-      }, 3000);
-    });
+    // Send data to server
+    await fetch('/api/mail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      // Resolve response
+      .then(async (res) => ({
+        status: res.status,
+        ok: res.ok,
+        data: await res.json(),
+      }))
+      // Handle response
+      .then((_data) => {
+        if (!_data.ok) {
+          const error: ErrorOption = { type: 'server', message: _data.data.error };
+          setError('name', error);
+          setError('email', error);
+          setError('message', error);
+        }
+      })
+      // Handle error
+      .catch((err) => {
+        const error: ErrorOption = {
+          type: 'server',
+          message: err.message || 'Something went wrong',
+        };
+        setError('name', error);
+        setError('email', error);
+        setError('message', error);
+      });
   };
 
   // Handle auto resize
@@ -170,7 +182,7 @@ const Contact: FunctionComponent = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className="h-[40px] w-full rounded bg-gradient-to-br from-slate-600/40 to-slate-600/0 px-4 py-2 text-sm font-normal text-slate-900 hover:from-slate-600/50 hover:to-slate-600/10 focus:outline-none dark:from-slate-400/40 dark:to-slate-400/0 dark:text-slate-100 dark:hover:from-slate-400/50 dark:hover:to-slate-400/10"
+                className="h-[40px] w-full rounded bg-gradient-to-br from-slate-600/40 to-slate-600/0 px-4 py-2 text-sm font-normal text-slate-900 focus:outline-none enabled:hover:from-slate-600/50 enabled:hover:to-slate-600/10 dark:from-slate-400/40 dark:to-slate-400/0 dark:text-slate-100 dark:enabled:hover:from-slate-400/50 dark:enabled:hover:to-slate-400/10"
                 disabled={isSubmitting}
               >
                 Send
