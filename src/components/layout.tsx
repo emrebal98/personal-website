@@ -50,7 +50,13 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }) => {
     </>
   );
 
-  return isHydrated ? page : <div>Loading...</div>;
+  return isHydrated ? (
+    page
+  ) : (
+    <div className="flex min-h-screen items-center justify-center bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+      <p>Loading...</p>
+    </div>
+  );
 };
 
 export default Layout;
