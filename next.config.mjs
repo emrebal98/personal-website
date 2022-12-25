@@ -22,5 +22,8 @@ const config = {
     });
     return c;
   },
+  async rewrites() {
+    return [{ source: '/:path*', destination: '/_404/:path*' }];
+  },
 };
 export default config;
