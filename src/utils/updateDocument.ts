@@ -15,18 +15,18 @@ const updateDocument: (key: number, newDocument: IDocument, docs: IDocument[]) =
   const updatedDocuments: IDocument[] = [];
   docs.forEach((doc) => {
     // Create a new document to store the updated document
-    let newDoc = doc;
+    let currentDoc = JSON.parse(JSON.stringify(doc));
     // Check if the current document is an IDocument with the specified key
-    if (newDoc.key === key) {
-      newDoc = { ...newDoc, ...newDocument };
+    if (currentDoc.key === key) {
+      currentDoc = { ...currentDoc, ...newDocument };
     }
     // Check if the current document is an IFolder
-    if (newDoc.type === 'FOLDER') {
+    if (currentDoc.type === 'FOLDER') {
       // If so, update the children of the folder recursively
-      newDoc.children = updateDocument(key, newDocument, newDoc.children);
+      currentDoc.children = updateDocument(key, newDocument, currentDoc.children);
     }
     // Add the document to the updated array
-    updatedDocuments.push(newDoc);
+    updatedDocuments.push(currentDoc);
   });
   // Return the updated array
   return updatedDocuments;

@@ -2,20 +2,23 @@ import React, { createRef, type FunctionComponent, useEffect } from 'react';
 import CodeEditor from 'react-simple-code-editor';
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
-import { contactExtensionKey, getCodeContent } from '../utils';
+import { contactExtensionKey, findFile, getCodeContent } from '../utils';
 import Contact from './contact';
 
 const Editor: FunctionComponent = () => {
   // Scrollable node ref
   const scrollableNodeRef = createRef<HTMLElement>();
+  // Documents
+  const documents = useDocumentsStore((state) => state.documents);
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
   // Active file code content
-  const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
+  // const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
   const updateContent = useDocumentsStore((state) => state.findAndUpdateContent);
   // Active line number
   const activeLineNumber = useDocumentsStore((state) => state.activeLineNumber);
 
+  // Handle scroll position
   useEffect(() => {
     // If there is no active line number, return
     if (activeLineNumber === -1) return;
@@ -44,7 +47,7 @@ const Editor: FunctionComponent = () => {
       .join('\n');
 
   //  If the active file is an extension and the active file is the contact extension
-  if (findActiveFile(activeFile)?.isExtension === true && activeFile === contactExtensionKey) {
+  if (findFile(activeFile, documents)?.isExtension === true && activeFile === contactExtensionKey) {
     return <Contact />;
   }
 
@@ -52,8 +55,8 @@ const Editor: FunctionComponent = () => {
     <div className="language-tsx h-full overflow-hidden">
       <SimpleBar className="h-full" scrollableNodeProps={{ ref: scrollableNodeRef }}>
         <CodeEditor
-          className="code-editor float-left min-h-[40px] min-w-full "
-          value={findActiveFile(activeFile)?.content ?? ''}
+          className="code-editor float-left min-h-[40px] min-w-full"
+          value={findFile(activeFile, documents)?.content ?? ''}
           onValueChange={(newCode) => updateContent(activeFile, newCode)}
           highlight={(hCode) => highlightWithLineNumbers(hCode)}
           placeholder="Write some code..."

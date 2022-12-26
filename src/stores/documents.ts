@@ -1,12 +1,11 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
-import { type IDocument, type IFile, type IMenuNames, type IRunComponent } from '../types';
+import { type IDocument, type IMenuNames, type IRunComponent } from '../types';
 import { DOCUMENTS, searchByKey, updateDocument } from '../utils';
 
 interface DocumentsState {
   // All documents
   documents: IDocument[];
-  findActiveFile: (key: number) => IFile | null;
   findAndUpdateContent: (key: number, newContent: string) => void;
   setDocuments: (documents: IDocument[]) => void;
   clearDocuments: () => void;
@@ -40,11 +39,6 @@ const useDocumentsStore = create<DocumentsState>()(
     (set, get) => ({
       // All documents
       documents: JSON.parse(JSON.stringify(DOCUMENTS)),
-      findActiveFile: (key) => {
-        const activeFile = searchByKey(key, get().documents);
-        if (activeFile && activeFile.type === 'FILE') return activeFile;
-        return null;
-      },
       findAndUpdateContent: (key, newContent) =>
         set((state) => {
           const currentDocument = searchByKey(key, state.documents);

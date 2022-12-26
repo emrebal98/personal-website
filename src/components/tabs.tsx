@@ -9,7 +9,7 @@ import { createRef, type FunctionComponent, type MouseEvent, useEffect } from 'r
 import SimpleBar from 'simplebar-react';
 import { useDocumentsStore } from '../stores';
 import { type IRunComponent } from '../types';
-import { clg, RUNCOMPONENT_ORDER } from '../utils';
+import { clg, findFile, RUNCOMPONENT_ORDER } from '../utils';
 
 interface ITabsProps {
   title?: string;
@@ -18,12 +18,14 @@ interface ITabsProps {
 const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
   // Scrollable node ref
   const scrollableNodeRef = createRef<HTMLElement>();
+  // Documents
+  const documents = useDocumentsStore((state) => state.documents);
   // Active tabs
   const activeTabs = useDocumentsStore((state) => state.activeTabs);
   const removeActiveTab = useDocumentsStore((state) => state.removeActiveTab);
   // Active file
   const activeFile = useDocumentsStore((state) => state.activeFile);
-  const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
+  // const findActiveFile = useDocumentsStore((state) => state.findActiveFile);
   const setActiveFile = useDocumentsStore((state) => state.setActiveFile);
   // Run component
   const runComponent = useDocumentsStore((state) => state.runComponent);
@@ -112,14 +114,14 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
                 onClick={() => setActiveFile(key)}
               >
                 {/* If the file is an extension, show the extension icon */}
-                {findActiveFile(key)?.isExtension === true ? (
+                {findFile(key, documents)?.isExtension === true ? (
                   <SquaresPlusIcon className="h-6 w-6 text-slate-900 dark:text-slate-100" />
                 ) : (
                   <CodeBracketIcon className="h-6 w-6 text-slate-900 dark:text-slate-100" />
                 )}
 
                 <span className="whitespace-nowrap font-consolas text-base font-normal italic text-slate-900 dark:text-slate-100">
-                  {findActiveFile(key)?.title}
+                  {findFile(key, documents)?.title}
                 </span>
               </button>
               <button
