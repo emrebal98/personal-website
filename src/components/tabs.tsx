@@ -75,25 +75,29 @@ const Tabs: FunctionComponent<ITabsProps> = ({ title }) => {
           <div className="flex w-full justify-between">
             <div className="flex w-full justify-start overflow-hidden">
               <button
-                className="flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+                className="flex items-center gap-2 overflow-hidden text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
                 type="button"
                 onClick={() => setRunComponent(getRunComponent('prev'))}
+                title={getRunComponent('prev')}
               >
-                <ArrowLeftIcon className="h-6 w-6" /> {getRunComponent('prev')}
+                <ArrowLeftIcon className="h-6 w-6" />{' '}
+                <span className="overflow-hidden text-ellipsis"> {getRunComponent('prev')}</span>
               </button>
             </div>
-            <div className="flex w-full justify-center overflow-hidden">
+            <div className="flex w-full min-w-[96px] justify-center overflow-hidden">
               <p className="font-consolas text-base italic text-slate-900 dark:text-slate-100">
                 {title}
               </p>
             </div>
             <div className="flex w-full justify-end overflow-hidden">
               <button
-                className="flex items-center gap-2 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+                className="flex items-center gap-2 overflow-hidden text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
                 type="button"
                 onClick={() => setRunComponent(getRunComponent('next'))}
+                title={getRunComponent('next')}
               >
-                {getRunComponent('next')} <ArrowRightIcon className="h-6 w-6" />
+                <span className="overflow-hidden text-ellipsis">{getRunComponent('next')}</span>
+                <ArrowRightIcon className="h-6 w-6" />
               </button>
             </div>
           </div>
