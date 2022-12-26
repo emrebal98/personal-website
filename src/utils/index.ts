@@ -15,3 +15,4 @@ export { default as updateDocument } from './updateDocument';
 export { default as removeDocument } from './removeDocument';
 export { default as validateForm } from './validateForm';
 export { default as getEmailTemplate } from './getEmailTemplate';
+export { default as findFile } from './findFile';
