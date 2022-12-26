@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { type NextPage } from 'next';
 import { type AppProps } from 'next/app';
 import { type ReactElement, type ReactNode } from 'react';
@@ -16,8 +17,13 @@ type AppPropsWithLayout = AppProps & {
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <>
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <Component {...pageProps} />
+      <Analytics />
+    </>
+  );
 };
 
 export default MyApp;
