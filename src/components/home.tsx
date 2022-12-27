@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { type FunctionComponent, type ReactElement } from 'react';
 
 const Card = ({ children }: { children: ReactElement }) => (
@@ -12,10 +13,13 @@ const Home: FunctionComponent = () => (
     <Card>
       <>
         <h1 className="text-4xl font-bold">Hi, I am Emre BAL</h1>
-        <h3 className="text-xl font-bold">Full Stack Developer</h3>
+        <h3 className="text-xl font-bold">Software Developer</h3>
         <p className="text-base font-normal">
-          I am currently improving myself on Next.js with using T3 stack. You can navigate to skills
-          page to see what technologies that I used.
+          I am currently improving myself on Next.js with using
+          <Link href="https://create.t3.gg/" target="_blank">
+            {' T3 stack'}
+          </Link>
+          . You can navigate to skills page to see what technologies that I used.
         </p>
       </>
     </Card>
