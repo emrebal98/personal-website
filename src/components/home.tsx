@@ -13,7 +13,7 @@ const Home: FunctionComponent = () => (
     <Card>
       <>
         <h1 className="text-4xl font-bold">Hi, I am Emre BAL</h1>
-        <h3 className="text-xl font-bold">Software Developer</h3>
+        <h2 className="text-xl font-bold">Software Developer</h2>
         <p className="text-base font-normal">
           I am currently improving myself on Next.js with using
           <Link href="https://create.t3.gg/" target="_blank">
@@ -25,11 +25,11 @@ const Home: FunctionComponent = () => (
     </Card>
     <Card>
       <>
-        <h3 className="text-xl font-bold">Why is this site like a code editor?</h3>
+        <h2 className="text-xl font-bold">Why is this site like a code editor?</h2>
         <p className="text-base font-normal">
           Basically, I wanted to create an unusual website to introduce myself.
         </p>
-        <h3 className="text-xl font-bold">How do I use it?</h3>
+        <h2 className="text-xl font-bold">How do I use it?</h2>
         <ul className="list-disc pl-8 text-base font-normal">
           <li>There are 4 pages Home, Projects, Experiences, Skills. </li>
           <li>
