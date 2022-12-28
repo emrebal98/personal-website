@@ -19,7 +19,7 @@ const Experiences: FunctionComponent = () => (
         />
         {experience.jobs.length === 1 && experience.jobs[0] ? (
           // If there is only one job, show the job title, company name, job type, start date, end date, location, and skills.
-          <div className="flex flex-col gap-2">
+          <div className="flex w-full flex-col gap-2">
             <h3 className="font-bold">{experience.jobs[0].jobTitle}</h3>
             <p className="text-sm">{`${experience.companyName} • ${experience.jobs[0].jobType}`}</p>
             <p className="text-sm text-slate-700 dark:text-slate-300">
@@ -33,7 +33,7 @@ const Experiences: FunctionComponent = () => (
           </div>
         ) : (
           // If there are more than one job, show the company name, total months, location, and jobs.
-          <div className="flex flex-col gap-4">
+          <div className="flex w-full flex-col gap-4">
             <div className="flex flex-col gap-2">
               <h3 className="font-bold">{experience.companyName}</h3>
               <p className="text-sm">
