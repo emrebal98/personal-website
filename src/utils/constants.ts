@@ -20,6 +20,7 @@ import {
   TailwindCSS,
   TRPC,
   TypeScript,
+  Zustand,
 } from '../assets/icons';
 import { type IDocument, type IExperience, type IRunComponent, type ISkill } from '../types';
 
@@ -188,6 +189,12 @@ export const SKILLS: ISkill[] = [
     id: 219,
     title: 'NodeJS',
     icon: NodeJS,
+  },
+  {
+    id: 228,
+    title: 'Zustand',
+    icon: Zustand,
+    isStaticImage: true,
   },
   {
     id: 220,

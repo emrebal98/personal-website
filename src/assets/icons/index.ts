@@ -20,3 +20,4 @@ export { default as Allianz } from './allianz.png';
 export { default as SistemTeknik } from './sistem-teknik.png';
 export { default as GitHub } from './github.svg';
 export { default as LinkedIn } from './linkedin.png';
+export { default as Zustand } from './zustand.png';

@@ -212,11 +212,11 @@ const IconBar: FunctionComponent = () => {
               {currentTheme === 'dark' ? (
                 <>
                   <SunIcon className="h-6 w-6" />
-                  Toggle Light Theme
+                  Light Theme
                 </>
               ) : (
                 <>
-                  <MoonIcon className="h-6 w-6" /> Toggle Dark Theme
+                  <MoonIcon className="h-6 w-6" /> Dark Theme
                 </>
               )}
             </button>
