@@ -1,28 +1,93 @@
-# Create T3 App
+<div align="center" id="top">
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+&#xa0;
 
-## What's next? How do I make an app with this?
+<a href="https://emrebal.com">Demo</a>
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+</div>
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+<h1 align="center">Personal Website</h1>
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+<p align="center">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/emrebal98/personal-website?color=56BEB8">
 
-## Learn More
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/emrebal98/personal-website?color=56BEB8">
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/emrebal98/personal-website?color=56BEB8">
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+  <img alt="License" src="https://img.shields.io/github/license/emrebal98/personal-website?color=56BEB8">
+</p>
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+<p align="center">
+  <a href="#dart-about">About</a> &#xa0; | &#xa0; 
+  <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
+  <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
+  <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
+  <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
+  <a href="#memo-license">License</a> &#xa0; | &#xa0;
+  <a href="https://github.com/emrebal98" target="_blank">Author</a>
+</p>
 
-## How do I deploy this?
+<br>
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## :dart: About
+
+I was looking for an idea to showcase my skill in a different way, then I though why not build my portfolio website like an code editor(like VSCode). I started to design it with Figma. After most of the structure completed, I started to implement the website and complete the rest of the design on the go. You can see the end result [here](https://emrebal.com).
+
+The code editor has 4 main initial folder. You can run them by clicking play button. The home page comes in the running state, on first visit to the site. You can stop it with stop button or clicking any other menu button. You can navigate between these 4 pages Home, Projects, Experiences and Skills.
+
+You can add new folder or file, like you are in a code editor. You can write code on it and it gets tsx syntax higlight. But don't expect to run these newly created files. These newly created files and folders stored on your localStorage, you can reset it to initial state with the reset documents button.
+
+Search pane is working like you expect from a code editor. There is a contact page in the extensions pane.
+
+## :sparkles: Features
+
+:heavy_check_mark: Recursive folder structure;\
+:heavy_check_mark: Highlighting folder which has active file;\
+:heavy_check_mark: Syntax highlighting on dynamic text;\
+:heavy_check_mark: Create new files/folders and they saved on local storage;\
+:heavy_check_mark: View projects on mobile and desktop view;\
+:heavy_check_mark: Dark and light mode;\
+:heavy_check_mark: Responsive app;
+
+## :rocket: Technologies
+
+The following tools were used in this project:
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)
+
+## :white_check_mark: Requirements
+
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+
+## :checkered_flag: Starting
+
+```bash
+# Clone this project
+$ git clone https://github.com/emrebal98/personal-website
+
+# Access
+$ cd personal-website
+
+# Install dependencies
+$ npm install
+
+# Run the project
+$ npm start
+
+# The server will initialize in the <http://localhost:3000>
+```
+
+## :memo: License
+
+This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
+
+Made with :heart: by <a href="https://github.com/emrebal98" target="_blank">Emre Bal</a>
+
+&#xa0;
+
+<a href="#top">Back to top</a>
