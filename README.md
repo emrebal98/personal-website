@@ -32,13 +32,13 @@
 
 ## :dart: About
 
-I was looking for an idea to showcase my skill in a different way, then I though why not build my portfolio website like an code editor(like VSCode). I started to design it with Figma. After most of the structure completed, I started to implement the website and complete the rest of the design on the go. You can see the end result [here](https://emrebal.com).
+I was looking for an idea to showcase my skill in a different way, then I though why not build my portfolio website like an code editor (VSCode). I started to design it with Figma. After most of the structure completed, I started to implement the website and complete the rest of the design on the go. You can see the end result [here](https://emrebal.com).
 
 The code editor has 4 main initial folder. You can run them by clicking play button. The home page comes in the running state, on first visit to the site. You can stop it with stop button or clicking any other menu button. You can navigate between these 4 pages Home, Projects, Experiences and Skills.
 
-You can add new folder or file, like you are in a code editor. You can write code on it and it gets tsx syntax higlight. But don't expect to run these newly created files. These newly created files and folders stored on your localStorage, you can reset it to initial state with the reset documents button.
+You can add new folder or file, like you are in a code editor. You can write code on it and it gets tsx syntax highlighting. But don't expect to run these newly created files. These newly created files and folders stored on your localStorage, you can reset it to initial state with the reset documents button.
 
-Search pane is working like you expect from a code editor. There is a contact page in the extensions pane.
+Search pane is working like you expect from a code editor. And there is a contact page in the extensions pane.
 
 ## :sparkles: Features
 
@@ -46,7 +46,7 @@ Search pane is working like you expect from a code editor. There is a contact pa
 :heavy_check_mark: Highlighting folder which has active file;\
 :heavy_check_mark: Syntax highlighting on dynamic text;\
 :heavy_check_mark: Create new files/folders and they saved on local storage;\
-:heavy_check_mark: View projects on mobile and desktop view;\
+:heavy_check_mark: View projects on mobile and desktop view in the Projects page;\
 :heavy_check_mark: Dark and light mode;\
 :heavy_check_mark: Responsive app;
 
@@ -84,7 +84,7 @@ $ npm start
 
 ## :memo: License
 
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
+This project is under license from Apache 2.0. For more details, see the [LICENSE](LICENSE.md) file.
 
 Made with :heart: by <a href="https://github.com/emrebal98" target="_blank">Emre Bal</a>
 
