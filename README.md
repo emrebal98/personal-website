@@ -76,8 +76,11 @@ $ cd personal-website
 # Install dependencies
 $ npm install
 
-# Run the project
-$ npm start
+# Create .env file
+$ cp .env.example .env # for sending mail from contact page
+
+# Build & Run the project
+$ npm run build && npm run start
 
 # The server will initialize in the <http://localhost:3000>
 ```
