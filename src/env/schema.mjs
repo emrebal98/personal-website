@@ -9,6 +9,7 @@ export const serverSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']),
   MAIL_FROM: z.string().email(),
   MAIL_TO: z.string().email(),
+  MAIL_API: z.string(),
   MAIL_API_KEY: z.string(),
 });
 

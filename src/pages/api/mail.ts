@@ -24,7 +24,7 @@ export default async function sendContactForm(req: NextApiRequest, res: NextApiR
       htmlContent: getEmailTemplate(formData),
     });
     // Send email
-    const response = await fetch('https://api.sendinblue.com/v3/smtp/email', {
+    const response = await fetch(env.MAIL_API, {
       method: 'POST',
       headers: { 'api-key': env.MAIL_API_KEY, 'Content-Type': 'application/json' },
       body,
