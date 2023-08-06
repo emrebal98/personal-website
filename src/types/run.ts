@@ -31,6 +31,7 @@ export interface IExperience {
     jobType: string;
     startDate: Date;
     endDate: Date;
+    isPresent?: boolean;
   }[];
   location: string;
   skills?: string[];

@@ -51,7 +51,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }) => {
   return (
     <SEO>
       {isHydrated ? (
-        <ThemeProvider attribute="class" enableSystem>
+        <ThemeProvider attribute="class" enableSystem={false} defaultTheme="dark">
           {children}
         </ThemeProvider>
       ) : (

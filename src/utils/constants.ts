@@ -8,12 +8,15 @@ import {
   Java,
   JavaScript,
   Jotform,
+  Kartaca,
+  MUI,
   MySQL,
   NextJS,
   NodeJS,
   Prisma,
   Python,
   ReactJS,
+  Redux,
   Sass,
   SistemTeknik,
   StyledComponents,
@@ -186,9 +189,19 @@ export const SKILLS: ISkill[] = [
     isStaticImage: true,
   },
   {
+    id: 230,
+    title: 'Material UI',
+    icon: MUI,
+  },
+  {
     id: 219,
     title: 'NodeJS',
     icon: NodeJS,
+  },
+  {
+    id: 229,
+    title: 'Redux',
+    icon: Redux,
   },
   {
     id: 228,
@@ -240,6 +253,23 @@ export const SKILLS: ISkill[] = [
 ];
 
 export const EXPERIENCES: IExperience[] = [
+  {
+    id: 314,
+    companyName: 'Kartaca',
+    companyLogo: Kartaca,
+    jobs: [
+      {
+        id: 3141,
+        jobTitle: 'Software Developer',
+        jobType: 'Full-time',
+        startDate: new Date('2023-03-01'),
+        endDate: new Date(),
+        isPresent: true,
+      },
+    ],
+    location: 'Istanbul, Turkey',
+    skills: ['ReactJS', 'Redux', 'Redux Thunk', 'Material UI', 'TypeScript', 'Git', 'CSS'],
+  },
   {
     id: 311,
     companyName: 'Jotform',
