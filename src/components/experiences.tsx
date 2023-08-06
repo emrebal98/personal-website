@@ -23,7 +23,7 @@ const Experiences: FunctionComponent = () => (
             <h3 className="font-bold">{experience.jobs[0].jobTitle}</h3>
             <p className="text-sm">{`${experience.companyName} • ${experience.jobs[0].jobType}`}</p>
             <p className="text-sm text-slate-700 dark:text-slate-300">
-              {getDateString(experience.jobs[0].startDate, experience.jobs[0].endDate)}
+              {getDateString(experience.jobs[0])}
             </p>
             <p className="text-sm text-slate-800 dark:text-slate-200">{experience.location}</p>
             <p className="text-sm">
@@ -50,9 +50,7 @@ const Experiences: FunctionComponent = () => (
               <div key={job.id} className="relative flex flex-col gap-2">
                 <h4 className="font-bold">{job.jobTitle}</h4>
                 <p className="text-sm">{job.jobType}</p>
-                <p className="text-sm text-slate-700 dark:text-slate-300">
-                  {getDateString(job.startDate, job.endDate)}
-                </p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{getDateString(job)}</p>
               </div>
             ))}
           </div>

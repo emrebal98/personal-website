@@ -21,3 +21,6 @@ export { default as SistemTeknik } from './sistem-teknik.png';
 export { default as GitHub } from './github.svg';
 export { default as LinkedIn } from './linkedin.png';
 export { default as Zustand } from './zustand.png';
+export { default as Kartaca } from './kartaca.png';
+export { default as Redux } from './redux.svg';
+export { default as MUI } from './mui.svg';
