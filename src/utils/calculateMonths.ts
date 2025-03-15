@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { differenceInMonths } from 'date-fns';
 
 /**
  * Calculates the number of months between two dates.
@@ -6,14 +6,16 @@ import dayjs from 'dayjs';
  * @param {Date} startDate - The start date.
  * @param {Date} endDate - The end date.
  *
- * @returns {number} The number of months between the two dates.
+ * @returns {string} A formatted string representing relative time between the two dates in years and months.
  */
-const calculateMonths = (startDate: Date, endDate: Date) => {
-  // Convert the dates to dayjs objects for easier manipulation
-  const start = dayjs(startDate);
-  const end = dayjs(endDate);
-  // Subtract the start date's month from the end date's month and return the result
-  return end.subtract(start.get('months'), 'months').get('months');
+const calculateMonths = (startDate: Date, endDate: Date): string => {
+  const diffInMonths = differenceInMonths(endDate, startDate) + 1;
+  const diffInYears = Math.floor(diffInMonths / 12);
+  const remainingMonths = diffInMonths % 12;
+
+  return `${diffInYears > 0 ? `${diffInYears} year${diffInYears > 1 ? 's' : ''}` : ''}
+  ${diffInYears > 0 && remainingMonths > 0 ? ' ' : ''}
+  ${remainingMonths > 0 ? `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}`;
 };
 
 export default calculateMonths;

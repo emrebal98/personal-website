@@ -12,7 +12,7 @@
     "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "^2.9.10",
     "@vercel/analytics": "^0.1.6",
-    "dayjs": "^1.11.7",
+    "date-fns": "^4.1.0",
     "framer-motion": "^8.0.2",
     "hast-util-to-html": "^8.0.3",
     "next": "13.0.2",

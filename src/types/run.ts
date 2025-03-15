@@ -33,6 +33,6 @@ export interface IExperience {
     endDate: Date;
     isPresent?: boolean;
   }[];
-  location: string;
+  location?: string;
   skills?: string[];
 }
