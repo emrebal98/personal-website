@@ -5,8 +5,9 @@ import {
   DevicePhoneMobileIcon,
   RocketLaunchIcon,
 } from '@heroicons/react/24/outline/';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import { type FunctionComponent, type RefObject, useState } from 'react';
+import { type FunctionComponent, type RefObject, useEffect, useRef, useState } from 'react';
 import { clg, useElementWidth } from '../utils';
 
 const PROJECTS: { url: string; title: string }[] = [
@@ -25,6 +26,8 @@ const DEVICES: { [key in 'desktop' | 'mobile']: { width: number; height: number 
   },
 };
 
+const IFRAME_LOAD_TIMEOUT = 5000;
+
 interface IProjectsProps {
   barRef: RefObject<HTMLElement>;
 }
@@ -37,8 +40,21 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
   const parent = useElementWidth(barRef);
   // Calculated value for zoom respect to window width
   const calculatedZoom = 1 / (DEVICES[device].width / parent.width);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [iframeHasError, setIframeHasError] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        setIframeHasError(true);
+      }
+    }, IFRAME_LOAD_TIMEOUT);
+
+    return () => clearTimeout(timer);
+  }, [loading, projectIndex]);
 
   const handleNextProject = () => {
+    setIframeHasError(false);
     setLoading(true);
     setProjectIndex((prev) => (prev === PROJECTS.length - 1 ? 0 : prev + 1));
   };
@@ -68,9 +84,22 @@ const Projects: FunctionComponent<IProjectsProps> = ({ barRef }) => {
             className="h-12 w-12 animate-[spin_2s_linear_infinite] text-slate-900 dark:text-slate-100"
             title="Loading"
           />
+          <AnimatePresence>
+            {iframeHasError && (
+              <motion.p
+                className="absolute top-1/2 mt-14 -translate-y-1/2 text-sm text-slate-900 dark:text-slate-100"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                Project link seems to be broken. Please try again later.
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
       )}
       <iframe
+        ref={iframeRef}
         className="h-full w-full origin-top-left"
         src={PROJECTS[projectIndex]?.url}
         title={PROJECTS[projectIndex]?.title}

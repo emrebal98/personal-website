@@ -25,11 +25,15 @@ const Experiences: FunctionComponent = () => (
             <p className="text-sm text-slate-700 dark:text-slate-300">
               {getDateString(experience.jobs[0])}
             </p>
-            <p className="text-sm text-slate-800 dark:text-slate-200">{experience.location}</p>
-            <p className="text-sm">
-              <span className="font-bold">Skills: </span>
-              {experience.skills?.join(' • ')}
-            </p>
+            {experience.location && (
+              <p className="text-sm text-slate-800 dark:text-slate-200">{experience.location}</p>
+            )}
+            {experience.skills && (
+              <p className="text-sm">
+                <span className="font-bold">Skills: </span>
+                {experience.skills?.join(' • ')}
+              </p>
+            )}
           </div>
         ) : (
           // If there are more than one job, show the company name, total months, location, and jobs.
@@ -37,14 +41,14 @@ const Experiences: FunctionComponent = () => (
             <div className="flex flex-col gap-2">
               <h3 className="font-bold">{experience.companyName}</h3>
               <p className="text-sm">
-                {`${
-                  calculateMonths(
-                    experience.jobs[experience.jobs.length - 1]?.startDate as Date,
-                    experience.jobs[0]?.endDate as Date
-                  ) + 1
-                } months`}
+                {`${calculateMonths(
+                  experience.jobs[experience.jobs.length - 1]?.startDate as Date,
+                  experience.jobs[0]?.endDate as Date
+                )}`}
               </p>
-              <p className="text-sm text-slate-700 dark:text-slate-300">{experience.location}</p>
+              {experience.location && (
+                <p className="text-sm text-slate-700 dark:text-slate-300">{experience.location}</p>
+              )}
             </div>
             {experience.jobs.map((job) => (
               <div key={job.id} className="relative flex flex-col gap-2">

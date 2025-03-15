@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import type { IExperience } from '../types';
 import calculateMonths from './calculateMonths';
 
@@ -12,16 +12,10 @@ import calculateMonths from './calculateMonths';
  */
 const getDateString = (job: IExperience['jobs'][number]) => {
   const { startDate, endDate, isPresent } = job;
-  // Convert the dates to dayjs objects for easier manipulation
-  const start = dayjs(startDate);
-  const end = dayjs(endDate);
-  // Calculate the number of months between the two dates
-  const monthDiff = calculateMonths(startDate, endDate);
-  // Generate and return the formatted string
-  const result = `${start.format('MMM YYYY')} - ${
-    isPresent ? 'Present' : end.format('MMM YYYY')
-  } • ${monthDiff + 1} month${monthDiff + 1 > 1 ? 's' : ''}`;
-  return result;
+
+  return `${format(startDate, 'MMM yyyy')} - 
+  ${isPresent ? 'Present' : format(endDate, 'MMM yyyy')} • 
+  ${calculateMonths(startDate, endDate)}`;
 };
 
 export default getDateString;
